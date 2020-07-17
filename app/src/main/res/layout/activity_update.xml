@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:focusedByDefault="true"
+    android:orientation="vertical"
+    tools:context=".updateActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Product Barcode"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true"
+
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="true"
+                            android:padding="10dp"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Product Name"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true"
+
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:inputType="text"
+                            android:padding="10dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout4"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Choose Collection Name"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconMode="dropdown_menu"
+                        app:errorEnabled="true"
+
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="true"
+                            android:padding="9dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Choose Brand"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconMode="dropdown_menu"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="true"
+                            android:padding="6dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout5"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Choose Expire date"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconDrawable="@drawable/calendar"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="false"
+                            android:enabled="true"
+                            android:padding="6dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout6"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.2"
+                        android:hint="Price"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconDrawable="@drawable/money"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:background="@null"
+                            android:inputType="number"
+                            android:padding="9dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputlayout7"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:hint="Enter Amount"
+                        android:theme="@style/AppTheme2"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconMode="custom"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextLabel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdown7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:inputType="number"
+                            android:padding="9dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Add Photo"
+                    android:textColor="#000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/pick"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_weight="1"
+                        android:background="#ee0202"
+                        android:padding="4dp"
+                        android:text="Delete"
+                        android:textColor="#fff"
+                        android:textSize="17sp"
+                        android:textStyle="normal" />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_weight="1"
+                        android:background="#0679c5"
+                        android:padding="4dp"
+                        android:text="Update"
+                        android:textColor="#fff"
+                        android:textSize="17sp"
+                        android:textStyle="normal" />
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

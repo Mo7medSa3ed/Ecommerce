@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HomeFragment" >
+
+    <FrameLayout
+        android:id="@+id/con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipgroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+                            app:checkedChip="@+id/chip_cosmatics"
+                            app:singleLine="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_cosmatics"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:text="Cosmatics"
+                                android:textColor="@android:color/black"
+                                app:chipBackgroundColor="@drawable/chip_select"
+                                app:chipStrokeColor="@android:color/darker_gray"
+                                app:chipStrokeWidth="1dp"
+                                app:rippleColor="@color/colorPrimary"
+
+                                />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_Medical"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:text="Medical Supplies"
+                                android:textColor="@android:color/black"
+                                app:chipBackgroundColor="@drawable/chip_select"
+                                app:chipStrokeColor="@android:color/darker_gray"
+                                app:chipStrokeWidth="1dp"
+
+
+                                app:rippleColor="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_Makups"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:text="Makeup"
+                                android:textColor="@android:color/black"
+                                app:chipBackgroundColor="@drawable/chip_select"
+                                app:chipStrokeColor="@android:color/darker_gray"
+                                app:chipStrokeWidth="1dp"
+                                app:rippleColor="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_papers"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:text="papers"
+                                android:textColor="@android:color/black"
+                                app:chipBackgroundColor="@drawable/chip_select"
+                                app:chipStrokeColor="@android:color/darker_gray"
+                                app:chipStrokeWidth="1dp"
+                                app:rippleColor="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_others"
+                                style="@style/Widget.MaterialComponents.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checkable="true"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:text="Others"
+                                android:textColor="@android:color/black"
+                                app:chipBackgroundColor="@drawable/chip_select"
+                                app:chipStrokeColor="@android:color/darker_gray"
+                                app:chipStrokeWidth="1dp"
+                                app:rippleColor="@color/colorPrimary" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/SwipeRefreshLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="true"
+
+                        />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="20dp"
+                    android:clickable="true"
+                    app:elevation="16dp"
+                    android:src="@drawable/ic_arrow_upward"
+                    app:backgroundTint="#fff" />
+
+            </FrameLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:padding="2dp"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+</FrameLayout>

@@ -1,0 +1,502 @@
+package com.mohamedsaeed555.ecommerce;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.navigation.NavigationView;
+
+
+import com.google.gson.Gson;
+import com.mohamedsaeed555.MyDataBase.Database;
+import com.mohamedsaeed555.MyDataBase.Product_class;
+import com.mohamedsaeed555.MyDataBase.Users;
+import com.mohamedsaeed555.Notification.Notification_Class;
+import com.mohamedsaeed555.Notification.Notification_Service;
+import com.squareup.picasso.Picasso;
+
+
+import java.util.ArrayList;
+
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class SecondActivity extends AppCompatActivity {
+
+    GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInAccount acct;
+    ArrayList<Product_class> data2 = new ArrayList<>();
+    RecyclerView recyclerView;
+    RecyclerAdapter adapter;
+    ViewModel viewModel;
+    SearchView searchView;
+    RecyclerView.LayoutManager layoutManager;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    ChipGroup chipGroup;
+    //Database db = new Database(this);
+    int page = 1;
+    Boolean isloading=true;
+    private int visibleItemCount=0;
+    private int totalItemCount=0;
+    private int pastVisibleItems=0;
+    ProgressBar progressBar ;
+    public Boolean check=true;
+    public  static String collection_name="cosmatics";
+    LinearLayout home,search,logout,tasafoh,cart , updateprofile ,Alluser , favourite ,orders , changepassword;
+    ImageView dropimage;
+    TextView addnew ,addamount,sale_product,cos ,med,mak,pap,oth,username , cartbadge;
+    ExpandableRelativeLayout myLayout , mylayout2;
+    CircleImageView image_uri;
+    private String check_Activity="";
+    Gson gson = new Gson();
+    Notification_Class notification_class;
+    String c="s";
+    Database db =new Database(this);
+    ArrayList<Users> user = new ArrayList<>();
+    int cart_size=0;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+
+        StartService2();
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        user = db.getAllusers();
+        cart_size=db.getAllProducts("Cart").size();
+
+            try {
+                c = getIntent().getExtras().getString("c","f");
+                notification_class = gson.fromJson(getIntent().getExtras().getString("go",""),Notification_Class.class);
+            }catch (Exception e){e.printStackTrace();}
+
+            if (c.equals("c")) {
+                if (notification_class.getGo_Activity().equals("details")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("col", notification_class.getCollection());
+                    bundle.putString("pd",gson.toJson(notification_class.getProduct_class()));
+                    DetailsProductActivity frag = new DetailsProductActivity();
+                    frag.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.cotainers, frag)
+                            .addToBackStack(null).commit();
+                }else if (notification_class.getGo_Activity().equals("orderdetails")){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("o",gson.toJson(notification_class.getOrders()));
+                    Orders_Details frag = new Orders_Details();
+                    frag.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.cotainers, frag)
+                            .addToBackStack(null).commit();
+                }else if (notification_class.getGo_Activity().equals("alluser")){
+
+                }
+            }
+            else {
+                fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
+            }
+
+
+
+
+        NavigationView navigationView = findViewById(R.id.navigation);
+        home = (LinearLayout) navigationView.findViewById(R.id.linear1);
+        search = (LinearLayout) navigationView.findViewById(R.id.linear3);
+        tasafoh = (LinearLayout) navigationView.findViewById(R.id.linear4);
+        logout = (LinearLayout) navigationView.findViewById(R.id.linear5);
+        cart = (LinearLayout) navigationView.findViewById(R.id.linear8);
+        username = navigationView.findViewById(R.id.user_name);
+        image_uri = navigationView.findViewById(R.id.profile_image);
+        updateprofile = navigationView.findViewById(R.id.linear6);
+        Alluser = navigationView.findViewById(R.id.linearuser);
+        favourite = navigationView.findViewById(R.id.linearfavourite);
+        if (user.size() != 0){
+            if (user.get(0).getName()!=null)
+            username.setText(user.get(0).getName());
+            if (user.get(0).getImage()!=null)
+            Picasso.get().load(Uri.parse(user.get(0).getImage())).into(image_uri);
+        }
+
+        LinearLayout btn_addactivity = navigationView.findViewById(R.id.btn);
+        final ImageView arrow = navigationView.findViewById(R.id.arrow);
+        final ImageView arrow2 = navigationView.findViewById(R.id.arrow2);
+        myLayout =navigationView.findViewById(R.id.expandableLayout1);
+        mylayout2 =navigationView.findViewById(R.id.expandableLayout2);
+        cos =navigationView.findViewById(R.id.tv_chiled3);
+        med =navigationView.findViewById(R.id.tv_chiled4);
+        mak =navigationView.findViewById(R.id.tv_chiled5);
+        pap =navigationView.findViewById(R.id.tv_chiled6);
+        oth =navigationView.findViewById(R.id.tv_chiled7);
+        addnew =navigationView.findViewById(R.id.tv_chiled);
+        addamount =navigationView.findViewById(R.id.tv_chiled2);
+        sale_product =navigationView.findViewById(R.id.tv_sale);
+        orders = navigationView.findViewById(R.id.linearorders);
+        changepassword = navigationView.findViewById(R.id.linearpassword);
+        cartbadge= navigationView.findViewById(R.id.notification_badge);
+
+        setupBadge(cart_size);
+
+        addnew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id","");
+                AddNewProduct product = new AddNewProduct();
+                product.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,product).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        addamount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("collection_name", "");
+                bundle.putString("barcode", "");
+                bundle.putString("name", "");
+                bundle.putString("date", "");
+                bundle.putDouble("price", 0);
+                bundle.putString("brand", "");
+                bundle.putString("image", "");
+                bundle.putInt("amount", 0);
+                AmountFragment myFragment = new AmountFragment();
+                myFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, myFragment).addToBackStack(null).commit();
+                    drawerLayout.closeDrawer(GravityCompat.START);
+        }
+
+        });
+///////////////////////////////
+
+        sale_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("collection_name", "");
+                bundle.putString("barcode", "");
+                bundle.putString("name", "");
+                bundle.putString("date", "");
+                bundle.putDouble("price", 0);
+                bundle.putString("brand", "");
+                bundle.putString("image", "");
+                bundle.putInt("amount", 0);
+                SaleFragment myFragment = new SaleFragment();
+                myFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, myFragment).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+
+        });
+
+
+        btn_addactivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //myLayout.toggle();
+
+                  if (myLayout.isExpanded()){
+                    myLayout.collapse();
+                      arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+
+                }else {
+                    myLayout.expand();
+                      arrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+
+
+
+               }
+            }
+        });
+
+
+        tasafoh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mylayout2.isExpanded()){
+                    mylayout2.collapse();
+                    arrow2.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+
+                }else {
+                    mylayout2.expand();
+                    arrow2.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+                }
+
+
+            }
+
+
+
+        });
+
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new Order_List()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+        cos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GO_Activity("Cosmatics");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        med.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GO_Activity("Medical");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        mak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GO_Activity("Makeup");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        pap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GO_Activity("Papers");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        oth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GO_Activity("Others");
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+        updateprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new UserSetting()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+        Alluser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new AlluserFragment()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new FavouriteFragment()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        changepassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new ChangePassword()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        acct = GoogleSignIn.getLastSignedInAccount(this);
+
+        orders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new OrdersFragment()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new ScannerViewForSearch()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
+                    db.Delete_All("Users");
+                    db.Delete_All("Cart");
+                    db.Delete_All("Products");
+                    db.Delete_All("Favourite");
+
+                    LoginManager.getInstance().logOut();
+                    Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else if (acct != null) {
+                    db.Delete_All("Users");
+                    db.Delete_All("Cart");
+                    db.Delete_All("Products");
+                    db.Delete_All("Favourite");
+
+                    signOut();
+                }else {
+                    db.Delete_All("Users");
+                    db.Delete_All("Cart");
+                    db.Delete_All("Products");
+                    db.Delete_All("Favourite");
+                    Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+      /*  addnew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SecondActivity.this, ScannerView.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });*/
+
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new HomeFragment()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
+    }
+
+
+
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+            //adapter.notifyDataSetChanged();
+        }
+    }
+
+
+
+    public void GO_Activity(String key){
+        Bundle bundle = new Bundle();
+        bundle.putString("activity",key);
+        Fragment fragment = new AdminFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, fragment).addToBackStack(null).commit();
+    }
+
+    private void setupBadge(int count) {
+
+        if (cartbadge != null) {
+            if (count == 0) {
+                if (cartbadge.getVisibility() != View.GONE) {
+                    cartbadge.setVisibility(View.GONE);
+                }
+            } else {
+                cartbadge.setText(String.valueOf(count));
+                if (cartbadge.getVisibility() != View.VISIBLE) {
+                    cartbadge.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+
+    public void StartService(){
+        Intent intent = new Intent(this, Notification_Service.class);
+        ContextCompat.startForegroundService(this,intent);
+    }
+
+
+    public void StopService(){
+        Intent intent = new Intent(this, Notification_Service.class);
+        stopService(intent);
+    }
+
+    public void StartService2(){
+        Intent intent = new Intent(this, Notification_Service.class);
+        startService(intent);
+    }
+
+
+
+}
+

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Ecommerce</string>
+    <string name="facebook_app_id" translatable="false">3404287529599263</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb3404287529599263</string>
+    <string name="open">Open</string>
+    <string name="close">DrawerLayout</string>
+    <string-array name="picker_items">
+        <item>Cosmatics</item>
+        <item>Medical</item>
+        <item>Makeup</item>
+        <item>Papers</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="brand_items">
+        <item>شامبو</item>
+        <item>بلسم</item>
+        <item>بديل زيت</item>
+        <item>شامبو و بلسم</item>
+        <item>كريم للشعر</item>
+        <item>كريم للبشرة</item>
+        <item>معجون اسنان</item>
+        <item>معجون حلاقة</item>
+        <item>جل</item>
+    </string-array>
+
+
+    <string-array name="AddActivity">
+        <item>Add New Product</item>
+        <item>Add Amount for Exist product</item>
+    </string-array>
+
+    
+
+
+</resources>
