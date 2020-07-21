@@ -217,7 +217,7 @@ public class SaleFragment extends Fragment {
                         int amount2 = Integer.parseInt(pAmount.getText().toString().trim())* -1 ;
                         String code =Products.get(x).getBarcode();
                         amount=Products.get(x).getAmount();
-                        RetrofitClient.getInstance().UPDATEAMOUNTFORPRODUCT(collection_name,code, amount2)
+                        RetrofitClient.getInstance().UPDATEAMOUNTFORPRODUCT(db.getAllusers().get(0).getToken(),collection_name,code, amount2)
                                 .enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {

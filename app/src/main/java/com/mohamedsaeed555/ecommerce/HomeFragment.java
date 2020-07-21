@@ -43,6 +43,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Retrofit_class_data;
+import com.mohamedsaeed555.MyDataBase.Users;
 
 import java.util.ArrayList;
 
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick  {
     SwipeRefreshLayout swipeRefreshLayout;
     int checkid;
     SharedPreferences shp;
+    Users users;
 
     TextView smsCountTxt , drawer_text;
     int cart_size=0;
@@ -83,6 +85,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         db = new Database(getActivity());
+        users=db.getAllusers().get(0);
         cart_size =db.getAllProducts("Cart").size();
         return inflater.inflate(R.layout.activity_home_fragment, container, false);
     }
@@ -117,7 +120,11 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick  {
         layoutManager = new GridLayoutManager(getActivity(), Colums_Count);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter(false);
+        if (users.getToken() == null || users.getAdmin() == false){
+            adapter = new RecyclerAdapter(true);
+        }else {
+            adapter = new RecyclerAdapter(false);
+        }
         recyclerView.setAdapter(adapter);
 
        // Toast.makeText(getActivity(),String.valueOf(checkid),Toast.LENGTH_LONG).show();
@@ -216,7 +223,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick  {
     }
 
     private void Getcosmatics(String collection_name ,String page_number) {
-        RetrofitClient.getInstance().GETALLPRODUCTSPAGINATION(collection_name,page_number).enqueue(new Callback<Retrofit_class_data>() {
+        RetrofitClient.getInstance().GETALLPRODUCTSPAGINATION(db.getAllusers().get(0).getToken(),collection_name,page_number).enqueue(new Callback<Retrofit_class_data>() {
             @Override
             public void onResponse(Call<Retrofit_class_data> call, Response<Retrofit_class_data> response) {
                 if (response.isSuccessful()) {
@@ -233,7 +240,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick  {
     }
 
     private void Getcosmatics2(String collection_name ,String page_number) {
-        RetrofitClient.getInstance().GETALLPRODUCTSPAGINATION(collection_name,page_number).enqueue(new Callback<Retrofit_class_data>() {
+        RetrofitClient.getInstance().GETALLPRODUCTSPAGINATION(db.getAllusers().get(0).getToken(),collection_name,page_number).enqueue(new Callback<Retrofit_class_data>() {
             @Override
             public void onResponse(Call<Retrofit_class_data> call, Response<Retrofit_class_data> response) {
                 if (response.isSuccessful()) {

@@ -30,7 +30,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("create table AllData ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
         db.execSQL("create table Products ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
-        db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT)");
+        db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT ,token TEXT)");
         db.execSQL("create table Favourite (id INTEGER PRIMARY KEY AUTOINCREMENT , Fav TEXT)");
     }
 
@@ -266,7 +266,7 @@ public class Database extends SQLiteOpenHelper {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public  Boolean insert_user ( Users users){
+    public  Boolean insert_user ( Users users,String token){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name",users.getName());
@@ -281,6 +281,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put("superAdmin",users.getSuperAdmin().toString());
         contentValues.put("admin",users.getAdmin().toString());
         contentValues.put("_id",users.get_id());
+        contentValues.put("token",token);
         long result = db.insert("Users",null,contentValues);
         if (result== -1)
             return false;
@@ -306,8 +307,8 @@ public class Database extends SQLiteOpenHelper {
             String t11 = cursor.getString(10);
             String t12 = cursor.getString(11);
             String t13 = cursor.getString(12);
-
-            Users users = new Users(t2,t3,t4,t5,t6,t7,t8,t9,t10,Boolean.parseBoolean(t11),Boolean.parseBoolean(t12),t13);
+            String t14 = cursor.getString(13);
+            Users users = new Users(t2,t3,t4,t5,t6,t7,t8,t9,t10,Boolean.parseBoolean(t11),Boolean.parseBoolean(t12),t13,t14);
             arrayList.add(users);
             cursor.moveToNext();
         }

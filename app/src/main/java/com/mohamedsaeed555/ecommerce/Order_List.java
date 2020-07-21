@@ -57,7 +57,7 @@ public class Order_List extends Fragment {
     Poset_Orders.User user;
     TextView fprice;
     ArrayList<Double> t =new ArrayList<>();
-
+    Boolean check;
     Gson gson =new Gson();
     private Socket mSocket;
     {
@@ -110,11 +110,11 @@ public class Order_List extends Fragment {
                     }
                     t.add(total);
                     Poset_Orders order = new Poset_Orders(user, products,t);
-                    RetrofitClient.getInstance().PostOrder(order).enqueue(new Callback<Poset_Orders>() {
+                    RetrofitClient.getInstance().PostOrder(users.getToken(),order).enqueue(new Callback<Poset_Orders>() {
                         @Override
                         public void onResponse(Call<Poset_Orders> call, Response<Poset_Orders> response) {
                             if (response.isSuccessful()) {
-
+                                check=true;
                                 Notification_Class notification_class =new Notification_Class(users.getAdmin(),"New Order From User","orderdetails",response.body());
                                 mSocket.emit("dbchanged",gson.toJson(notification_class));
 
@@ -165,6 +165,26 @@ public class Order_List extends Fragment {
 
                         }
                     });
+                    for (int x = 0; x < orders.size(); x++) {
+                        if (check == true) {
+                            View v = recyclerView.getChildAt(x);
+                            pamount = v.findViewById(R.id.filled_exposed_dropdown3);
+                            int a =  Integer.parseInt(pamount.getText().toString().trim());
+                            RetrofitClient.getInstance().UPDATEAMOUNTFORPRODUCT(users.getToken(),orders.get(x).getCollection(),orders.get(x).getBarcode(),a).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()){
+                                        check=false;
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    }
                 }
             }
         }

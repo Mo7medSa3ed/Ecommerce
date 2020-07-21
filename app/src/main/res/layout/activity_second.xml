@@ -15,6 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FAFAFA"
         android:orientation="vertical">
 
 
@@ -269,23 +270,10 @@
                                 android:text="Cart"
                                 android:textSize="18sp" />
 
-                            <TextView
-                                android:id="@+id/notification_badge"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:layout_margin="16dp"
-                                android:background="@drawable/badgebackground"
-                                android:gravity="center"
-                                android:padding="3dp"
-                                android:textColor="@android:color/white"
-                                android:text="0"
-                                android:textSize="10sp"/>
 
 
 
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:id="@+id/linear4"
@@ -341,9 +329,9 @@
                                     android:id="@+id/tv_chiled3"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:gravity="center_vertical"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical"
                                     android:text="Cosmatics"
                                     android:textSize="15sp" />
 
@@ -351,9 +339,9 @@
                                     android:id="@+id/tv_chiled4"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:gravity="center_vertical"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical"
                                     android:text="Medical"
                                     android:textSize="15sp" />
 
@@ -361,9 +349,9 @@
                                     android:id="@+id/tv_chiled5"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:gravity="center_vertical"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical"
                                     android:text="Makeup"
                                     android:textSize="15sp" />
 
@@ -371,9 +359,9 @@
                                     android:id="@+id/tv_chiled6"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:gravity="center_vertical"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical"
                                     android:text="Papers"
                                     android:textSize="15sp" />
 
@@ -381,9 +369,9 @@
                                     android:id="@+id/tv_chiled7"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
-                                    android:gravity="center_vertical"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="8dp"
+                                    android:gravity="center_vertical"
                                     android:text="Others"
                                     android:textSize="15sp" />
 
@@ -415,7 +403,6 @@
                                 android:textSize="18sp" />
                         </LinearLayout>
 
-
                         <LinearLayout
                             android:id="@+id/linearuser"
                             android:layout_width="match_parent"
@@ -439,7 +426,6 @@
                                 android:text="All Users"
                                 android:textSize="18sp" />
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:id="@+id/linearfavourite"
@@ -465,7 +451,6 @@
                                 android:textSize="18sp" />
                         </LinearLayout>
 
-
                         <LinearLayout
                             android:id="@+id/linearorders"
                             android:layout_width="match_parent"
@@ -489,7 +474,6 @@
                                 android:text="Orders"
                                 android:textSize="18sp" />
                         </LinearLayout>
-
 
                         <LinearLayout
                             android:id="@+id/linearpassword"
@@ -515,7 +499,6 @@
                                 android:textSize="18sp" />
                         </LinearLayout>
 
-
                         <LinearLayout
                             android:id="@+id/linear5"
                             android:layout_width="match_parent"
@@ -539,6 +522,108 @@
                                 android:text="Log out"
                                 android:textSize="18sp" />
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@android:color/darker_gray"/>
+
+                        <LinearLayout
+                            android:id="@+id/cominication"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <TextView
+                                android:id="@+id/textcomin"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Communication"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:id="@+id/linearwhats"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <ImageView
+                                android:id="@+id/imagwhats"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_settings_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/textwhats"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="24dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Whats App"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+
+
+
+                        <LinearLayout
+                            android:id="@+id/linearface"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <ImageView
+                                android:id="@+id/imagface"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_settings_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/textface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="24dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Facebook"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/linearshare"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp">
+
+                            <ImageView
+                                android:id="@+id/imagshare"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_settings_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/textshare"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="24dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Share"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
                 </ScrollView>

@@ -13,7 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.FragmentManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -52,7 +54,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SecondActivity extends AppCompatActivity {
-
+    final  static  String FB_URL="https://www.facebook.com/Makkamedical";
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount acct;
     ArrayList<Product_class> data2 = new ArrayList<>();
@@ -66,34 +68,32 @@ public class SecondActivity extends AppCompatActivity {
     ChipGroup chipGroup;
     //Database db = new Database(this);
     int page = 1;
-    Boolean isloading=true;
-    private int visibleItemCount=0;
-    private int totalItemCount=0;
-    private int pastVisibleItems=0;
-    ProgressBar progressBar ;
-    public Boolean check=true;
-    public  static String collection_name="cosmatics";
-    LinearLayout home,search,logout,tasafoh,cart , updateprofile ,Alluser , favourite ,orders , changepassword;
+    Boolean isloading = true;
+    private int visibleItemCount = 0;
+    private int totalItemCount = 0;
+    private int pastVisibleItems = 0;
+    ProgressBar progressBar;
+    public Boolean check = true;
+    public static String collection_name = "cosmatics";
+    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face ,share;
     ImageView dropimage;
-    TextView addnew ,addamount,sale_product,cos ,med,mak,pap,oth,username , cartbadge;
-    ExpandableRelativeLayout myLayout , mylayout2;
+    TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge;
+    ExpandableRelativeLayout myLayout, mylayout2;
     CircleImageView image_uri;
-    private String check_Activity="";
+    private String check_Activity = "";
     Gson gson = new Gson();
     Notification_Class notification_class;
-    String c="s";
-    Database db =new Database(this);
-    ArrayList<Users> user = new ArrayList<>();
-    int cart_size=0;
+    String c = "s";
+    Database db = new Database(this);
+    int cart_size = 0;
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-
+        Users user = db.getAllusers().get(0);
         StartService2();
-
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,39 +102,38 @@ public class SecondActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        user = db.getAllusers();
-        cart_size=db.getAllProducts("Cart").size();
+        cart_size = db.getAllProducts("Cart").size();
 
-            try {
-                c = getIntent().getExtras().getString("c","f");
-                notification_class = gson.fromJson(getIntent().getExtras().getString("go",""),Notification_Class.class);
-            }catch (Exception e){e.printStackTrace();}
 
-            if (c.equals("c")) {
-                if (notification_class.getGo_Activity().equals("details")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("col", notification_class.getCollection());
-                    bundle.putString("pd",gson.toJson(notification_class.getProduct_class()));
-                    DetailsProductActivity frag = new DetailsProductActivity();
-                    frag.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.cotainers, frag)
-                            .addToBackStack(null).commit();
-                }else if (notification_class.getGo_Activity().equals("orderdetails")){
-                    Bundle bundle = new Bundle();
-                    bundle.putString("o",gson.toJson(notification_class.getOrders()));
-                    Orders_Details frag = new Orders_Details();
-                    frag.setArguments(bundle);
-                    fragmentTransaction.replace(R.id.cotainers, frag)
-                            .addToBackStack(null).commit();
-                }else if (notification_class.getGo_Activity().equals("alluser")){
+        try {
+            c = getIntent().getExtras().getString("c", "f");
+            notification_class = gson.fromJson(getIntent().getExtras().getString("go", ""), Notification_Class.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                }
+        if (c.equals("c")) {
+            if (notification_class.getGo_Activity().equals("details")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("col", notification_class.getCollection());
+                bundle.putString("pd", gson.toJson(notification_class.getProduct_class()));
+                DetailsProductActivity frag = new DetailsProductActivity();
+                frag.setArguments(bundle);
+                fragmentTransaction.replace(R.id.cotainers, frag)
+                        .addToBackStack(null).commit();
+            } else if (notification_class.getGo_Activity().equals("orderdetails")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("o", gson.toJson(notification_class.getOrders()));
+                Orders_Details frag = new Orders_Details();
+                frag.setArguments(bundle);
+                fragmentTransaction.replace(R.id.cotainers, frag)
+                        .addToBackStack(null).commit();
+            } else if (notification_class.getGo_Activity().equals("alluser")) {
+
             }
-            else {
-                fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
-            }
-
-
+        } else {
+            fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
+        }
 
 
         NavigationView navigationView = findViewById(R.id.navigation);
@@ -148,40 +147,50 @@ public class SecondActivity extends AppCompatActivity {
         updateprofile = navigationView.findViewById(R.id.linear6);
         Alluser = navigationView.findViewById(R.id.linearuser);
         favourite = navigationView.findViewById(R.id.linearfavourite);
-        if (user.size() != 0){
-            if (user.get(0).getName()!=null)
-            username.setText(user.get(0).getName());
-            if (user.get(0).getImage()!=null)
-            Picasso.get().load(Uri.parse(user.get(0).getImage())).into(image_uri);
+        if (user.get_id() != null) {
+            if (user.getName() != null)
+                username.setText(user.getName());
+            if (user.getImage() != null)
+                Picasso.get().load(Uri.parse(user.getImage())).into(image_uri);
         }
 
         LinearLayout btn_addactivity = navigationView.findViewById(R.id.btn);
         final ImageView arrow = navigationView.findViewById(R.id.arrow);
         final ImageView arrow2 = navigationView.findViewById(R.id.arrow2);
-        myLayout =navigationView.findViewById(R.id.expandableLayout1);
-        mylayout2 =navigationView.findViewById(R.id.expandableLayout2);
-        cos =navigationView.findViewById(R.id.tv_chiled3);
-        med =navigationView.findViewById(R.id.tv_chiled4);
-        mak =navigationView.findViewById(R.id.tv_chiled5);
-        pap =navigationView.findViewById(R.id.tv_chiled6);
-        oth =navigationView.findViewById(R.id.tv_chiled7);
-        addnew =navigationView.findViewById(R.id.tv_chiled);
-        addamount =navigationView.findViewById(R.id.tv_chiled2);
-        sale_product =navigationView.findViewById(R.id.tv_sale);
+        myLayout = navigationView.findViewById(R.id.expandableLayout1);
+        mylayout2 = navigationView.findViewById(R.id.expandableLayout2);
+        cos = navigationView.findViewById(R.id.tv_chiled3);
+        med = navigationView.findViewById(R.id.tv_chiled4);
+        mak = navigationView.findViewById(R.id.tv_chiled5);
+        pap = navigationView.findViewById(R.id.tv_chiled6);
+        oth = navigationView.findViewById(R.id.tv_chiled7);
+        addnew = navigationView.findViewById(R.id.tv_chiled);
+        addamount = navigationView.findViewById(R.id.tv_chiled2);
+        sale_product = navigationView.findViewById(R.id.tv_sale);
         orders = navigationView.findViewById(R.id.linearorders);
         changepassword = navigationView.findViewById(R.id.linearpassword);
-        cartbadge= navigationView.findViewById(R.id.notification_badge);
+        cartbadge = navigationView.findViewById(R.id.notification_badge);
+        whats = navigationView.findViewById(R.id.linearwhats);
+        face = navigationView.findViewById(R.id.linearface);
+        share = navigationView.findViewById(R.id.linearshare);
 
         setupBadge(cart_size);
+
+        if (user.getToken() == null || user.getAdmin() == false) {
+            btn_addactivity.setVisibility(View.GONE);
+            Alluser.setVisibility(View.GONE);
+            orders.setVisibility(View.GONE);
+            tasafoh.setVisibility(View.GONE);
+        }
 
         addnew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id","");
+                bundle.putString("id", "");
                 AddNewProduct product = new AddNewProduct();
                 product.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,product).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, product).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -201,8 +210,8 @@ public class SecondActivity extends AppCompatActivity {
                 AmountFragment myFragment = new AmountFragment();
                 myFragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, myFragment).addToBackStack(null).commit();
-                    drawerLayout.closeDrawer(GravityCompat.START);
-        }
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
 
         });
 ///////////////////////////////
@@ -231,19 +240,18 @@ public class SecondActivity extends AppCompatActivity {
         btn_addactivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //myLayout.toggle();
+                //myLayout.toggle();
 
-                  if (myLayout.isExpanded()){
+                if (myLayout.isExpanded()) {
                     myLayout.collapse();
-                      arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+                    arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
 
-                }else {
+                } else {
                     myLayout.expand();
-                      arrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
+                    arrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
 
 
-
-               }
+                }
             }
         });
 
@@ -252,11 +260,11 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (mylayout2.isExpanded()){
+                if (mylayout2.isExpanded()) {
                     mylayout2.collapse();
                     arrow2.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
 
-                }else {
+                } else {
                     mylayout2.expand();
                     arrow2.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
                 }
@@ -265,13 +273,12 @@ public class SecondActivity extends AppCompatActivity {
             }
 
 
-
         });
 
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new Order_List()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new Order_List()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -317,7 +324,7 @@ public class SecondActivity extends AppCompatActivity {
         updateprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new UserSetting()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new UserSetting()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -326,7 +333,7 @@ public class SecondActivity extends AppCompatActivity {
         Alluser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new AlluserFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new AlluserFragment()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -334,7 +341,7 @@ public class SecondActivity extends AppCompatActivity {
         favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new FavouriteFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new FavouriteFragment()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -342,7 +349,7 @@ public class SecondActivity extends AppCompatActivity {
         changepassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new ChangePassword()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new ChangePassword()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -357,18 +364,51 @@ public class SecondActivity extends AppCompatActivity {
         orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new OrdersFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new OrdersFragment()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
 
-
-
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new ScannerViewForSearch()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new ScannerViewForSearch()).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT,"ECommerce");
+                intent.putExtra(Intent.EXTRA_TITLE,"MaKKaH APP");
+                startActivity(Intent.createChooser(intent,"Share Using"));
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        whats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (appinstalledornot("com.whatsapp")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=" + "0201000995944"));
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(SecondActivity.this, "WhatsApp doesn't installed on your device", Toast.LENGTH_SHORT).show();
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+
+        });
+
+        face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotofacebook();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -394,7 +434,7 @@ public class SecondActivity extends AppCompatActivity {
                     db.Delete_All("Favourite");
 
                     signOut();
-                }else {
+                } else {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
                     db.Delete_All("Products");
@@ -420,15 +460,13 @@ public class SecondActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers,new HomeFragment()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
 
     }
-
-
 
 
     private void signOut() {
@@ -447,17 +485,16 @@ public class SecondActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
+        } else {
             super.onBackPressed();
             //adapter.notifyDataSetChanged();
         }
     }
 
 
-
-    public void GO_Activity(String key){
+    public void GO_Activity(String key) {
         Bundle bundle = new Bundle();
-        bundle.putString("activity",key);
+        bundle.putString("activity", key);
         Fragment fragment = new AdminFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, fragment).addToBackStack(null).commit();
@@ -480,23 +517,42 @@ public class SecondActivity extends AppCompatActivity {
     }
 
 
-    public void StartService(){
+    public void StartService() {
         Intent intent = new Intent(this, Notification_Service.class);
-        ContextCompat.startForegroundService(this,intent);
+        ContextCompat.startForegroundService(this, intent);
     }
 
 
-    public void StopService(){
+    public void StopService() {
         Intent intent = new Intent(this, Notification_Service.class);
         stopService(intent);
     }
 
-    public void StartService2(){
+    public void StartService2() {
         Intent intent = new Intent(this, Notification_Service.class);
         startService(intent);
     }
 
+    public boolean appinstalledornot(String url) {
+        PackageManager packageManager = getPackageManager();
+        boolean installed;
+        try {
+            packageManager.getPackageInfo(url, PackageManager.GET_ACTIVITIES);
+            installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            installed = false;
+        }
+        return installed;
+    }
 
-
+    public void gotofacebook() {
+       try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("fb://facewebmodal/f?href="+FB_URL));
+            startActivity(intent);
+       }catch (ActivityNotFoundException e){
+            Intent intent =new Intent(Intent.ACTION_VIEW,Uri.parse(FB_URL));
+            startActivity(intent);
+       }
+    }
 }
-

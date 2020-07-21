@@ -1,15 +1,20 @@
 package com.mohamedsaeed555.ecommerce;
 
 import android.content.Context;
+import android.graphics.RadialGradient;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.labters.lottiealertdialoglibrary.ClickListener;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
@@ -32,7 +37,7 @@ public class UserAdapter extends BaseAdapter {
     ArrayList<Users> arrayList=new ArrayList<>();
     Context context;
     LayoutInflater layoutInflater;
-
+    RadioGroup group;
     public UserAdapter() {
     }
 
@@ -66,21 +71,28 @@ public class UserAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null){
             layoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view=layoutInflater.inflate(R.layout.user_item,null,false);
+            view=layoutInflater.inflate(R.layout.user_item,parent,false);
         }
 
         CircleImageView img = view.findViewById(R.id.user_image);
         TextView txtname = view.findViewById(R.id.textView38);
         TextView txtemail = view.findViewById(R.id.textView40);
         ImageButton btn_delete = view.findViewById(R.id.button6);
+        group = view.findViewById(R.id.group);
 
         Picasso.get().load(arrayList.get(position).getImage()).placeholder(R.drawable.cart2).into(img);
         txtname.setText(arrayList.get(position).getName());
         txtemail.setText(arrayList.get(position).getEmail());
+        if (arrayList.get(position).getAdmin()){
+            group.check(R.id.admin);
+        }else {
+            group.check(R.id.user);
+        }
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Database db =new Database(context);
                 String _id =arrayList.get(position).get_id();
                 new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Are you sure?")
@@ -89,7 +101,7 @@ public class UserAdapter extends BaseAdapter {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                RetrofitClient.getInstance().DeleteUser(_id).enqueue(new Callback<Void>() {
+                                RetrofitClient.getInstance().DeleteUser(db.getAllusers().get(0).getToken(),_id).enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         if (response.isSuccessful()){
@@ -155,7 +167,110 @@ public class UserAdapter extends BaseAdapter {
             }
         });
 
+        group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.user){
+                    make_user(arrayList.get(position).getToken(),arrayList.get(position).get_id(),true);
+                }else if (checkedId == R.id.admin){
+                    make_admin(arrayList.get(position).getToken(),arrayList.get(position).get_id(),true);
+                }
+            }
+        });
+
 
         return view;
+    }
+
+    public void make_user(String token , String id , Boolean admin){
+        RetrofitClient.getInstance().UpdateUserAdmin(token,id,admin).enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful()){
+                    new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Update User")
+                            .setContentText("This User Become Now User")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    group.check(R.id.user);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }else {
+                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    public void make_admin(String token , String id , Boolean admin){
+        RetrofitClient.getInstance().UpdateUserAdmin(token,id,admin).enqueue(new Callback<Users>() {
+            @Override
+            public void onResponse(Call<Users> call, Response<Users> response) {
+                if (response.isSuccessful()){
+                    new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Update User")
+                            .setContentText("This User Become Now Admin")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    group.check(R.id.admin);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }else {
+                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Users> call, Throwable t) {
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 }

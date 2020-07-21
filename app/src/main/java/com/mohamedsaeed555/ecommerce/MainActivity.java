@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     private String email;
     private String id;
     private String uri_image;
-
+    int calc=0;
     Users users;
     ExpandableRelativeLayout layout;
     TextView txtgo;
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+       // final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         layout = findViewById(R.id.expandle);
-        layout.startAnimation(myAnim);
+        //layout.startAnimation(myAnim);
         txtgo =findViewById(R.id.textView39);
          btn = findViewById(R.id.button4);
         namelayout = findViewById(R.id.inputlayout2);
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
                 mSocket.emit("dbchanged",gson.toJson(notification_class));
 
                 db.Delete_All("Users");
-                db.insert_user(response.body());
+                db.insert_user(response.body(),null);
                 int size = response.body().getFav().size();
                 if (size>0) {
                     for (int x = 0; x < size; x++) {
@@ -397,9 +397,31 @@ public class MainActivity extends AppCompatActivity {
                 if (s){
                     alertDialog.dismiss();
                 }
-                Intent intent = new Intent(MainActivity.this,SecondActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
+
+                if (response.body().getAdmin() && response.body().getToken() != null && db.isEmpty("AllData")){
+                    alertDialog = new LottieAlertDialog.Builder(MainActivity.this, DialogTypes.TYPE_LOADING)
+                            .setTitle("Loading")
+                            .setDescription("Please wait until Get Products details")
+                            .build();
+                    alertDialog.setCancelable(false);
+                    alertDialog.show();
+                    db.Delete_All("AllData");
+                    GET(response.body().getToken(),"cosmatics");
+                    GET(response.body().getToken(),"medical");
+                    GET(response.body().getToken(),"papers");
+                    GET(response.body().getToken(),"makeup");
+                    GET(response.body().getToken(),"others");
+
+                    if (calc == db.getAllProducts2("AllDate").size()){
+                        Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }
+
+
+
 
             }
 
@@ -428,6 +450,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void GET (String token,String collection_name ){
+        RetrofitClient.getInstance().GETALLPRODUCTS(token,collection_name).enqueue(new Callback<List<Product_class>>() {
+            @Override
+            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+                if (!(response.isSuccessful())){
+                    Toast.makeText(getApplicationContext(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                }
+                calc+=response.body().size();
+                for (Product_class p : response.body()){
+                    Product_class productClass =new Product_class(p.getDate(),p.getAmount(),
+                            p.getBarcode(),p.getName(),p.getPrice(),p.getBrand(),
+                            p.getImage(),collection_name);
+                    db.insert_product_toAlldata("AllData",productClass);
+                }
+                if (collection_name.equals("others")){
+                    alertDialog.dismiss();
+                }
 
+            }
+            @Override
+            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }
 
 }

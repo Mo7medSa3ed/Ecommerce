@@ -243,7 +243,7 @@ public class AdminFragment extends Fragment {
 
     public void Get_gata(){
         final Database db = new Database(getActivity());
-        RetrofitClient.getInstance().GETALLPRODUCTS(activity.toLowerCase()).enqueue(new Callback<List<Product_class>>() {
+        RetrofitClient.getInstance().GETALLPRODUCTS(db.getAllusers().get(0).getToken(),activity.toLowerCase()).enqueue(new Callback<List<Product_class>>() {
             @Override
             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
                 if (!(response.isSuccessful())){

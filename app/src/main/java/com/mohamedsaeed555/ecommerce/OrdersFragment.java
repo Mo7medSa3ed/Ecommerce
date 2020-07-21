@@ -132,7 +132,7 @@ public class OrdersFragment extends Fragment {
 }
 
     private void GETALLORDERS(){
-        RetrofitClient.getInstance().GetAllOrder().enqueue(new Callback<List<Orders>>() {
+        RetrofitClient.getInstance().GetAllOrder(database.getAllusers().get(0).getToken()).enqueue(new Callback<List<Orders>>() {
             @Override
             public void onResponse(Call<List<Orders>> call, Response<List<Orders>> response) {
                 if (response.isSuccessful()){

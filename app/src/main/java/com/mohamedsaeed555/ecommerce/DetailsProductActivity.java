@@ -176,20 +176,22 @@ public class DetailsProductActivity extends Fragment {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (test && size==0){
+                if (amount > 0) {
+                    if (test && size == 0) {
+                        Product_class productClass = new Product_class(Newdate, amount, barcode, name, price, brand, image);
+                        db.insert_product_tocart("Cart", productClass);
+                        actionButton.setClickable(false);
+                        pendingSMSCount = db.getAllProducts("Cart").size();
+                        setupBadge();
+                        test = true;
+                        Toast.makeText(getActivity(), "Product Added Successfully", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Product Added Previously", Toast.LENGTH_LONG).show();
+                    }
 
-                    Product_class productClass = new Product_class(Newdate,amount,barcode,name,price,brand,image);
-                    db.insert_product_tocart("Cart",productClass);
-                    actionButton.setClickable(false);
-                    pendingSMSCount=db.getAllProducts("Cart").size();
-                    setupBadge();
-                    test=true;
-                    Toast.makeText(getActivity(),"Product Added Successfully",Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getActivity(), "No Amount For this Product", Toast.LENGTH_LONG).show();
                 }
-                else{
-                    Toast.makeText(getActivity(),"Product Added Previously",Toast.LENGTH_LONG).show();
-                }
-
             }
         });
 
@@ -219,7 +221,7 @@ public class DetailsProductActivity extends Fragment {
                 }
                  Users users = db.getAllusers().get(0);
                 _id = users.get_id();
-                RetrofitClient.getInstance().UpdateUser_Fav(_id,fav).enqueue(new Callback<Users>() {
+                RetrofitClient.getInstance().UpdateUser_Fav(users.getToken(),_id,fav).enqueue(new Callback<Users>() {
                     @Override
                     public void onResponse(Call<Users> call, Response<Users> response) {
                         if (response.isSuccessful()){
@@ -256,7 +258,7 @@ public class DetailsProductActivity extends Fragment {
     }
 
     private void GETONEPRODUCTDETAILS(final String colection_name , final String barcode){
-        RetrofitClient.getInstance().GETONEPRODUCTDETAILS(colection_name,barcode).enqueue(new Callback<One_product_class>() {
+        RetrofitClient.getInstance().GETONEPRODUCTDETAILS(db.getAllusers().get(0).getToken(),colection_name,barcode).enqueue(new Callback<One_product_class>() {
             @Override
             public void onResponse(Call<One_product_class> call, Response<One_product_class> response) {
                 if (!(response.isSuccessful())){

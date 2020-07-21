@@ -3,7 +3,8 @@ package com.mohamedsaeed555.MyDataBase;
 import java.util.ArrayList;
 
 public class Users {
-
+    private String token;
+    private Users user;
     private ArrayList<String> fav;
     private String name;
     private String tel;
@@ -17,6 +18,22 @@ public class Users {
     private Boolean admin;
     private Boolean superAdmin;
     private String _id;
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public ArrayList<String> getFav() {
         return fav;
@@ -56,6 +73,22 @@ public class Users {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public Users(String name, String tel, String adress, String image, String email, String password, String city, String fbid, String goid, Boolean admin, Boolean superAdmin, String _id,String token) {
+        this.name = name;
+        this.tel = tel;
+        this.adress = adress;
+        this.image = image;
+        this.email = email;
+        this.password = password;
+        this.city = city;
+        this.fbid = fbid;
+        this.goid = goid;
+        this.admin = admin;
+        this.superAdmin = superAdmin;
+        this._id = _id;
+        this.token=token;
     }
 
     public Users(String name, String tel, String adress, String image, String email, String password, String city, String fbid, String goid, Boolean admin, Boolean superAdmin, String _id) {

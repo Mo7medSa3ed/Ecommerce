@@ -136,7 +136,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
                                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                RetrofitClient.getInstance().DELETEPRODUCT(HomeFragment.collection_name,details.getBarcode())
+                                                RetrofitClient.getInstance().DELETEPRODUCT(db.getAllusers().get(0).getToken(),HomeFragment.collection_name,details.getBarcode())
                                                         .enqueue(new Callback<Void>() {
                                                             @Override
                                                             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -264,7 +264,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
                         filterd_data=result_list;
 
                     }else {
-                        RetrofitClient.getInstance().GETSEARCHRODUCTNAME(HomeFragment.collection_name.toLowerCase(), searchstring).enqueue(new Callback<List<Product_class>>() {
+                        RetrofitClient.getInstance().GETSEARCHRODUCTNAME(db.getAllusers().get(0).getToken(),HomeFragment.collection_name.toLowerCase(), searchstring).enqueue(new Callback<List<Product_class>>() {
                             @Override
                             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
                                 if (!(response.isSuccessful())) {

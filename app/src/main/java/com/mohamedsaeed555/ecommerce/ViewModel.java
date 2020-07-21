@@ -16,20 +16,5 @@ public class ViewModel extends androidx.lifecycle.ViewModel {
     MutableLiveData <List<Product_class>> liveData_getallproducts =new MutableLiveData<>();
 
 
-    public void GET_Products(String collection_name){
-        RetrofitClient.getInstance().GETALLPRODUCTS(collection_name).enqueue(new Callback<List<Product_class>>() {
-            @Override
-            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
-                liveData_getallproducts.setValue(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<List<Product_class>> call, Throwable t) {
-
-            }
-        });
-    }
-
-
 
 }

@@ -184,12 +184,17 @@ public class UserSetting extends Fragment {
                         RequestBody cit = RequestBody.create(MediaType.parse("text/plain"), city);
                         RequestBody adress = RequestBody.create(MediaType.parse("text/plain"), address);
                         RequestBody te = RequestBody.create(MediaType.parse("text/plain"), tel);
-                        RetrofitClient.getInstance().UpdateUser(_id,nam,te,adress,cit,emai,part,false,false,null,null).enqueue(new Callback<Users>() {
+                        RetrofitClient.getInstance().UpdateUser(users.getToken(),_id,nam,te,adress,cit,emai,part,false,false,null,null).enqueue(new Callback<Users>() {
                             @Override
                             public void onResponse(Call<Users> call,Response<Users> response) {
                                 if (response.isSuccessful()){
                                     db.Delete_All("Users");
-                                    db.insert_user(response.body());
+                                    if (response.body().getToken()!=null){
+                                        db.insert_user(response.body().getUser(),response.body().getToken());
+                                    }else {
+                                        db.insert_user(response.body(),null);
+                                    }
+                                    db.insert_user(response.body(),null);
                                     new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                             .setTitleText("Update Profile")
                                             .setContentText("Profile Updated successfully")
@@ -226,13 +231,18 @@ public class UserSetting extends Fragment {
                         Users u = db.getAllusers().get(0);
                         String _id = u.get_id();
                         Users users = new Users(name,tel,address,image,email,u.getPassword(),city,u.getFbid(),u.getGoid(),u.getAdmin(),u.getSuperAdmin(),_id);
-                        RetrofitClient.getInstance().UpdateUser2(_id,users).enqueue(new Callback<Users>() {
+                        RetrofitClient.getInstance().UpdateUser2(users.getToken(),_id,users).enqueue(new Callback<Users>() {
                             @Override
                             public void onResponse(Call<Users> call, Response<Users> response) {
                                 if (response.isSuccessful()){
                                     //Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_LONG).show();
                                     db.Delete_All("Users");
-                                    db.insert_user(users);
+                                    if (response.body().getToken()!=null){
+                                        db.insert_user(response.body().getUser(),response.body().getToken());
+                                    }else {
+                                        db.insert_user(response.body(),null);
+                                    }
+                                    //db.insert_user(users,null);
                                     new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                             .setTitleText("Update Profile")
                                             .setContentText("Profile Updated successfully")

@@ -52,6 +52,7 @@ import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
+import com.mohamedsaeed555.MyDataBase.Users;
 import com.mohamedsaeed555.Notification.Notification_Class;
 import com.squareup.picasso.Picasso;
 
@@ -88,7 +89,8 @@ public class updateActivity extends Fragment {
     Button btn_add , btn_delete;
     AutoCompleteTextView id , name , collection , brand , date , price , amount ;
 
-
+    Users users ;
+    Database db;
 
     String[] list;
     String[] list2;
@@ -122,6 +124,8 @@ ProgressDialog progressDialog;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        db=new Database(getActivity());
+        users = db.getAllusers().get(0);
         return inflater.inflate(R.layout.activity_update,container,false);
     }
 
@@ -506,7 +510,7 @@ ProgressDialog progressDialog;
                                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                RetrofitClient.getInstance().DELETEPRODUCT(collection_name,barcode).enqueue(new Callback<Void>() {
+                                                RetrofitClient.getInstance().DELETEPRODUCT(users.getToken(),collection_name,barcode).enqueue(new Callback<Void>() {
                                                     @Override
                                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                                         if (response.isSuccessful()) {
@@ -624,7 +628,7 @@ ProgressDialog progressDialog;
 
 
 
-        RetrofitClient.getInstance().UPDATEPRODUCT("",collection_name,date3,amount3,code,nam,price3,bran,part)
+        RetrofitClient.getInstance().UPDATEPRODUCT(users.getToken(),collection_name,date3,amount3,code,nam,price3,bran,part)
         .enqueue(new Callback<Product_class>() {
             @Override
             public void onResponse(Call<Product_class> call, Response<Product_class> response) {
@@ -724,7 +728,7 @@ ProgressDialog progressDialog;
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            RetrofitClient.getInstance().DELETEPRODUCT(collection_name,barcode)
+                            RetrofitClient.getInstance().DELETEPRODUCT(users.getToken(),collection_name,barcode)
                                     .enqueue(new Callback<Void>() {
                                         @Override
                                         public void onResponse(Call<Void> call, Response<Void> response) {

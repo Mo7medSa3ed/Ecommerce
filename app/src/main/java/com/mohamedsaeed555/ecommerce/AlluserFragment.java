@@ -37,11 +37,13 @@ public class AlluserFragment extends Fragment {
     ListView list;
     UserAdapter adapter;
     ArrayList<Users> users = new ArrayList<>();
+    Database db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //getAllUser();
+        db=new Database(getActivity());
         return inflater.inflate(R.layout.fragment_alluser, container, false);
     }
 
@@ -62,7 +64,7 @@ public class AlluserFragment extends Fragment {
 
 
     public void getAllUser(){
-        RetrofitClient.getInstance().GET_all_User().enqueue(new Callback<List<Users>>() {
+        RetrofitClient.getInstance().GET_all_User(db.getAllusers().get(0).getToken()).enqueue(new Callback<List<Users>>() {
             @Override
             public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
                 if (response.isSuccessful()){
@@ -101,7 +103,7 @@ public class AlluserFragment extends Fragment {
                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            RetrofitClient.getInstance().DeleteAllUser().enqueue(new Callback<Void>() {
+                            RetrofitClient.getInstance().DeleteAllUser(db.getAllusers().get(0).getToken()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (response.isSuccessful()){

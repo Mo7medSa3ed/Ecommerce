@@ -73,7 +73,7 @@ public class ChangePassword extends Fragment {
                confirmpass=Confirm_Text.getText().toString().trim();
                if (new_pass.equals(confirmpass)){
 
-                   RetrofitClient.getInstance().ChangePassword(users.get_id(),confirmpass).enqueue(new Callback<Users>() {
+                   RetrofitClient.getInstance().ChangePassword(users.getToken(),users.get_id(),confirmpass).enqueue(new Callback<Users>() {
                        @Override
                        public void onResponse(Call<Users> call, Response<Users> response) {
                          if (response.isSuccessful()) {

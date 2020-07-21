@@ -122,6 +122,11 @@ public class Orders_Details extends Fragment {
         cphone.setText(users.getTel());
         caddress.setText(users.getAdress());
 
+        if (db.getAllusers().get(0).getToken()!= null){
+            paid.setVisibility(View.GONE);
+            contact.setVisibility(View.GONE);
+        }
+
 
         if (pid){
             cimage.setImageResource(R.drawable.ic_check_black_24dp);
@@ -183,7 +188,7 @@ public class Orders_Details extends Fragment {
     }
 
     private void GETDATA (){
-        RetrofitClient.getInstance().GetOneOrder(id).enqueue(new Callback<Orders>() {
+        RetrofitClient.getInstance().GetOneOrder(users.getToken(),id).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders>response) {
                 if (response.isSuccessful()){
@@ -233,7 +238,7 @@ public class Orders_Details extends Fragment {
     }
 
     private void updatepaid(String id , JSONObject orders){
-        RetrofitClient.getInstance().UpdateOrderPaid(id,orders).enqueue(new Callback<Orders>() {
+        RetrofitClient.getInstance().UpdateOrderPaid(users.getToken(),id,orders).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()){
@@ -261,7 +266,7 @@ public class Orders_Details extends Fragment {
     }
 
     private void updatecontact(String id , JSONObject jsonObject){
-        RetrofitClient.getInstance().UpdateOrderDeleviry(id,jsonObject).enqueue(new Callback<Orders>() {
+        RetrofitClient.getInstance().UpdateOrderDeleviry(users.getToken(),id,jsonObject).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()){

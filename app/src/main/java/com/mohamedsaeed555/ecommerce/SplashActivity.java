@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-   /*     GET("cosmatics");
+   /*   GET("cosmatics");
         GET("medical");
         GET("papers");
         GET("makeup");
@@ -36,12 +36,12 @@ public class SplashActivity extends AppCompatActivity {
         if (db.getAllusers().size() != 0 || db.getAllusers().size()>0){
             //second
 
-            Intent intent = new Intent(SplashActivity.this,testAcivity.class);
+            Intent intent = new Intent(SplashActivity.this,SecondActivity.class);
             startActivity(intent);
             finish();
         }else {
             //main
-            Intent intent = new Intent(SplashActivity.this,testAcivity.class);
+            Intent intent = new Intent(SplashActivity.this,MainActivity.class);
             startActivity(intent);
             finish();
         }

@@ -33,6 +33,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="#FAFAFA"
                     android:orientation="vertical"
                     >
 
@@ -41,9 +42,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:cropToPadding="false"
                         android:background="#fff"
                         android:minHeight="250dp"
-                        android:cropToPadding="false"
                         android:src="@drawable/haircode" />
 
                     <LinearLayout

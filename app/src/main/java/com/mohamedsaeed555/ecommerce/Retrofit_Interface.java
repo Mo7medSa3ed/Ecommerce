@@ -38,18 +38,19 @@ import retrofit2.http.Path;
 public interface Retrofit_Interface {
 
     @GET("{collection_name}/products/all")
-    Call<List<Product_class>> GETALLPRODUCTS(@Path("collection_name") String collection_name);
+    Call<List<Product_class>> GETALLPRODUCTS(@Header("x-auth-token") String token,@Path("collection_name") String collection_name);
 
     @GET("{collection_name}/{page_number}")
-    Call<Retrofit_class_data> GETPRODUCTPAGINATION(@Path("collection_name") String collection_name, @Path("page_number") String page_number);
+    Call<Retrofit_class_data> GETPRODUCTPAGINATION(@Header("x-auth-token") String token,@Path("collection_name") String collection_name, @Path("page_number") String page_number);
 
     @GET("{collection_name}/one/{barcode}")
-    Call<One_product_class> GETONEPRODUCTDETAILS(@Path("collection_name")String collection_name,@Path("barcode")String barcode);
+    Call<One_product_class> GETONEPRODUCTDETAILS(@Header("x-auth-token") String token,@Path("collection_name")String collection_name,@Path("barcode")String barcode);
 
 
     @Multipart
     @POST("{collection_name}")
-    Call<Product_class> ADD_PRODUCT(@Path("collection_name")String collection_name,
+    Call<Product_class> ADD_PRODUCT(@Header("x-auth-token") String token,
+                                   @Path("collection_name")String collection_name,
                                    @Part("date") String date,
                                    @Part("amount") Integer amount,
                                    @Part("barcode") RequestBody old_barcode,
@@ -60,7 +61,7 @@ public interface Retrofit_Interface {
 
 
     @DELETE("{collection_name}/{barcode}")
-    Call<Void> DELETEPRODUCT(@Path("collection_name")String collection_name,@Path("barcode") String barcode);
+    Call<Void> DELETEPRODUCT(@Header("x-auth-token") String token,@Path("collection_name")String collection_name,@Path("barcode") String barcode);
 
 
     @Multipart
@@ -78,17 +79,17 @@ public interface Retrofit_Interface {
 
     @FormUrlEncoded
     @POST("{collection_name}/filter")
-    Call<List<Product_class>> GETSEARCHRODUCTNAME(@Path("collection_name")String collection_name,@Field("name")String name);
+    Call<List<Product_class>> GETSEARCHRODUCTNAME(@Header("x-auth-token") String token,@Path("collection_name")String collection_name,@Field("name")String name);
 
 
     @FormUrlEncoded
     @POST("{collection_name}/filter")
-    Call<List<Product_class>> GETSEARCHRODUCTBARCODE(@Path("collection_name")String collection_name,@Field("barcode")String barcode);
+    Call<List<Product_class>> GETSEARCHRODUCTBARCODE(@Header("x-auth-token") String token,@Path("collection_name")String collection_name,@Field("barcode")String barcode);
 
 
     @FormUrlEncoded
     @PUT("{collection_name}/amount")
-    Call<Void> UPDATEAMOUNT(@Path("collection_name") String collection_name , @Field("barcode") String barcode , @Field("amount") int amount);
+    Call<Void> UPDATEAMOUNT(@Header("x-auth-token") String token,@Path("collection_name") String collection_name , @Field("barcode") String barcode , @Field("amount") int amount);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,15 +102,16 @@ public interface Retrofit_Interface {
 
 
     @GET("users/all")
-    Call<List<Users>> GETALLUSERS ();
+    Call<List<Users>> GETALLUSERS (@Header("x-auth-token") String token);
 
 
     @GET("users/one")
-    Call<Users> GETONEUSER ();
+    Call<Users> GETONEUSER (@Header("x-auth-token") String token);
 
     @Multipart
     @PATCH("users/{id}")
-    Call<Users> UPDATEUSER(@Path("id") String id,
+    Call<Users> UPDATEUSER(@Header("x-auth-token") String token,
+                           @Path("id") String id,
                            @Part("name") RequestBody name,
                            @Part("tel") RequestBody tel,
                            @Part("adress") RequestBody adress,
@@ -123,60 +125,64 @@ public interface Retrofit_Interface {
 
 
     @PATCH("users/{id}")
-    Call<Users> UPDATEUSER2(@Path("id") String id,@Body Users users);
+    Call<Users> UPDATEUSER2(@Header("x-auth-token") String token,@Path("id") String id,@Body Users users);
+
+    @FormUrlEncoded
+    @PATCH("users/{id}")
+    Call<Users> UPDATEUSERADMIN(@Header("x-auth-token") String token,@Path("id") String id,@Field("admin") Boolean admin);
 
 
     @FormUrlEncoded
     @PATCH("users/{id}")
-    Call<Users> UPDATEUSER_Fav(@Path("id") String id, @Field("fav") ArrayList<String> fav);
+    Call<Users> UPDATEUSER_Fav(@Header("x-auth-token") String token,@Path("id") String id, @Field("fav") ArrayList<String> fav);
 
 
     @FormUrlEncoded
     @PATCH("users/{id}")
-    Call<Users> CHANGEPASSWORD(@Path("id") String id, @Field("password") String password);
+    Call<Users> CHANGEPASSWORD(@Header("x-auth-token") String token,@Path("id") String id, @Field("password") String password);
 
 
 
 
 
     @DELETE("users/{id}")
-    Call<Void> DELETEUSER(@Path("id") String id);
+    Call<Void> DELETEUSER(@Header("x-auth-token") String token,@Path("id") String id);
 
 
     @DELETE("users/delete/all")
-    Call<Void> DELETEALLUSER();
+    Call<Void> DELETEALLUSER(@Header("x-auth-token") String token);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @POST("orders/")
-    Call<Poset_Orders> POSTORDER (@Body Poset_Orders  orders);
+    Call<Poset_Orders> POSTORDER (@Header("x-auth-token") String token,@Body Poset_Orders  orders);
 
 
 
     @DELETE("orders/{id}")
-    Call<Void> DELETEONEORDER (@Path("id") String id);
+    Call<Void> DELETEONEORDER (@Header("x-auth-token") String token,@Path("id") String id);
 
 
     @DELETE("orders/orders/all")
-    Call<Void> DELETEALLORDER ();
+    Call<Void> DELETEALLORDER (@Header("x-auth-token") String token);
 
 
     @PATCH("orders/{id}")
-    Call<Orders> UPDATEORDER (@Path("id") String id, @Body Orders orders);
+    Call<Orders> UPDATEORDER (@Header("x-auth-token") String token,@Path("id") String id, @Body Orders orders);
 
 
     @PATCH("orders/{id}")
-    Call<Orders> UPDATEORDERPAID (@Path("id") String id, @Body JSONObject orders);
+    Call<Orders> UPDATEORDERPAID (@Header("x-auth-token") String token,@Path("id") String id, @Body JSONObject orders);
 
 
     @PATCH("orders/{id}")
-    Call<Orders> UPDATEORDERDELEVIRD (@Path("id") String id,@Body JSONObject jsonObject);
+    Call<Orders> UPDATEORDERDELEVIRD (@Header("x-auth-token") String token,@Path("id") String id,@Body JSONObject jsonObject);
 
 
 
     @GET("orders/")
-    Call<List<Orders>> GETALLORDERS ();
+    Call<List<Orders>> GETALLORDERS (@Header("x-auth-token") String token);
 
     @GET("orders/{id}")
-        Call<Orders> GETONEORDERS (@Path("id")String id);
+        Call<Orders> GETONEORDERS (@Header("x-auth-token") String token,@Path("id")String id);
 }

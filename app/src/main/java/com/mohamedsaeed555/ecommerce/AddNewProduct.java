@@ -569,7 +569,7 @@ public class AddNewProduct extends Fragment {
             //Product_class productClass = new Product_class(date1,amount1,barcode,name1,price1,brand1,image_path);
             //Product_class productClass2 = new Product_class(date1,amount1,barcode,name1,price1,brand1,image_path,coll_name);
 
-            RetrofitClient.getInstance().ADDPRODUCT(coll_name,date1, amount1, code, nam, price1, bran, part)
+            RetrofitClient.getInstance().ADDPRODUCT(db.getAllusers().get(0).getToken(),coll_name,date1, amount1, code, nam, price1, bran, part)
             .enqueue(new Callback<Product_class>() {
                 @Override
                 public void onResponse(Call<Product_class> call, Response<Product_class> response) {

@@ -50,6 +50,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     AutoCompleteTextView emailtext , passwordtext;
     Database db =new Database(this);
     LottieAlertDialog alertDialog;
+    private int calc=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,7 +318,12 @@ public class LoginActivity extends AppCompatActivity {
                     }catch (Exception e ){e.printStackTrace();}
                 }
                 db.Delete_All("Users");
-                db.insert_user(response.body());
+                if (response.body().getToken()!=null){
+                    db.insert_user(response.body().getUser(),response.body().getToken());
+                }else {
+                    db.insert_user(response.body(),null);
+                }
+
                 int size=0;
                 if (response.body().getFav() != null){
                    size= response.body().getFav().size();
@@ -330,9 +337,28 @@ public class LoginActivity extends AppCompatActivity {
                 if (s){
                     alertDialog.dismiss();
                 }
-                Intent intent = new Intent(LoginActivity.this,SecondActivity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
+                if (response.body().getToken() != null && response.body().getAdmin() && db.isEmpty("AllData")){
+                    alertDialog = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_LOADING)
+                            .setTitle("Loading")
+                            .setDescription("Please wait until Get Products details")
+                            .build();
+                    alertDialog.setCancelable(false);
+                    alertDialog.show();
+                    db.Delete_All("AllData");
+                    GET(response.body().getToken(),"cosmatics");
+                    GET(response.body().getToken(),"medical");
+                    GET(response.body().getToken(),"papers");
+                    GET(response.body().getToken(),"makeup");
+                    GET(response.body().getToken(),"others");
+
+
+                    if (calc == db.getAllProducts2("AllData").size()){
+                        Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }
 
             }
 
@@ -359,6 +385,31 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    public void GET (String token,String collection_name ){
+        RetrofitClient.getInstance().GETALLPRODUCTS(token,collection_name).enqueue(new Callback<List<Product_class>>() {
+            @Override
+            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+                if (!(response.isSuccessful())){
+                    Toast.makeText(getApplicationContext(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                }
+                calc+=response.body().size();
+                for (Product_class p : response.body()){
+                    Product_class productClass =new Product_class(p.getDate(),p.getAmount(),
+                            p.getBarcode(),p.getName(),p.getPrice(),p.getBrand(),
+                            p.getImage(),collection_name);
+                    db.insert_product_toAlldata("AllData",productClass);
+                }
+                if (collection_name.equals("others")){
+                    alertDialog.dismiss();
+                }
 
+            }
+            @Override
+            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+                Toast.makeText(LoginActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }
 
 }

@@ -5,11 +5,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -22,14 +20,8 @@ import com.google.gson.Gson;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.ecommerce.R;
 import com.mohamedsaeed555.ecommerce.SecondActivity;
-import com.mohamedsaeed555.ecommerce.testAcivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -82,8 +74,8 @@ public class Notification_Service extends Service {
         @Override
         public void call(Object... args) {
 
-           // Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
-           /* if (notification_class.getAdmin()){
+            /*Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
+            if (notification_class.getAdmin()){
                 if (notification_class.getGo_Activity().equals("allusers")){
                     createNotificationchannel(notification_class);
                 }else if (notification_class.getGo_Activity().equals("orderdetails")){
@@ -95,10 +87,10 @@ public class Notification_Service extends Service {
                 }else if (notification_class.getGo_Activity().equals("orderdetails")){
                     createNotificationchannelnotclick(notification_class);
                 }
-            }
-*/
+            }*/
 
-            dsd();
+
+         //   dsd();
            // createNotificationchannel(notification_class);
 
             /*if (notification_class.getGo_Activity().equals("orderdetails")){
@@ -124,7 +116,7 @@ public class Notification_Service extends Service {
         Intent intent = new Intent(this,SecondActivity.class);
         intent.putExtra("c","c");
         intent.putExtra("go",gson.toJson(arg));
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+       // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
 
 
