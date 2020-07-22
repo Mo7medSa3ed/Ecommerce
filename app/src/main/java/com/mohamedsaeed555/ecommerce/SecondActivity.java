@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,7 @@ import com.mohamedsaeed555.Notification.Notification_Service;
 import com.squareup.picasso.Picasso;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -75,9 +77,9 @@ public class SecondActivity extends AppCompatActivity {
     ProgressBar progressBar;
     public Boolean check = true;
     public static String collection_name = "cosmatics";
-    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face ,share;
+    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face ,share ,location;
     ImageView dropimage;
-    TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge;
+    TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge ,email;
     ExpandableRelativeLayout myLayout, mylayout2;
     CircleImageView image_uri;
     private String check_Activity = "";
@@ -93,6 +95,7 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Users user = db.getAllusers().get(0);
+
         StartService2();
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -143,6 +146,7 @@ public class SecondActivity extends AppCompatActivity {
         logout = (LinearLayout) navigationView.findViewById(R.id.linear5);
         cart = (LinearLayout) navigationView.findViewById(R.id.linear8);
         username = navigationView.findViewById(R.id.user_name);
+        email = navigationView.findViewById(R.id.email);
         image_uri = navigationView.findViewById(R.id.profile_image);
         updateprofile = navigationView.findViewById(R.id.linear6);
         Alluser = navigationView.findViewById(R.id.linearuser);
@@ -150,8 +154,9 @@ public class SecondActivity extends AppCompatActivity {
         if (user.get_id() != null) {
             if (user.getName() != null)
                 username.setText(user.getName());
+                email.setText(user.getEmail());
             if (user.getImage() != null)
-                Picasso.get().load(Uri.parse(user.getImage())).into(image_uri);
+                Picasso.get().load(Uri.parse(user.getImage())).placeholder(R.drawable.haircode).into(image_uri);
         }
 
         LinearLayout btn_addactivity = navigationView.findViewById(R.id.btn);
@@ -173,6 +178,7 @@ public class SecondActivity extends AppCompatActivity {
         whats = navigationView.findViewById(R.id.linearwhats);
         face = navigationView.findViewById(R.id.linearface);
         share = navigationView.findViewById(R.id.linearshare);
+        location = navigationView.findViewById(R.id.linearlocation);
 
         setupBadge(cart_size);
 
@@ -181,6 +187,8 @@ public class SecondActivity extends AppCompatActivity {
             Alluser.setVisibility(View.GONE);
             orders.setVisibility(View.GONE);
             tasafoh.setVisibility(View.GONE);
+            search.setVisibility(View.GONE);
+
         }
 
         addnew.setOnClickListener(new View.OnClickListener() {
@@ -381,12 +389,23 @@ public class SecondActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT,"ECommerce");
-                intent.putExtra(Intent.EXTRA_TITLE,"MaKKaH APP");
-                startActivity(Intent.createChooser(intent,"Share Using"));
+                ApplicationInfo info =getApplicationContext().getApplicationInfo();
+                String apkpath = info.sourceDir;
+                Intent intent =new Intent(Intent.ACTION_SEND);
+                intent.setType("application/vnd.android.package-archive");
+                intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(apkpath)));
+                startActivity(Intent.createChooser(intent,"SHARE APP USING"));
                 drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("geo:30.5122314,31.3543281,15z"));
+                if (intent.resolveActivity(getPackageManager())!=null)
+                    startActivity(Intent.createChooser(intent,"Launch Map"));
             }
         });
 

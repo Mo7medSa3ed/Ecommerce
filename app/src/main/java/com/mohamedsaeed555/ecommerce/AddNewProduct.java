@@ -157,7 +157,7 @@ public class AddNewProduct extends Fragment {
         }
 
         list = getActivity().getResources().getStringArray(R.array.picker_items);
-        list2.addAll(Arrays.asList(getActivity().getResources().getStringArray(R.array.brand_items))) ;
+        list2 =db.GETALLBRAND() ;
 
         id.addTextChangedListener(new TextWatcher() {
             @Override
@@ -361,10 +361,11 @@ public class AddNewProduct extends Fragment {
             public void onClick(View v) {
                 String s = brand.getText().toString().trim();
                 if (!(s.isEmpty() || s == null)) {
+                    Toast.makeText(getActivity(),"Added",Toast.LENGTH_SHORT).show();
+                    db.insert_brand(s);
                     list2.add(s);
                     adapter2.add(s);
                     adapter2.notifyDataSetChanged();
-                    Toast.makeText(getActivity(), String.valueOf(list2.size()), Toast.LENGTH_SHORT).show();
                 }
             }
         });

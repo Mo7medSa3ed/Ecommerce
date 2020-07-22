@@ -74,8 +74,8 @@ public class Notification_Service extends Service {
         @Override
         public void call(Object... args) {
 
-            /*Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
-            if (notification_class.getAdmin()){
+            //Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
+           /* if (notification_class.getAdmin()){
                 if (notification_class.getGo_Activity().equals("allusers")){
                     createNotificationchannel(notification_class);
                 }else if (notification_class.getGo_Activity().equals("orderdetails")){
@@ -90,7 +90,7 @@ public class Notification_Service extends Service {
             }*/
 
 
-         //   dsd();
+            dsd();
            // createNotificationchannel(notification_class);
 
             /*if (notification_class.getGo_Activity().equals("orderdetails")){

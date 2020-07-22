@@ -80,7 +80,7 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    String[] brand_list;
     LoginButton loginButton ;
     CallbackManager callbackManager;
     private static final int RC_SIGN_IN = 0;
@@ -98,8 +98,10 @@ public class MainActivity extends AppCompatActivity {
     AutoCompleteTextView nametext , citytext,emailtext , passwordtext , mobiletext , addresstext;
     Database db =new Database(this);
     Button btn;
+    boolean check=true;
     LottieAlertDialog alertDialog;
     Gson gson =new Gson();
+
     private Socket mSocket;
     {
         try {
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        brand_list = getResources().getStringArray(R.array.brand_items);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -388,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
 
                 db.Delete_All("Users");
                 db.insert_user(response.body(),null);
+
                 int size = response.body().getFav().size();
                 if (size>0) {
                     for (int x = 0; x < size; x++) {
@@ -398,14 +401,20 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog.dismiss();
                 }
 
-                if (response.body().getAdmin() && response.body().getToken() != null && db.isEmpty("AllData")){
+                if (response.body().getAdmin() && response.body().getToken() != null ){
                     alertDialog = new LottieAlertDialog.Builder(MainActivity.this, DialogTypes.TYPE_LOADING)
                             .setTitle("Loading")
-                            .setDescription("Please wait until Get Products details")
+                            .setDescription("Please wait until Get Products Data")
                             .build();
                     alertDialog.setCancelable(false);
                     alertDialog.show();
                     db.Delete_All("AllData");
+                    db.Delete_All("BRAND");
+
+                    for(int i=0; i<brand_list.length;i++){
+                        db.insert_brand(brand_list[i]);
+                    }
+
                     GET(response.body().getToken(),"cosmatics");
                     GET(response.body().getToken(),"medical");
                     GET(response.body().getToken(),"papers");
@@ -416,8 +425,16 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this,IntroActivity.class);
                         startActivity(intent);
                         finish();
+                    }else {
+                        Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
+                }else {
+                    Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
 
@@ -455,7 +472,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
                 if (!(response.isSuccessful())){
-                    Toast.makeText(getApplicationContext(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                    check=false;
+                    new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!,please try again later.")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                    return;
                 }
                 calc+=response.body().size();
                 for (Product_class p : response.body()){
@@ -472,6 +500,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Product_class>> call, Throwable t) {
                 Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                check=false;
                 return;
             }
         });

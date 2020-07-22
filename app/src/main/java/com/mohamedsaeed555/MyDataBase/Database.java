@@ -22,25 +22,18 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table cosmatics ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
-        db.execSQL("create table medical ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
-        db.execSQL("create table makeup ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
-        db.execSQL("create table papers ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
-        db.execSQL("create table others ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
         db.execSQL("create table AllData ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
         db.execSQL("create table Products ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT ,token TEXT)");
         db.execSQL("create table Favourite (id INTEGER PRIMARY KEY AUTOINCREMENT , Fav TEXT)");
+        db.execSQL("create table BRAND (id INTEGER PRIMARY KEY AUTOINCREMENT ,Brand TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS cosmatics");
-        db.execSQL("DROP TABLE IF EXISTS medical");
-        db.execSQL("DROP TABLE IF EXISTS makeup");
-        db.execSQL("DROP TABLE IF EXISTS papers");
-        db.execSQL("DROP TABLE IF EXISTS others");
+
+        db.execSQL("DROP TABLE IF EXISTS BRAND");
         db.execSQL("DROP TABLE IF EXISTS AllData");
         db.execSQL("DROP TABLE IF EXISTS Cart");
         db.execSQL("DROP TABLE IF EXISTS Products");
@@ -396,6 +389,18 @@ public class Database extends SQLiteOpenHelper {
             return true;
     }
 
+    public  Boolean insert_brand ( String brand){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("Brand",brand);
+        long result = db.insert("BRAND",null,contentValues);
+        if (result== -1)
+            return false;
+        else
+            return true;
+    }
+
+
     public ArrayList<String> Search_fav( String Fav){
         ArrayList<String> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -425,7 +430,19 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-
+    public ArrayList<String> GETALLBRAND(){
+        ArrayList<String> arrayList = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from BRAND",null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false){
+            String id = cursor.getString(0);
+            String fav = cursor.getString(1);
+            arrayList.add(fav);
+            cursor.moveToNext();
+        }
+        return arrayList;
+    }
 
     public void Delete_Fav(String Fav){
         SQLiteDatabase db = this.getWritableDatabase();

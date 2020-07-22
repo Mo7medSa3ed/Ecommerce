@@ -63,7 +63,7 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
         View v = convertView;
         if (v==null){
             inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v=inflater.inflate(R.layout.main_order,null,false);
+            v=inflater.inflate(R.layout.main_order,parent,false);
         }
 
         TextView o_name = v.findViewById(R.id.textView14);

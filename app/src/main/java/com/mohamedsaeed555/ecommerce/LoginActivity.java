@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     Users users;
     Button btn;
     TextView txtgo;
+    String[] brand_list;
     TextInputLayout  emaillayout,passwordlayout;
     AutoCompleteTextView emailtext , passwordtext;
     Database db =new Database(this);
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-
+        brand_list = getResources().getStringArray(R.array.brand_items);
         emaillayout = findViewById(R.id.inputlayout5);
         passwordlayout = findViewById(R.id.inputlayout1);
         emailtext = findViewById(R.id.filled_exposed_dropdown5);
@@ -321,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.body().getToken()!=null){
                     db.insert_user(response.body().getUser(),response.body().getToken());
                 }else {
-                    db.insert_user(response.body(),null);
+                    db.insert_user(response.body().getUser(),null);
                 }
 
                 int size=0;
@@ -337,14 +338,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (s){
                     alertDialog.dismiss();
                 }
-                if (response.body().getToken() != null && response.body().getAdmin() && db.isEmpty("AllData")){
+                if (response.body().getToken() != null && response.body().getUser().getAdmin()){
                     alertDialog = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_LOADING)
                             .setTitle("Loading")
-                            .setDescription("Please wait until Get Products details")
+                            .setDescription("Please wait until Get Products Data")
                             .build();
                     alertDialog.setCancelable(false);
                     alertDialog.show();
                     db.Delete_All("AllData");
+                    db.Delete_All("BRAND");
+
+                    for(int i=0; i<brand_list.length;i++){
+                        db.insert_brand(brand_list[i]);
+                    }
+
                     GET(response.body().getToken(),"cosmatics");
                     GET(response.body().getToken(),"medical");
                     GET(response.body().getToken(),"papers");
@@ -356,8 +363,16 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
                         startActivity(intent);
                         finish();
+                    }else {
+                        Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
+                }else {
+                    Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

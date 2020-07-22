@@ -170,13 +170,13 @@ public interface Retrofit_Interface {
     @PATCH("orders/{id}")
     Call<Orders> UPDATEORDER (@Header("x-auth-token") String token,@Path("id") String id, @Body Orders orders);
 
-
+    @FormUrlEncoded
     @PATCH("orders/{id}")
-    Call<Orders> UPDATEORDERPAID (@Header("x-auth-token") String token,@Path("id") String id, @Body JSONObject orders);
+    Call<Orders> UPDATEORDERPAID (@Header("x-auth-token") String token,@Path("id") String id, @Field("paid") Boolean paid , @Field("paidAt") String date);
 
-
+    @FormUrlEncoded
     @PATCH("orders/{id}")
-    Call<Orders> UPDATEORDERDELEVIRD (@Header("x-auth-token") String token,@Path("id") String id,@Body JSONObject jsonObject);
+    Call<Orders> UPDATEORDERDELEVIRD (@Header("x-auth-token") String token,@Path("id") String id,@Field("delivery") Boolean paid , @Field("deliveryAt") String date);
 
 
 

@@ -167,12 +167,12 @@ public class RetrofitClient {
     }
 
 
-    public Call<Orders> UpdateOrderPaid(String token,String id, JSONObject orders){
-        return retrofit_interface.UPDATEORDERPAID(token,id,orders);
+    public Call<Orders> UpdateOrderPaid(String token,String id, Boolean paid,String date){
+        return retrofit_interface.UPDATEORDERPAID(token,id,paid,date);
     }
 
-    public Call<Orders> UpdateOrderDeleviry(String token,String id, JSONObject jsonObject){
-        return retrofit_interface.UPDATEORDERDELEVIRD(token,id,jsonObject);
+    public Call<Orders> UpdateOrderDeleviry(String token,String id, Boolean paid,String date){
+        return retrofit_interface.UPDATEORDERDELEVIRD(token,id,paid,date);
     }
 
 

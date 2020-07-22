@@ -122,7 +122,7 @@ public class Orders_Details extends Fragment {
         cphone.setText(users.getTel());
         caddress.setText(users.getAdress());
 
-        if (db.getAllusers().get(0).getToken()!= null){
+        if (db.getAllusers().get(0).getToken() == null){
             paid.setVisibility(View.GONE);
             contact.setVisibility(View.GONE);
         }
@@ -153,16 +153,8 @@ public class Orders_Details extends Fragment {
         paid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject jsonObject =new JSONObject();
-                try {
-                    jsonObject.accumulate("paid",true);
-                    jsonObject.accumulate("paidAt",getDate());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-
-                updatepaid(id,  jsonObject);
+                updatepaid(id,  true,getDate());
 
             }
         });
@@ -171,15 +163,8 @@ public class Orders_Details extends Fragment {
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject jsonObject =new JSONObject();
-                try {
-                    jsonObject.put("delivery",true);
-                    jsonObject.put("deliveryAt",getDate());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
-                updatecontact(id,jsonObject);
+                updatecontact(id,true,getDate());
 
             }
         });
@@ -237,8 +222,8 @@ public class Orders_Details extends Fragment {
         });
     }
 
-    private void updatepaid(String id , JSONObject orders){
-        RetrofitClient.getInstance().UpdateOrderPaid(users.getToken(),id,orders).enqueue(new Callback<Orders>() {
+    private void updatepaid(String id , Boolean paid2,String date){
+        RetrofitClient.getInstance().UpdateOrderPaid(users.getToken(),id,paid2,date).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()){
@@ -265,8 +250,8 @@ public class Orders_Details extends Fragment {
         });
     }
 
-    private void updatecontact(String id , JSONObject jsonObject){
-        RetrofitClient.getInstance().UpdateOrderDeleviry(users.getToken(),id,jsonObject).enqueue(new Callback<Orders>() {
+    private void updatecontact(String id , Boolean paid,String date){
+        RetrofitClient.getInstance().UpdateOrderDeleviry(users.getToken(),id,paid,date).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()){

@@ -38,12 +38,13 @@ public class AlluserFragment extends Fragment {
     UserAdapter adapter;
     ArrayList<Users> users = new ArrayList<>();
     Database db;
-
+    Users user;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //getAllUser();
         db=new Database(getActivity());
+        user=db.getAllusers().get(0);
         return inflater.inflate(R.layout.fragment_alluser, container, false);
     }
 
@@ -64,13 +65,14 @@ public class AlluserFragment extends Fragment {
 
 
     public void getAllUser(){
-        RetrofitClient.getInstance().GET_all_User(db.getAllusers().get(0).getToken()).enqueue(new Callback<List<Users>>() {
+        RetrofitClient.getInstance().GET_all_User(user.getToken()).enqueue(new Callback<List<Users>>() {
             @Override
             public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
                 if (response.isSuccessful()){
                     users.clear();
                     for (Users u : response.body()){
-                        users.add(u);
+                        if (!(u.get_id().equals(user.get_id())))
+                            users.add(u);
                     }
                     //Toast.makeText(getActivity(),String.valueOf(users.size()),Toast.LENGTH_LONG).show();
                     adapter.setdata(users);

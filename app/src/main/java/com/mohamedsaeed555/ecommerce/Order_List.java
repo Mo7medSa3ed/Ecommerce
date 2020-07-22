@@ -57,8 +57,9 @@ public class Order_List extends Fragment {
     Poset_Orders.User user;
     TextView fprice;
     ArrayList<Double> t =new ArrayList<>();
-    Boolean check;
+    Boolean check=false;
     Gson gson =new Gson();
+    LottieAlertDialog  alertDialog;
     private Socket mSocket;
     {
         try {
@@ -95,8 +96,35 @@ public class Order_List extends Fragment {
             public void onClick(View view) {
                 Users users = db.getAllusers().get(0);
                 if (users.getTel()==null || users.getCity()==null || users.getAdress()==null){
-                Toast.makeText(getActivity(),"Please Complete profile information",Toast.LENGTH_SHORT).show();
-            }else {
+                  alertDialog = new LottieAlertDialog.Builder(getActivity(), DialogTypes.TYPE_QUESTION)
+                          .setTitle("Complete Profile Info")
+                          .setDescription("Do you want to update profile information ?")
+                          .setPositiveText("yes")
+                          .setNegativeText("No")
+                          .setPositiveButtonColor(Color.parseColor("#f44242"))
+                          .setPositiveTextColor(Color.parseColor("#0a0906"))
+                          .setNegativeButtonColor(Color.parseColor("#ffbb00"))
+                          .setNegativeTextColor(Color.parseColor("#0a0906"))
+                          .setPositiveListener(new ClickListener() {
+                              @Override
+                              public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                  alertDialog.dismiss();
+                                  getActivity().getSupportFragmentManager().beginTransaction()
+                                          .replace(R.id.cotainers,new UserSetting())
+                                          .addToBackStack(null).commit();
+                              }
+                          })
+                          .setNegativeListener(new ClickListener() {
+                              @Override
+                              public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                    alertDialog.dismiss();
+                              }
+                          })
+                          .build();
+                          alertDialog.show();
+
+
+                }else {
                 if (orders.size() > 0) {
                     Double total=0.0;
                     for (int x = 0; x < orders.size(); x++) {
@@ -144,6 +172,7 @@ public class Order_List extends Fragment {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                 sweetAlertDialog.dismissWithAnimation();
+                                                check=false;
                                             }
                                         })
                                         .show();
@@ -159,6 +188,7 @@ public class Order_List extends Fragment {
                                         @Override
                                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                                             sweetAlertDialog.dismissWithAnimation();
+                                            check=false;
                                         }
                                     })
                                     .show();

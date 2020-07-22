@@ -230,6 +230,7 @@ public class UserSetting extends Fragment {
                         String tel = mobiletext.getText().toString().trim();
                         Users u = db.getAllusers().get(0);
                         String _id = u.get_id();
+                        Toast.makeText(getActivity(),u.getAdmin().toString(),Toast.LENGTH_LONG).show();
                         Users users = new Users(name,tel,address,image,email,u.getPassword(),city,u.getFbid(),u.getGoid(),u.getAdmin(),u.getSuperAdmin(),_id);
                         RetrofitClient.getInstance().UpdateUser2(users.getToken(),_id,users).enqueue(new Callback<Users>() {
                             @Override
@@ -240,7 +241,7 @@ public class UserSetting extends Fragment {
                                     if (response.body().getToken()!=null){
                                         db.insert_user(response.body().getUser(),response.body().getToken());
                                     }else {
-                                        db.insert_user(response.body(),null);
+                                        db.insert_user(response.body().getUser(),null);
                                     }
                                     //db.insert_user(users,null);
                                     new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
