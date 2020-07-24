@@ -120,13 +120,14 @@ public class SecondActivity extends AppCompatActivity {
                         .addToBackStack(null).commit();
             } else if (notification_class.getGo_Activity().equals("orderdetails")) {
                 Bundle bundle = new Bundle();
-                bundle.putString("o", gson.toJson(notification_class.getOrders()));
+                bundle.putString("os", gson.toJson(notification_class.getOrd()));
                 Orders_Details frag = new Orders_Details();
                 frag.setArguments(bundle);
                 fragmentTransaction.replace(R.id.cotainers, frag)
                         .addToBackStack(null).commit();
             } else if (notification_class.getGo_Activity().equals("alluser")) {
-
+                fragmentTransaction.replace(R.id.cotainers,new  AlluserFragment())
+                        .addToBackStack(null).commit();
             }
         } else {
             fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
@@ -433,7 +434,7 @@ public class SecondActivity extends AppCompatActivity {
                 if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                    db.Delete_All("Products");
+                    //db.Delete_All("Products");
                     db.Delete_All("Favourite");
 
                     LoginManager.getInstance().logOut();
@@ -443,14 +444,14 @@ public class SecondActivity extends AppCompatActivity {
                 } else if (acct != null) {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                    db.Delete_All("Products");
+                   // db.Delete_All("Products");
                     db.Delete_All("Favourite");
 
                     signOut();
                 } else {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                    db.Delete_All("Products");
+                    //db.Delete_All("Products");
                     db.Delete_All("Favourite");
                     Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
                     startActivity(intent);

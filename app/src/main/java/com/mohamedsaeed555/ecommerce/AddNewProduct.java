@@ -577,8 +577,8 @@ public class AddNewProduct extends Fragment {
 
                             Notification_Class notification_class = new Notification_Class(
                                     db.getAllusers().get(0).getAdmin(), "Admin Added New Product",
-                                    "details", coll_name, response.body()
-                            );
+                                    "details", coll_name, response.body(),response.body().getImage(),
+                                    db.getAllusers().get(0).get_id());
                             Gson gson = new Gson();
 
                             mSocket.emit("dbchanged", gson.toJson(notification_class));

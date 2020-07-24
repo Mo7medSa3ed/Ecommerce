@@ -632,12 +632,10 @@ public class updateActivity extends Fragment {
                         }
 
                         Notification_Class notification_class = new Notification_Class(
-                                db.getAllusers().get(0).getAdmin(), "Admin Updated Product",
-                                "details", collection_name, response.body()
-                        );
+                                users.getAdmin(), "Admin Updated Product",
+                                "details", collection_name, response.body(),response.body().getImage(),users.get_id());
 
                         Gson gson = new Gson();
-
 
                         mSocket.emit("dbchanged", gson.toJson(notification_class));
 

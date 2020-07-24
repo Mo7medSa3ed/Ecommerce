@@ -12,35 +12,59 @@ public class Notification_Class {
     private String Collection;
     private Product_class product_class;
     private Orders orders;
+    private String image;
     private Poset_Orders ord;
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class , String image,String sender_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
         Collection = collection;
         this.product_class = product_class;
+        this.image=image;
+        Sender_id=sender_id;
     }
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, Orders orders) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, Orders orders, String image,String sender_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
         this.orders = orders;
+        this.image=image;
+        Sender_id=sender_id;
     }
 
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, Poset_Orders ord) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, Poset_Orders ord, String image,String sender_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
         this.ord = ord;
+        this.image=image;
+        Sender_id=sender_id;
     }
 
     public Notification_Class(Boolean admin, String msg, String go_Activity) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
+    }
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Poset_Orders getOrd() {
+        return ord;
+    }
+
+    public void setOrd(Poset_Orders ord) {
+        this.ord = ord;
     }
 
     public Orders getOrders() {

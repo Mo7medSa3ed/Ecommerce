@@ -52,6 +52,7 @@
                     android:theme="@style/AppTheme2"
                     app:boxStrokeColor="@color/colorPrimary"
                     app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/ic_baseline_email_24"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 
@@ -73,6 +74,7 @@
                     android:theme="@style/AppTheme2"
                     app:boxStrokeColor="@color/colorPrimary"
                     app:endIconMode="password_toggle"
+                    app:startIconDrawable="@drawable/ic_baseline_account_circle_24"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 

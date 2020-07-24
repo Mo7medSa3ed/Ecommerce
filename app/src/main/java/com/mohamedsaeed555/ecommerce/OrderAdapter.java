@@ -113,7 +113,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
                     if (holder.text_amount.getText().toString().isEmpty()) {
                         holder.text_amount.setText("1");
                         holder.calc.setVisibility(View.GONE);
-                        holder.text_amount.setFocusable(false);
+                        //holder.text_amount.setFocusable(false);
                     } else {
                         int amount = Integer.parseInt(String.valueOf(holder.text_amount.getText()));
                         double price = Double.parseDouble(String.valueOf(holder.product_price.getText()));
@@ -121,7 +121,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
                             holder.text_amount.setText(String.valueOf(amount));
                             holder.final_price.setText(String.valueOf(amount * price));
                             holder.calc.setVisibility(View.GONE);
-                            holder.text_amount.setFocusable(false);
+                           // holder.text_amount.setFocusable(false);
                         }
                     }
                 }

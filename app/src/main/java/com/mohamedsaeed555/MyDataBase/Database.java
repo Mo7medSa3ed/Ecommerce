@@ -23,7 +23,6 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table AllData ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
-        db.execSQL("create table Products ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT ,token TEXT)");
         db.execSQL("create table Favourite (id INTEGER PRIMARY KEY AUTOINCREMENT , Fav TEXT)");
         db.execSQL("create table BRAND (id INTEGER PRIMARY KEY AUTOINCREMENT ,Brand TEXT)");
@@ -35,7 +34,6 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS BRAND");
         db.execSQL("DROP TABLE IF EXISTS AllData");
         db.execSQL("DROP TABLE IF EXISTS Cart");
-        db.execSQL("DROP TABLE IF EXISTS Products");
         db.execSQL("DROP TABLE IF EXISTS Users");
         db.execSQL("DROP TABLE IF EXISTS Favourite");
         onCreate(db);

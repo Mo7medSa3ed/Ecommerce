@@ -67,7 +67,7 @@
                     android:layout_gravity="start"
                     android:theme="@style/AppTheme2"
                     app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconMode="clear_text"
+                    app:endIconMode="none"
                     android:textAlignment="center"
                     android:gravity="center"
                     app:errorEnabled="true"
@@ -93,7 +93,7 @@
                     android:textAlignment="textStart"
                     android:layoutDirection="ltr"
                     app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconMode="clear_text"
+                    app:endIconMode="none"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 
@@ -120,7 +120,7 @@
                     android:textAlignment="textStart"
 
                     app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconMode="clear_text"
+                    app:endIconMode="none"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 
@@ -145,7 +145,7 @@
                     android:textAlignment="textStart"
 
                     app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconMode="clear_text"
+                    app:endIconMode="none"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 
@@ -170,7 +170,7 @@
                     android:textAlignment="textStart"
                     android:theme="@style/AppTheme2"
                     app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconMode="clear_text"
+                    app:endIconMode="none"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextLabel">
 

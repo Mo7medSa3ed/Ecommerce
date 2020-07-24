@@ -59,10 +59,10 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-       // if (v == null) {}
-           inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-           v = inflater.inflate(R.layout.main_order, parent, false);
-
+        if (v == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            v = inflater.inflate(R.layout.main_order, null, false);
+        }
 
         TextView o_name = v.findViewById(R.id.textView14);
         TextView o_address = v.findViewById(R.id.textView42);
@@ -75,10 +75,6 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
         ImageView arrow = v.findViewById(R.id.imageView15);
         ExpandableRelativeLayout ex = v.findViewById(R.id.expandableLayout1);
 
-        /*if (ex.isExpanded()) {
-            ex.collapse();
-            arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
-        }*/
 
         o_name.setText(filterorders.get(position).getBy().getName());
         o_address.setText(filterorders.get(position).getBy().getCity());

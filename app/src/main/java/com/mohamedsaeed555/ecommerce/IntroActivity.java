@@ -19,18 +19,18 @@ public class IntroActivity extends AppIntro {
 
         addSlide(AppIntroFragment.newInstance("Mohamed",
                 "Saeed",
-                R.drawable.ic_launcher_background,
+                R.drawable.haircode,
                 Color.parseColor("#51e2b7")));
 
 
         addSlide(AppIntroFragment.newInstance("Mohamed",
-                "HAbiby",
-                R.drawable.ic_launcher_background,
+                "Ayman",
+                R.drawable.haircode,
                 Color.parseColor("#0B0E4D")));
 
         addSlide(AppIntroFragment.newInstance("Mohamed",
                 "Elawah",
-                R.drawable.ic_launcher_background,
+                R.drawable.haircode,
                 Color.parseColor("#51e2b7")));
 
 

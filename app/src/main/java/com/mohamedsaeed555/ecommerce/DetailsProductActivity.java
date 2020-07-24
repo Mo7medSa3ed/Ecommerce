@@ -74,7 +74,6 @@ public class DetailsProductActivity extends Fragment {
             price = getArguments().getDouble("price");
 
             if (collection_name == null || collection_name.equals("")) {
-                Toast.makeText(getActivity(), "Dsad", Toast.LENGTH_LONG).show();
                 collection_name = getArguments().getString("col", "");
                 Product_class c = gson.fromJson(getArguments().getString("pd"), Product_class.class);
                 barcode = c.getBarcode();

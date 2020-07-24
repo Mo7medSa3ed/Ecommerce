@@ -13,6 +13,18 @@ public class Orders {
     private String _id;
     private String created_at;
 
+    public Orders(Users by, ArrayList<ObjectProduct> products, ArrayList<Double> total, Boolean delivery, String deliveryAt, Boolean paid, String paidAt, String _id, String created_at) {
+        this.by = by;
+        this.products = products;
+        this.total = total;
+        this.delivery = delivery;
+        this.deliveryAt = deliveryAt;
+        this.paid = paid;
+        this.paidAt = paidAt;
+        this._id = _id;
+        this.created_at = created_at;
+    }
+
     public Orders(Users by, ArrayList<ObjectProduct> products) {
         this.by = by;
         this.products = products;

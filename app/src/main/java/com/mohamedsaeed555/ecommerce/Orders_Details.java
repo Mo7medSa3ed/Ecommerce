@@ -22,6 +22,7 @@ import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.DetailsProductOrder;
 import com.mohamedsaeed555.MyDataBase.ObjectProduct;
 import com.mohamedsaeed555.MyDataBase.Orders;
+import com.mohamedsaeed555.MyDataBase.Poset_Orders;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Users;
 import com.mohamedsaeed555.Notification.Notification_Class;
@@ -59,6 +60,8 @@ public class Orders_Details extends Fragment {
     Gson gson = new Gson();
     Date date = new Date();
     Orders o;
+    int x=0;
+    Poset_Orders o2;
     private Socket mSocket;
 
     {
@@ -71,24 +74,24 @@ public class Orders_Details extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        try {
-            db = new Database(getActivity());
-            users = db.getAllusers().get(0);
-            o = gson.fromJson(getArguments().getString("order"), Orders.class);
-            id = o.get_id();
-            pid = o.getPaid();
-            dele = o.getDelivery();
-            total = String.valueOf(o.getTotal().get(0));
-            if (o == null) {
-                o = gson.fromJson(getArguments().getString("o"), Orders.class);
-                id = o.get_id();
-                pid = o.getPaid();
-                dele = o.getDelivery();
-                total = String.valueOf(o.getTotal().get(0));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        db = new Database(getActivity());
+        users = db.getAllusers().get(0);
+       try {
+           o = gson.fromJson(getArguments().getString("order"), Orders.class);
+           if (o != null) {
+               id = o.get_id();
+               pid = o.getPaid();
+               dele = o.getDelivery();
+               total = String.valueOf(o.getTotal().get(0));
+           } else {
+               o2 = gson.fromJson(getArguments().getString("os"), Poset_Orders.class);
+               id = o2.get_id();
+               pid = o2.getPaid();
+               dele = o2.getDelivery();
+               total = String.valueOf(o2.getTotal().get(0));
+           }
+       }catch (Exception e){e.printStackTrace();}
+
 
         return inflater.inflate(R.layout.fragment_orders__details, container, false);
     }
@@ -142,6 +145,7 @@ public class Orders_Details extends Fragment {
         adapter = new DetailsOrderAdapter(data, getActivity());
         list.setAdapter(adapter);
 
+
         GETDATA();
 
         paid.setOnClickListener(new View.OnClickListener() {
@@ -176,14 +180,15 @@ public class Orders_Details extends Fragment {
                     data.clear();
                     products = response.body().getProducts();
                     new_pr.add(response.body().getProducts().get(0));
-
-                    for (int x = 1; x < products.size(); x++) {
-                        if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
-                            int old_amount = products.get(x).getAmount();
-                            int amount = new_pr.get(x - 1).getAmount();
-                            new_pr.get(x - 1).setAmount(old_amount + amount);
-                        } else {
-                            new_pr.add(products.get(x));
+                    if (products.size()>1) {
+                        for (int x = 1; x < products.size(); x++) {
+                            if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
+                                int old_amount = products.get(x).getAmount();
+                                int amount = new_pr.get(x - 1).getAmount();
+                                new_pr.get(x - 1).setAmount(old_amount + amount);
+                            } else {
+                                new_pr.add(products.get(x));
+                            }
                         }
                     }
 
@@ -201,7 +206,6 @@ public class Orders_Details extends Fragment {
 
                 } else {
 
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
 
 
@@ -222,7 +226,7 @@ public class Orders_Details extends Fragment {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
-                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o);
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id());
 
                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 
@@ -252,7 +256,7 @@ public class Orders_Details extends Fragment {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
-                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o);
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id());
                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 
                     Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();

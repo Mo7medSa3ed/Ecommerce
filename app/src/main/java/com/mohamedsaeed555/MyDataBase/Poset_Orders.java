@@ -3,7 +3,6 @@ package com.mohamedsaeed555.MyDataBase;
 import java.util.ArrayList;
 
 public class Poset_Orders {
-    private User by;
     private ArrayList<ObjectProduct> products;
     private ArrayList<Double> total;
     private Boolean delivery;
@@ -11,6 +10,7 @@ public class Poset_Orders {
     private Boolean paid;
     private String paidAt;
     private String _id;
+    private User by;
 
     public Poset_Orders(User by, ArrayList<ObjectProduct> products, ArrayList<Double> total) {
         this.by = by;

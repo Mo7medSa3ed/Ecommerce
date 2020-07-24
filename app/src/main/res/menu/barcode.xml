@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/bar"
-        android:icon="@drawable/bar_img"
+        android:icon="@drawable/scanner"
         android:title="BARCODE"
         app:showAsAction="always"/>
 

@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     TextInputLayout emaillayout, passwordlayout;
     AutoCompleteTextView emailtext, passwordtext;
     Database db = new Database(this);
-    LottieAlertDialog alertDialog;
+    LottieAlertDialog alertDialog ,alert;
     private String first_name, Name;
     private String last_name;
     private String email;
@@ -332,12 +332,12 @@ public class LoginActivity extends AppCompatActivity {
                     alertDialog.dismiss();
                 }
                 if (response.body().getToken() != null && response.body().getUser().getAdmin()) {
-                    alertDialog = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_LOADING)
+                    alert = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_LOADING)
                             .setTitle("Loading")
                             .setDescription("Please wait until Get Products Data")
                             .build();
-                    alertDialog.setCancelable(false);
-                    alertDialog.show();
+                    alert.setCancelable(false);
+                    alert.show();
                     db.Delete_All("AllData");
                     db.Delete_All("BRAND");
 
@@ -407,9 +407,12 @@ public class LoginActivity extends AppCompatActivity {
                             p.getImage(), collection_name);
                     db.insert_product_toAlldata("AllData", productClass);
                 }
-                if (collection_name.equals("others")) {
-                    alertDialog.dismiss();
-                }
+              try {
+
+                  if (collection_name.equals("others")) {
+                      alert.dismiss();
+                  }
+              }catch (Exception e){e.printStackTrace();}
 
             }
 

@@ -99,7 +99,7 @@
             android:layout_below="@+id/expa"
             android:background="#EEE"
             app:ael_duration="400"
-            app:ael_expanded="true"
+            app:ael_expanded="false"
             app:ael_interpolator="accelerate"
             app:ael_orientation="vertical">
 

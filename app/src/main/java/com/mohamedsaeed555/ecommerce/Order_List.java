@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -171,7 +172,7 @@ public class Order_List extends Fragment {
                             public void onResponse(Call<Poset_Orders> call, Response<Poset_Orders> response) {
                                 if (response.isSuccessful()) {
                                     check = true;
-                                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "New Order From User", "orderdetails", response.body());
+                                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "New Order From User", "orderdetails", response.body() , users.getImage(),users.get_id());
                                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 
                                     db.Delete_All("Cart");
