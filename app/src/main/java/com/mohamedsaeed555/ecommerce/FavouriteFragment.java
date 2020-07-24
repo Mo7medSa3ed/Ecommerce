@@ -2,7 +2,6 @@ package com.mohamedsaeed555.ecommerce;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,12 +26,20 @@ import java.util.ArrayList;
 
 public class FavouriteFragment extends Fragment implements RecyclerAdapter.onclick {
 
-    ArrayList<Product_class> arrayList =new ArrayList<>();
+    ArrayList<Product_class> arrayList = new ArrayList<>();
     String barcode;
-    RecyclerView recyclerView ;
+    RecyclerView recyclerView;
     RecyclerAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
     SearchView searchView;
+
+    public static int calculateNoOfColumns(Context context, float columnWidthDp) { // For example columnWidthdp=180
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (screenWidthDp / columnWidthDp + 0.5); // +0.5 for correct rounding to int.
+        return noOfColumns;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,11 +51,11 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle("Favourite");
-        Database db =new Database(getActivity());
+        Database db = new Database(getActivity());
         recyclerView = view.findViewById(R.id.recycler_fav);
         int size = db.GETALLFAV().size();
         if (size > 0) {
-                arrayList.clear();
+            arrayList.clear();
             for (int x = 0; x < size; x++) {
                 barcode = db.GETALLFAV().get(x);
                 arrayList.add(db.Search_product2("AllData", barcode).get(0));
@@ -66,17 +71,9 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         adapter = new RecyclerAdapter(true);
         recyclerView.setAdapter(adapter);
 
-        adapter.setdate2(arrayList,getActivity(),FavouriteFragment.this,true);
+        adapter.setdate2(arrayList, getActivity(), FavouriteFragment.this, true);
 
 
-
-    }
-
-    public static int calculateNoOfColumns(Context context, float columnWidthDp) { // For example columnWidthdp=180
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
-        int noOfColumns = (int) (screenWidthDp / columnWidthDp + 0.5); // +0.5 for correct rounding to int.
-        return noOfColumns;
     }
 
     @Override
@@ -91,37 +88,36 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         MenuItem menuItem = menu.findItem(R.id.search2);
 
 
-        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView)   menuItem.getActionView();
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Search Here !");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query.trim().isEmpty()){
+                if (query.trim().isEmpty()) {
                     //check=true;
                     adapter.getFilter().filter(query);
-                }else {
+                } else {
                     adapter.getFilter().filter(query);
-                   // check=false;
+                    // check=false;
                 }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.trim().isEmpty()){
+                if (newText.trim().isEmpty()) {
                     //check=true;
                     adapter.getFilter().filter(newText);
-                }else {
+                } else {
                     adapter.getFilter().filter(newText);
                     //check=false;
                 }
                 return false;
             }
         });
-
 
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -136,7 +132,6 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }

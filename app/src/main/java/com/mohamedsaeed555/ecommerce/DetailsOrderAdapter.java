@@ -9,13 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mohamedsaeed555.MyDataBase.DetailsProductOrder;
-import com.mohamedsaeed555.MyDataBase.Orders;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class DetailsOrderAdapter extends BaseAdapter {
-    ArrayList<DetailsProductOrder> list ;
+    ArrayList<DetailsProductOrder> list;
     Context context;
     LayoutInflater inflater;
 
@@ -27,9 +26,9 @@ public class DetailsOrderAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void  setdata(ArrayList<DetailsProductOrder> list, Context context){
-        this.list=list;
-        this.context=context;
+    public void setdata(ArrayList<DetailsProductOrder> list, Context context) {
+        this.list = list;
+        this.context = context;
         notifyDataSetChanged();
     }
 
@@ -50,10 +49,10 @@ public class DetailsOrderAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v =convertView;
-        if (v==null){
-            inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v=inflater.inflate(R.layout.order_product,parent,false);
+        View v = convertView;
+        if (v == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            v = inflater.inflate(R.layout.order_product, parent, false);
         }
 
         TextView pname = v.findViewById(R.id.textView27);

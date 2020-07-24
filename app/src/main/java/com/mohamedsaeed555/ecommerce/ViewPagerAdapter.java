@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
-    ArrayList<Product_class> list ;
+    ArrayList<Product_class> list;
     LayoutInflater layoutInflater;
     Context context;
 
@@ -41,13 +41,13 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.order_item,container,false);
+        View view = layoutInflater.inflate(R.layout.order_item, container, false);
 
-        ImageView img =view.findViewById(R.id.imageView2);
+        ImageView img = view.findViewById(R.id.imageView2);
         TextView name = view.findViewById(R.id.textView2);
         TextView price = view.findViewById(R.id.textView3);
         TextView edit = view.findViewById(R.id.textView5);
-        CardView card= view.findViewById(R.id.card2);
+        CardView card = view.findViewById(R.id.card2);
 
         final Product_class details = list.get(position);
 
@@ -56,14 +56,14 @@ public class ViewPagerAdapter extends PagerAdapter {
                 .into(img);
 
         name.setText(details.getName());
-        price.setText(String.valueOf(details.getPrice())+" EGP");
+        price.setText(details.getPrice() + " EGP");
 
-        container.addView(view,0);
+        container.addView(view, 0);
         return view;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
     }
 }

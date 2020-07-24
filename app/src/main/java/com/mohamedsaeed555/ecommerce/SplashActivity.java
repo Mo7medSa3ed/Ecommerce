@@ -1,18 +1,21 @@
 package com.mohamedsaeed555.ecommerce;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
+
 import java.util.ArrayList;
 
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ArrayList<Product_class> array =new ArrayList<>();
     Database db = new Database(this);
+    private ArrayList<Product_class> array = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +36,15 @@ public class SplashActivity extends AppCompatActivity {
 
 */
 
-        if (db.getAllusers().size() != 0 || db.getAllusers().size()>0){
+        if (db.getAllusers().size() != 0 || db.getAllusers().size() > 0) {
             //second
 
-            Intent intent = new Intent(SplashActivity.this,SecondActivity.class);
+            Intent intent = new Intent(SplashActivity.this, SecondActivity.class);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             //main
-            Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }

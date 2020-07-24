@@ -1,7 +1,6 @@
 package com.mohamedsaeed555.ecommerce;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,30 +13,29 @@ import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.mohamedsaeed555.MyDataBase.Orders;
-import com.mohamedsaeed555.MyDataBase.Product_class;
 
 import java.util.ArrayList;
 
 public class OrdersAdapter extends BaseAdapter implements Filterable {
 
-    ArrayList<Orders> orders ;
-    ArrayList<Orders> filterorders ;
+    ArrayList<Orders> orders;
+    ArrayList<Orders> filterorders;
     Context context;
     LayoutInflater inflater;
-    Double total=0.0;
+    Double total = 0.0;
 
     public OrdersAdapter() {
     }
 
     public OrdersAdapter(ArrayList<Orders> orders, Context context) {
         this.orders = orders;
-        this.filterorders=orders;
+        this.filterorders = orders;
         this.context = context;
     }
 
     public void setdata(ArrayList<Orders> orders, Context context) {
         this.orders = orders;
-        this.filterorders=orders;
+        this.filterorders = orders;
         this.context = context;
         notifyDataSetChanged();
     }
@@ -61,55 +59,74 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View v = convertView;
-        if (v==null){
-            inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v=inflater.inflate(R.layout.main_order,parent,false);
-        }
+       // if (v == null) {}
+           inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+           v = inflater.inflate(R.layout.main_order, parent, false);
+
 
         TextView o_name = v.findViewById(R.id.textView14);
         TextView o_address = v.findViewById(R.id.textView42);
         TextView o_price = v.findViewById(R.id.textView41);
+        TextView paid_date = v.findViewById(R.id.txtVi43);
+        TextView delevary_date = v.findViewById(R.id.tetew43);
+        TextView order_date = v.findViewById(R.id.textV);
         ImageView img = v.findViewById(R.id.imageView11);
         LinearLayout ly = v.findViewById(R.id.expa);
         ImageView arrow = v.findViewById(R.id.imageView15);
         ExpandableRelativeLayout ex = v.findViewById(R.id.expandableLayout1);
 
-        if (ex.isExpanded()){ex.collapse();
-            arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);}
+        /*if (ex.isExpanded()) {
+            ex.collapse();
+            arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
+        }*/
 
         o_name.setText(filterorders.get(position).getBy().getName());
         o_address.setText(filterorders.get(position).getBy().getCity());
+        try {
 
-        if (filterorders.get(position).getTotal().size()>1) {
+            order_date.setText(filterorders.get(position).getCreated_at().substring(0, 10));
+
+            if (filterorders.get(position).getPaidAt() == null) {
+                paid_date.setText("none");
+            } else {
+                paid_date.setText(filterorders.get(position).getPaidAt().substring(0, 10));
+            }
+            if (filterorders.get(position).getDelivery() == null) {
+                delevary_date.setText("none");
+            } else {
+                delevary_date.setText(filterorders.get(position).getDeliveryAt().substring(0, 10));
+            }
+
+        }catch (Exception e){e.printStackTrace();}
+        if (filterorders.get(position).getTotal().size() > 1) {
             for (int x = 0; x < filterorders.get(position).getTotal().size(); x++) {
                 total += filterorders.get(position).getTotal().get(x);
             }
-        }else {
-            total= filterorders.get(position).getTotal().get(0);
+        } else {
+            total = filterorders.get(position).getTotal().get(0);
         }
 
-        o_price.setText(String.valueOf(total)+" EGP");
+        o_price.setText(total + " EGP");
 
-        if (filterorders.get(position).getPaid()){
+        if (filterorders.get(position).getPaid()) {
             img.setImageResource(R.drawable.ic_check_black_24dp);
-        }else {
+        } else {
             img.setImageResource(R.drawable.ic_clear_black_24dp);
         }
 
         ly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ex.isExpanded()){
+              /*  if (ex.isExpanded()) {
                     ex.collapse();
                     arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
-                }else {
+                } else {
                     ex.expand();
                     arrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
-                }
+                }*/
+              ex.toggle();
             }
         });
-
-
 
 
         return v;
@@ -120,19 +137,19 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-               ArrayList<Orders> result = new ArrayList<>();
-               String search_word = constraint.toString().toLowerCase().trim();
-               if (search_word.isEmpty()){
-                   filterorders = orders;
-               }else {
-                   for (int x=0; x<orders.size(); x++){
-                       if (orders.get(x).getBy().getName().toLowerCase().trim().contains(search_word)){
-                           result.add(orders.get(x));
-                       }
-                   }
+                ArrayList<Orders> result = new ArrayList<>();
+                String search_word = constraint.toString().toLowerCase().trim();
+                if (search_word.isEmpty()) {
+                    filterorders = orders;
+                } else {
+                    for (int x = 0; x < orders.size(); x++) {
+                        if (orders.get(x).getBy().getName().toLowerCase().trim().contains(search_word)) {
+                            result.add(orders.get(x));
+                        }
+                    }
 
-                   filterorders=result;
-               }
+                    filterorders = result;
+                }
 
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = filterorders;

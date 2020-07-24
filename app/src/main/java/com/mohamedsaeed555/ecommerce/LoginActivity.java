@@ -7,10 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,7 +25,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -48,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,27 +54,37 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    LoginButton loginButton ;
-    CallbackManager callbackManager;
     private static final int RC_SIGN_IN = 0;
+    LoginButton loginButton;
+    CallbackManager callbackManager;
     GoogleSignInClient mGoogleSignInClient;
-    private String first_name , Name;
-    private String last_name;
-    private String email;
-    private String id;
-    private String uri_image;
     ProgressDialog loadingbar;
     SharedPreferences.Editor editor;
-
     Users users;
     Button btn;
     TextView txtgo;
     String[] brand_list;
-    TextInputLayout  emaillayout,passwordlayout;
-    AutoCompleteTextView emailtext , passwordtext;
-    Database db =new Database(this);
+    TextInputLayout emaillayout, passwordlayout;
+    AutoCompleteTextView emailtext, passwordtext;
+    Database db = new Database(this);
     LottieAlertDialog alertDialog;
-    private int calc=0;
+    private String first_name, Name;
+    private String last_name;
+    private String email;
+    private String id;
+    private String uri_image;
+    private int calc = 0;
+    AccessTokenTracker tracker = new AccessTokenTracker() {
+        @Override
+        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+            if (currentAccessToken != null) {
+                loaduserprofile(currentAccessToken);
+            }
+
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         emailtext = findViewById(R.id.filled_exposed_dropdown5);
         passwordtext = findViewById(R.id.filled_exposed_dropdown1);
         txtgo = findViewById(R.id.textView50);
-         btn = findViewById(R.id.button7);
+        btn = findViewById(R.id.button7);
 
         emailtext.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         SignInButton signInButton = findViewById(R.id.sign_in_button);
-        loginButton=findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
         loadingbar = new ProgressDialog(this);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
@@ -145,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        callbackManager =CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
 
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
@@ -154,24 +159,25 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
 
             }
+
             @Override
             public void onCancel() {
             }
+
             @Override
             public void onError(FacebookException error) {
             }
         });
 
 
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (emailtext.getText().toString().trim().isEmpty()){
+                if (emailtext.getText().toString().trim().isEmpty()) {
                     emaillayout.setErrorEnabled(true);
                     emaillayout.setError("Please enter your email");
                     return;
-                }else if (passwordtext.getText().toString().trim().isEmpty()){
+                } else if (passwordtext.getText().toString().trim().isEmpty()) {
                     passwordlayout.setErrorEnabled(true);
                     passwordlayout.setError("Please enter password");
                     return;
@@ -184,20 +190,20 @@ public class LoginActivity extends AppCompatActivity {
                 alertDialog.setCancelable(false);
                 alertDialog.show();
 
-                String name =null;
-                String email=emailtext.getText().toString().trim();
-                String pass =passwordtext.getText().toString().trim();
-                String city =null;
-                String address=null;
-                String tel =null;
-                String img=null;
+                String name = null;
+                String email = emailtext.getText().toString().trim();
+                String pass = passwordtext.getText().toString().trim();
+                String city = null;
+                String address = null;
+                String tel = null;
+                String img = null;
 
                 btn.setEnabled(false);
                 btn.setClickable(false);
                 btn.setBackground(getResources().getDrawable(R.drawable.btn_shape_enable));
 
-                users = new Users(name,tel,address,img,email,pass,city,null,null,false,false);
-                Add_user(users,true);
+                users = new Users(name, tel, address, img, email, pass, city, null, null, false, false);
+                Add_user(users, true);
 
 
             }
@@ -206,13 +212,12 @@ public class LoginActivity extends AppCompatActivity {
         txtgo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
 
     }
-
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -225,33 +230,20 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
             //if (resultCode == RESULT_OK)
-                 Add_user(users,false);
-        }else {
-            callbackManager.onActivityResult(requestCode,resultCode,data);
+            Add_user(users, false);
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    AccessTokenTracker tracker = new AccessTokenTracker() {
-        @Override
-        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-            if (currentAccessToken!= null) {
-                loaduserprofile(currentAccessToken);
-            }
-
-
-        }
-
-    };
-
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
 
-        GoogleSignInAccount account =GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if(account!=null){
-            String name =account.getDisplayName();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (account != null) {
+            String name = account.getDisplayName();
             uri_image = account.getPhotoUrl().toString();
-            users = new Users(null,null,null,null,null,null,null,null,account.getId(),false,false);
+            users = new Users(null, null, null, null, null, null, null, null, account.getId(), false, false);
         }
         try {
             GoogleSignInAccount account2 = completedTask.getResult(ApiException.class);
@@ -266,12 +258,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
                     first_name = object.getString("first_name");
-                    last_name =object.getString("last_name");
-                    email =object.getString("email");
-                    id =object.getString("id");
-                    uri_image ="https://graph.facebook.com/"+id+"/picture?type=normal";
-                    users = new Users(null,null,null,null,null,null,null,id,null,false,false);
-                    Add_user(users,false);
+                    last_name = object.getString("last_name");
+                    email = object.getString("email");
+                    id = object.getString("id");
+                    uri_image = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                    users = new Users(null, null, null, null, null, null, null, id, null, false, false);
+                    Add_user(users, false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -279,22 +271,21 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Bundle bundle =new Bundle();
-        bundle.putString("fields","first_name,last_name,email,id");
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "first_name,last_name,email,id");
         request.setParameters(bundle);
         request.executeAsync();
     }
 
 
-
-    public void  Add_user(Users users ,Boolean s){
+    public void Add_user(Users users, Boolean s) {
         RetrofitClient.getInstance().Login_User(users).enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
                 if (!(response.isSuccessful())) {
 
                     try {
-                        if (s){
+                        if (s) {
                             alertDialog.dismiss();
                         }
                         LottieAlertDialog alertDialog = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_ERROR)
@@ -316,29 +307,31 @@ public class LoginActivity extends AppCompatActivity {
                         btn.setBackground(getResources().getDrawable(R.drawable.btn_click));
 
                         return;
-                    }catch (Exception e ){e.printStackTrace();}
-                }
-                db.Delete_All("Users");
-                if (response.body().getToken()!=null){
-                    db.insert_user(response.body().getUser(),response.body().getToken());
-                }else {
-                    db.insert_user(response.body().getUser(),null);
-                }
-
-                int size=0;
-                if (response.body().getFav() != null){
-                   size= response.body().getFav().size();
-                }
-
-                if (size>0) {
-                    for (int x = 0; x < size; x++) {
-                        db.insert_fav(response.body().getFav().get(x));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-                if (s){
+                db.Delete_All("Users");
+                if (response.body().getToken() != null) {
+                    db.insert_user(response.body().getUser(), response.body().getToken());
+                } else {
+                    db.insert_user(response.body().getUser(), null);
+                }
+
+                int size = 0;
+                if (response.body().getUser().getFav() != null) {
+                    size = response.body().getUser().getFav().size();
+                }
+
+                if (size > 0) {
+                    for (int x = 0; x < size; x++) {
+                        db.insert_fav(response.body().getUser().getFav().get(x));
+                    }
+                }
+                if (s) {
                     alertDialog.dismiss();
                 }
-                if (response.body().getToken() != null && response.body().getUser().getAdmin()){
+                if (response.body().getToken() != null && response.body().getUser().getAdmin()) {
                     alertDialog = new LottieAlertDialog.Builder(LoginActivity.this, DialogTypes.TYPE_LOADING)
                             .setTitle("Loading")
                             .setDescription("Please wait until Get Products Data")
@@ -348,29 +341,29 @@ public class LoginActivity extends AppCompatActivity {
                     db.Delete_All("AllData");
                     db.Delete_All("BRAND");
 
-                    for(int i=0; i<brand_list.length;i++){
+                    for (int i = 0; i < brand_list.length; i++) {
                         db.insert_brand(brand_list[i]);
                     }
 
-                    GET(response.body().getToken(),"cosmatics");
-                    GET(response.body().getToken(),"medical");
-                    GET(response.body().getToken(),"papers");
-                    GET(response.body().getToken(),"makeup");
-                    GET(response.body().getToken(),"others");
+                    GET(response.body().getToken(), "cosmatics");
+                    GET(response.body().getToken(), "medical");
+                    GET(response.body().getToken(), "papers");
+                    GET(response.body().getToken(), "makeup");
+                    GET(response.body().getToken(), "others");
 
 
-                    if (calc == db.getAllProducts2("AllData").size()){
-                        Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                    if (calc == db.getAllProducts2("AllData").size()) {
+                        Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
-                        Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
                         startActivity(intent);
                         finish();
                     }
 
-                }else {
-                    Intent intent = new Intent(LoginActivity.this,IntroActivity.class);
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -379,7 +372,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Users> call, Throwable t) {
-                if (s){
+                if (s) {
                     alertDialog.dismiss();
                 }
                 new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE)
@@ -400,28 +393,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void GET (String token,String collection_name ){
-        RetrofitClient.getInstance().GETALLPRODUCTS(token,collection_name).enqueue(new Callback<List<Product_class>>() {
+    public void GET(String token, String collection_name) {
+        RetrofitClient.getInstance().GETALLPRODUCTS(token, collection_name).enqueue(new Callback<List<Product_class>>() {
             @Override
             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
-                if (!(response.isSuccessful())){
-                    Toast.makeText(getApplicationContext(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                if (!(response.isSuccessful())) {
+                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
-                calc+=response.body().size();
-                for (Product_class p : response.body()){
-                    Product_class productClass =new Product_class(p.getDate(),p.getAmount(),
-                            p.getBarcode(),p.getName(),p.getPrice(),p.getBrand(),
-                            p.getImage(),collection_name);
-                    db.insert_product_toAlldata("AllData",productClass);
+                calc += response.body().size();
+                for (Product_class p : response.body()) {
+                    Product_class productClass = new Product_class(p.getDate(), p.getAmount(),
+                            p.getBarcode(), p.getName(), p.getPrice(), p.getBrand(),
+                            p.getImage(), collection_name);
+                    db.insert_product_toAlldata("AllData", productClass);
                 }
-                if (collection_name.equals("others")){
+                if (collection_name.equals("others")) {
                     alertDialog.dismiss();
                 }
 
             }
+
             @Override
             public void onFailure(Call<List<Product_class>> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 return;
             }
         });

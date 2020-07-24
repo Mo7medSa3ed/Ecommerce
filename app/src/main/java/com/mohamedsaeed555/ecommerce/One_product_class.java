@@ -4,7 +4,7 @@ import com.mohamedsaeed555.MyDataBase.Product_class;
 
 import java.util.ArrayList;
 
-public class One_product_class{
+public class One_product_class {
 
     private Product_class product;
     private ArrayList<Product_class> samilier;

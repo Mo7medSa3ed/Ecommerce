@@ -39,12 +39,13 @@ public class AlluserFragment extends Fragment {
     ArrayList<Users> users = new ArrayList<>();
     Database db;
     Users user;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //getAllUser();
-        db=new Database(getActivity());
-        user=db.getAllusers().get(0);
+        db = new Database(getActivity());
+        user = db.getAllusers().get(0);
         return inflater.inflate(R.layout.fragment_alluser, container, false);
     }
 
@@ -52,25 +53,25 @@ public class AlluserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        list=view.findViewById(R.id.userlist);
+        list = view.findViewById(R.id.userlist);
 
-       // users.add(new Users("dsdsa","asd","sadasd","adsd","asdsad","asdsa","sda","asdas","ads",false,false,"sadsa"));
+        // users.add(new Users("dsdsa","asd","sadasd","adsd","asdsad","asdsa","sda","asdas","ads",false,false,"sadsa"));
 
 
-        adapter = new UserAdapter(users,getActivity());
+        adapter = new UserAdapter(users, getActivity());
         list.setAdapter(adapter);
         getAllUser();
 
     }
 
 
-    public void getAllUser(){
+    public void getAllUser() {
         RetrofitClient.getInstance().GET_all_User(user.getToken()).enqueue(new Callback<List<Users>>() {
             @Override
             public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     users.clear();
-                    for (Users u : response.body()){
+                    for (Users u : response.body()) {
                         if (!(u.get_id().equals(user.get_id())))
                             users.add(u);
                     }
@@ -79,9 +80,10 @@ public class AlluserFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onFailure(Call<List<Users>> call, Throwable t) {
-                Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -89,13 +91,13 @@ public class AlluserFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.deleteall,menu);
+        inflater.inflate(R.menu.deleteall, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Database db =new Database(getActivity());
+        Database db = new Database(getActivity());
         int id2 = item.getItemId();
         if (id2 == R.id.deleteall) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
@@ -108,11 +110,11 @@ public class AlluserFragment extends Fragment {
                             RetrofitClient.getInstance().DeleteAllUser(db.getAllusers().get(0).getToken()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         sweetAlertDialog.dismissWithAnimation();
                                         users.clear();
                                         adapter.notifyDataSetChanged();
-                                    }else {
+                                    } else {
                                         new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                                                 .setTitleText("Oops...")
                                                 .setContentText("Something went wrong!")

@@ -1,34 +1,16 @@
 package com.mohamedsaeed555.ecommerce;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.graphics.Color;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
-import android.text.GetChars;
 import android.text.TextWatcher;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -38,8 +20,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -61,15 +41,12 @@ import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Users;
 import com.mohamedsaeed555.Notification.Notification_Class;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -80,33 +57,42 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
-    String[] brand_list;
-    LoginButton loginButton ;
-    CallbackManager callbackManager;
     private static final int RC_SIGN_IN = 0;
+    String[] brand_list;
+    LoginButton loginButton;
+    CallbackManager callbackManager;
     GoogleSignInClient mGoogleSignInClient;
-    private String first_name , Name;
+    int calc = 0;
+    Users users;
+    ExpandableRelativeLayout layout;
+    TextView txtgo;
+    TextInputLayout namelayout, citylayout, emaillayout, passwordlayout, mobilelayout, addresslayout;
+    AutoCompleteTextView nametext, citytext, emailtext, passwordtext, mobiletext, addresstext;
+    Database db = new Database(this);
+    Button btn;
+    boolean check = true;
+    LottieAlertDialog alertDialog;
+    Gson gson = new Gson();
+    private String first_name, Name;
     private String last_name;
     private String email;
     private String id;
     private String uri_image;
-    int calc=0;
-    Users users;
-    ExpandableRelativeLayout layout;
-    TextView txtgo;
-    TextInputLayout namelayout , citylayout , emaillayout,passwordlayout,mobilelayout,addresslayout;
-    AutoCompleteTextView nametext , citytext,emailtext , passwordtext , mobiletext , addresstext;
-    Database db =new Database(this);
-    Button btn;
-    boolean check=true;
-    LottieAlertDialog alertDialog;
-    Gson gson =new Gson();
-
     private Socket mSocket;
+    AccessTokenTracker tracker = new AccessTokenTracker() {
+        @Override
+        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+            if (currentAccessToken != null) {
+                loaduserprofile(currentAccessToken);
+            }
+        }
+    };
+
     {
         try {
             mSocket = IO.socket("https://newaccsys.herokuapp.com");
-        } catch (URISyntaxException e) {}
+        } catch (URISyntaxException e) {
+        }
     }
 
     @Override
@@ -114,17 +100,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
-       // final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        // final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         layout = findViewById(R.id.expandle);
         //layout.startAnimation(myAnim);
-        txtgo =findViewById(R.id.textView39);
-         btn = findViewById(R.id.button4);
+        txtgo = findViewById(R.id.textView39);
+        btn = findViewById(R.id.button4);
         namelayout = findViewById(R.id.inputlayout2);
         citylayout = findViewById(R.id.inputlayout4);
         emaillayout = findViewById(R.id.inputlayout5);
         passwordlayout = findViewById(R.id.inputlayout1);
         mobilelayout = findViewById(R.id.inputlayout3);
-        addresslayout= findViewById(R.id.inputlayout);
+        addresslayout = findViewById(R.id.inputlayout);
         nametext = findViewById(R.id.filled_exposed_dropdown2);
         citytext = findViewById(R.id.filled_exposed_dropdown4);
         emailtext = findViewById(R.id.filled_exposed_dropdown5);
@@ -171,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         SignInButton signInButton = findViewById(R.id.sign_in_button);
-        loginButton=findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
 
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setColorScheme(SignInButton.COLOR_DARK);
@@ -183,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        callbackManager =CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
 
         loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
 
@@ -191,14 +177,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
             }
+
             @Override
             public void onCancel() {
             }
+
             @Override
             public void onError(FacebookException error) {
             }
         });
-
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -209,16 +196,15 @@ public class MainActivity extends AppCompatActivity {
                 btn.setClickable(true);
 
 
-                if (nametext.getText().toString().trim().isEmpty()){
+                if (nametext.getText().toString().trim().isEmpty()) {
                     namelayout.setErrorEnabled(true);
                     namelayout.setError("Please enter your name");
                     return;
-                }else if (emailtext.getText().toString().trim().isEmpty()){
+                } else if (emailtext.getText().toString().trim().isEmpty()) {
                     emaillayout.setErrorEnabled(true);
                     emaillayout.setError("Please enter your email");
                     return;
-                }
-                else if (passwordtext.getText().toString().trim().isEmpty()){
+                } else if (passwordtext.getText().toString().trim().isEmpty()) {
                     passwordlayout.setErrorEnabled(true);
                     passwordlayout.setError("Please enter password");
                     return;
@@ -231,32 +217,32 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.setCancelable(false);
                 alertDialog.show();
 
-                String name =nametext.getText().toString().trim();
-                String email=emailtext.getText().toString().trim();
-                String pass =passwordtext.getText().toString().trim();
-                String city =null;
-                String address=null;
-                String tel =null;
-                String img=null;
+                String name = nametext.getText().toString().trim();
+                String email = emailtext.getText().toString().trim();
+                String pass = passwordtext.getText().toString().trim();
+                String city = null;
+                String address = null;
+                String tel = null;
+                String img = null;
 
-                if (!(addresstext.getText().toString().trim().equals(""))){
-                    address=addresstext.getText().toString().trim();
+                if (!(addresstext.getText().toString().trim().equals(""))) {
+                    address = addresstext.getText().toString().trim();
                 }
 
-                if (!(citytext.getText().toString().trim().equals(""))){
+                if (!(citytext.getText().toString().trim().equals(""))) {
 
-                    city=citytext.getText().toString().trim();
+                    city = citytext.getText().toString().trim();
                 }
 
-                if (!(mobiletext.getText().toString().trim().equals(""))){
-                    tel=mobiletext.getText().toString().trim();
+                if (!(mobiletext.getText().toString().trim().equals(""))) {
+                    tel = mobiletext.getText().toString().trim();
                 }
 
                 btn.setEnabled(false);
                 btn.setClickable(false);
                 btn.setBackground(getResources().getDrawable(R.drawable.btn_shape_enable));
-                users = new Users(name,tel,address,img,email,pass,city,null,null,false,false);
-                Add_user(users,true);
+                users = new Users(name, tel, address, img, email, pass, city, null, null, false, false);
+                Add_user(users, true);
 
 
             }
@@ -265,13 +251,12 @@ public class MainActivity extends AppCompatActivity {
         txtgo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
 
     }
-
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -283,32 +268,22 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-                //if (task !=null)
-                Add_user(users,false);
-        }else {
-            callbackManager.onActivityResult(requestCode,resultCode,data);
+            //if (task !=null)
+            Add_user(users, false);
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    AccessTokenTracker tracker = new AccessTokenTracker() {
-        @Override
-        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-            if (currentAccessToken!=null) {
-                loaduserprofile(currentAccessToken);
-            }
-        }
-    };
-
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
 
-        GoogleSignInAccount account =GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-        if(account!=null){
-            String name =account.getDisplayName();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        if (account != null) {
+            String name = account.getDisplayName();
             uri_image = account.getPhotoUrl().toString();
 
-            users = new Users(name,null,null,uri_image,account.getEmail(),null,null,null,account.getId(),false,false);
+            users = new Users(name, null, null, uri_image, account.getEmail(), null, null, null, account.getId(), false, false);
 
         }
         try {
@@ -324,32 +299,31 @@ public class MainActivity extends AppCompatActivity {
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
                     first_name = object.getString("first_name");
-                    last_name =object.getString("last_name");
-                    email =object.getString("email");
-                    id =object.getString("id");
-                    uri_image ="https://graph.facebook.com/"+id+"/picture?type=normal";
-                    users = new Users(first_name+" "+last_name,null,null,uri_image,email,null,null,id,null,false,false);
-                    Add_user(users,false);
+                    last_name = object.getString("last_name");
+                    email = object.getString("email");
+                    id = object.getString("id");
+                    uri_image = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                    users = new Users(first_name + " " + last_name, null, null, uri_image, email, null, null, id, null, false, false);
+                    Add_user(users, false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        Bundle bundle =new Bundle();
-        bundle.putString("fields","first_name,last_name,email,id");
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "first_name,last_name,email,id");
         request.setParameters(bundle);
         request.executeAsync();
     }
 
 
-
-    public void  Add_user(Users users , Boolean s){
+    public void Add_user(Users users, Boolean s) {
         RetrofitClient.getInstance().Add_User(users).enqueue(new Callback<Users>() {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
-                if (!(response.isSuccessful())){
-                    if (s){
+                if (!(response.isSuccessful())) {
+                    if (s) {
                         alertDialog.dismiss();
                     }
                     LottieAlertDialog alertDialog = new LottieAlertDialog.Builder(MainActivity.this, DialogTypes.TYPE_ERROR)
@@ -376,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                             })
                             .show();*/
 
-                    Toast.makeText(getApplicationContext(),"This User Existed Before ,please add new user.",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "This User Existed Before ,please add new user.", Toast.LENGTH_LONG).show();
 
                     btn.setEnabled(true);
                     btn.setClickable(true);
@@ -385,23 +359,23 @@ public class MainActivity extends AppCompatActivity {
 
                     return;
                 }
-                Notification_Class notification_class =new Notification_Class(response.body().getAdmin(),"New User Create Account","alluser");
-                mSocket.emit("dbchanged",gson.toJson(notification_class));
+                Notification_Class notification_class = new Notification_Class(response.body().getAdmin(), "New User Create Account", "alluser");
+                mSocket.emit("dbchanged", gson.toJson(notification_class));
 
                 db.Delete_All("Users");
-                db.insert_user(response.body(),null);
+                db.insert_user(response.body(), null);
 
                 int size = response.body().getFav().size();
-                if (size>0) {
+                if (size > 0) {
                     for (int x = 0; x < size; x++) {
                         db.insert_fav(response.body().getFav().get(x));
                     }
                 }
-                if (s){
+                if (s) {
                     alertDialog.dismiss();
                 }
 
-                if (response.body().getAdmin() && response.body().getToken() != null ){
+                if (response.body().getAdmin() && response.body().getToken() != null) {
                     alertDialog = new LottieAlertDialog.Builder(MainActivity.this, DialogTypes.TYPE_LOADING)
                             .setTitle("Loading")
                             .setDescription("Please wait until Get Products Data")
@@ -411,40 +385,38 @@ public class MainActivity extends AppCompatActivity {
                     db.Delete_All("AllData");
                     db.Delete_All("BRAND");
 
-                    for(int i=0; i<brand_list.length;i++){
+                    for (int i = 0; i < brand_list.length; i++) {
                         db.insert_brand(brand_list[i]);
                     }
 
-                    GET(response.body().getToken(),"cosmatics");
-                    GET(response.body().getToken(),"medical");
-                    GET(response.body().getToken(),"papers");
-                    GET(response.body().getToken(),"makeup");
-                    GET(response.body().getToken(),"others");
+                    GET(response.body().getToken(), "cosmatics");
+                    GET(response.body().getToken(), "medical");
+                    GET(response.body().getToken(), "papers");
+                    GET(response.body().getToken(), "makeup");
+                    GET(response.body().getToken(), "others");
 
-                    if (calc == db.getAllProducts2("AllDate").size()){
-                        Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                    if (calc == db.getAllProducts2("AllDate").size()) {
+                        Intent intent = new Intent(MainActivity.this, IntroActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
-                        Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, IntroActivity.class);
                         startActivity(intent);
                         finish();
                     }
 
-                }else {
-                    Intent intent = new Intent(MainActivity.this,IntroActivity.class);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, IntroActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
-
 
 
             }
 
             @Override
             public void onFailure(Call<Users> call, Throwable t) {
-                if (s){
+                if (s) {
                     alertDialog.dismiss();
                 }
                 new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
@@ -467,12 +439,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void GET (String token,String collection_name ){
-        RetrofitClient.getInstance().GETALLPRODUCTS(token,collection_name).enqueue(new Callback<List<Product_class>>() {
+    public void GET(String token, String collection_name) {
+        RetrofitClient.getInstance().GETALLPRODUCTS(token, collection_name).enqueue(new Callback<List<Product_class>>() {
             @Override
             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
-                if (!(response.isSuccessful())){
-                    check=false;
+                if (!(response.isSuccessful())) {
+                    check = false;
                     new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")
                             .setContentText("Something went wrong!,please try again later.")
@@ -485,22 +457,23 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                     return;
                 }
-                calc+=response.body().size();
-                for (Product_class p : response.body()){
-                    Product_class productClass =new Product_class(p.getDate(),p.getAmount(),
-                            p.getBarcode(),p.getName(),p.getPrice(),p.getBrand(),
-                            p.getImage(),collection_name);
-                    db.insert_product_toAlldata("AllData",productClass);
+                calc += response.body().size();
+                for (Product_class p : response.body()) {
+                    Product_class productClass = new Product_class(p.getDate(), p.getAmount(),
+                            p.getBarcode(), p.getName(), p.getPrice(), p.getBrand(),
+                            p.getImage(), collection_name);
+                    db.insert_product_toAlldata("AllData", productClass);
                 }
-                if (collection_name.equals("others")){
+                if (collection_name.equals("others")) {
                     alertDialog.dismiss();
                 }
 
             }
+
             @Override
             public void onFailure(Call<List<Product_class>> call, Throwable t) {
-                Toast.makeText(MainActivity.this,t.getMessage(),Toast.LENGTH_SHORT).show();
-                check=false;
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                check = false;
                 return;
             }
         });

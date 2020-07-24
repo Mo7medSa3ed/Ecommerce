@@ -48,7 +48,6 @@
     <activity android:name=".MainActivity"/>
 
     <service android:name="com.mohamedsaeed555.Notification.Notification_Service"
-        android:process=":service"
         android:stopWithTask="false"
         android:exported="true"
         android:enabled="true" />

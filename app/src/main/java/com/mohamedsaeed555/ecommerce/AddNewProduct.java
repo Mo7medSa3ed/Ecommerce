@@ -2,7 +2,6 @@ package com.mohamedsaeed555.ecommerce;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -54,7 +53,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,44 +68,38 @@ import retrofit2.Response;
 public class AddNewProduct extends Fragment {
 
 
-
-    ImageView img , bar_img;
-    Button btn_add , a ;
-    AutoCompleteTextView id , name , collection , brand , date , price , amount ;
-    TextInputLayout code,pname,pcollecion,pbrand,pprice,pamount , pdate;
+    ImageView img;
+    Button btn_add, a;
+    AutoCompleteTextView id, name, collection, brand, date, price, amount;
+    TextInputLayout code, pname, pcollecion, pbrand, pprice, pamount, pdate;
 
 
     String[] list;
-    ArrayList<String> list2=new ArrayList<>();
+    ArrayList<String> list2 = new ArrayList<>();
     DatePickerDialog.OnDateSetListener mDateSetListener;
-    private String item_Selected = "";
     Uri path;
     String Image_path = "";
-    Retrofit_Interface retrofit_interface;
     String collection_name = "";
     String brand_name = "";
-    ProgressDialog progressDialog;
     BottomSheetDialog bottomSheetDialog;
-     String barcode="";
-     String Datepick="";
-
-    LottieAlertDialog alertDialog ;
-    Database db ;
-
+    String barcode = "";
+    String Datepick = "";
+    LottieAlertDialog alertDialog;
+    Database db;
     private Socket mSocket;
+
     {
         try {
             mSocket = IO.socket("https://newaccsys.herokuapp.com");
-        } catch (URISyntaxException e) {}
+        } catch (URISyntaxException e) {
+        }
     }
-
-
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        db= new Database(getActivity());
+        db = new Database(getActivity());
         return inflater.inflate(R.layout.activity_add_product, container, false);
     }
 
@@ -116,40 +108,39 @@ public class AddNewProduct extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle("Add Product");
-        barcode = getArguments().getString("id","");
+        barcode = getArguments().getString("id", "");
         btn_add = view.findViewById(R.id.button);
         img = view.findViewById(R.id.img);
-        id =view.findViewById(R.id.filled_exposed_dropdown);
-        name =view.findViewById(R.id.filled_exposed_dropdown2);
-        collection =view.findViewById(R.id.filled_exposed_dropdown4);
-        brand =view.findViewById(R.id.filled_exposed_dropdown3);
-        date =view.findViewById(R.id.filled_exposed_dropdown5);
-        price =view.findViewById(R.id.filled_exposed_dropdown6);
-        amount =view.findViewById(R.id.filled_exposed_dropdown7);
+        id = view.findViewById(R.id.filled_exposed_dropdown);
+        name = view.findViewById(R.id.filled_exposed_dropdown2);
+        collection = view.findViewById(R.id.filled_exposed_dropdown4);
+        brand = view.findViewById(R.id.filled_exposed_dropdown3);
+        date = view.findViewById(R.id.filled_exposed_dropdown5);
+        price = view.findViewById(R.id.filled_exposed_dropdown6);
+        amount = view.findViewById(R.id.filled_exposed_dropdown7);
         a = view.findViewById(R.id.vvv);
-        code=view.findViewById(R.id.inputlayout);
-        pname=view.findViewById(R.id.inputlayout2);
-        pcollecion=view.findViewById(R.id.inputlayout4);
-        pbrand=view.findViewById(R.id.inputlayout3);
-        pprice=view.findViewById(R.id.inputlayout6);
-        pamount=view.findViewById(R.id.inputlayout7);
-        pdate=view.findViewById(R.id.inputlayout5);
+        code = view.findViewById(R.id.inputlayout);
+        pname = view.findViewById(R.id.inputlayout2);
+        pcollecion = view.findViewById(R.id.inputlayout4);
+        pbrand = view.findViewById(R.id.inputlayout3);
+        pprice = view.findViewById(R.id.inputlayout6);
+        pamount = view.findViewById(R.id.inputlayout7);
+        pdate = view.findViewById(R.id.inputlayout5);
 
 
-        if (!(barcode==null||barcode.isEmpty()))
+        if (!(barcode == null || barcode.isEmpty()))
             id.setText(barcode);
 
         bottomSheetDialog = new BottomSheetDialog(getActivity());
-        View v =getLayoutInflater().inflate(R.layout.bottom_sheat,null);
+        View v = getLayoutInflater().inflate(R.layout.bottom_sheat, null);
         bottomSheetDialog.setContentView(v);
         ImageView cam = v.findViewById(R.id.imageView);
         ImageView gal = v.findViewById(R.id.imageView4);
         TextView cancel = v.findViewById(R.id.cancel);
 
 
-
         if (Build.VERSION.SDK_INT >= 23) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 2);
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 2);
         }
 
         if (barcode != null) {
@@ -157,7 +148,7 @@ public class AddNewProduct extends Fragment {
         }
 
         list = getActivity().getResources().getStringArray(R.array.picker_items);
-        list2 =db.GETALLBRAND() ;
+        list2 = db.GETALLBRAND();
 
         id.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,7 +163,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,code);
+                validateEditText(s, code);
             }
         });
         name.addTextChangedListener(new TextWatcher() {
@@ -188,7 +179,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pname);
+                validateEditText(s, pname);
             }
         });
         collection.addTextChangedListener(new TextWatcher() {
@@ -204,7 +195,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pcollecion);
+                validateEditText(s, pcollecion);
             }
         });
         brand.addTextChangedListener(new TextWatcher() {
@@ -220,7 +211,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pbrand);
+                validateEditText(s, pbrand);
             }
         });
         date.addTextChangedListener(new TextWatcher() {
@@ -236,7 +227,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pdate);
+                validateEditText(s, pdate);
             }
         });
         price.addTextChangedListener(new TextWatcher() {
@@ -252,7 +243,7 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pprice);
+                validateEditText(s, pprice);
             }
         });
         amount.addTextChangedListener(new TextWatcher() {
@@ -268,12 +259,9 @@ public class AddNewProduct extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(s,pamount);
+                validateEditText(s, pamount);
             }
         });
-
-
-
 
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -305,32 +293,31 @@ public class AddNewProduct extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month++;
-                Datepick = year+"-"+month+"-"+day;
+                Datepick = year + "-" + month + "-" + day;
                 String date2 = month + " / " + year;
                 date.setText(date2);
             }
         };
 
 
-
-       ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,list);
-       collection.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+        collection.setAdapter(adapter);
 
         collection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                collection_name=list[position].toLowerCase();
+                collection_name = list[position].toLowerCase();
             }
         });
 
 
-        final ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,list2);
+        final ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list2);
         brand.setAdapter(adapter2);
 
         brand.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                brand_name=list2.get(position);
+                brand_name = list2.get(position);
             }
         });
 
@@ -343,9 +330,9 @@ public class AddNewProduct extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int ss = brand.getAdapter().getCount();
-                if (ss==0){
+                if (ss == 0) {
                     a.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     a.setVisibility(View.GONE);
                 }
             }
@@ -361,7 +348,7 @@ public class AddNewProduct extends Fragment {
             public void onClick(View v) {
                 String s = brand.getText().toString().trim();
                 if (!(s.isEmpty() || s == null)) {
-                    Toast.makeText(getActivity(),"Added",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Added", Toast.LENGTH_SHORT).show();
                     db.insert_brand(s);
                     list2.add(s);
                     adapter2.add(s);
@@ -380,7 +367,6 @@ public class AddNewProduct extends Fragment {
         });
 
 
-
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -392,7 +378,7 @@ public class AddNewProduct extends Fragment {
 
                         Uri path2 = FileProvider.getUriForFile(getActivity(), "com.example.android.fileprovider", photo_file);
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, path2);
-                       startActivityForResult(Intent.createChooser(cameraIntent,"Select Camera"), 1);
+                        startActivityForResult(Intent.createChooser(cameraIntent, "Select Camera"), 1);
                     }
                 }
                 bottomSheetDialog.dismiss();
@@ -404,7 +390,7 @@ public class AddNewProduct extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent,"Select Picture"), 0);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -430,36 +416,43 @@ public class AddNewProduct extends Fragment {
 
                 if (barcod == null || barcod.isEmpty()) {
                     code.setError("Please enter product barcode");
-                    code.requestFocus(); return;
+                    code.requestFocus();
+                    return;
                 } else if (nam == null || nam.isEmpty()) {
                     pname.setError("Please enter product name");
-                    pname.requestFocus();return;
-                }else if (collection_name == null || collection_name.isEmpty()) {
+                    pname.requestFocus();
+                    return;
+                } else if (collection_name == null || collection_name.isEmpty()) {
                     pcollecion.setError("Please choose product collection");
-                    pcollecion.requestFocus();return;
+                    pcollecion.requestFocus();
+                    return;
                 } else if (bran == null || bran.isEmpty()) {
                     pbrand.setError("Please choose product brand");
-                    pbrand.requestFocus();return;
+                    pbrand.requestFocus();
+                    return;
                 } else if (dat == null || dat.isEmpty()) {
                     pdate.setError("Please enter Expire date");
-                    pdate.requestFocus();return;
+                    pdate.requestFocus();
+                    return;
                 } else if (pric == null || pric.isEmpty()) {
                     pprice.setError("Please enter product Price");
-                    pprice.requestFocus();return;
+                    pprice.requestFocus();
+                    return;
                 } else if (amoun == null || amoun.isEmpty()) {
                     pamount.setError("Please enter available amount");
-                    pamount.requestFocus();return;
+                    pamount.requestFocus();
+                    return;
                 } else {
                     String image = "";
-                    if (Image_path.isEmpty() && path!=null) {
+                    if (Image_path.isEmpty() && path != null) {
                         image = getRealPathFromURI(path);
                     } else {
                         image = Image_path;
                     }
-                    if (image.isEmpty()|| image==null) {
+                    if (image.isEmpty() || image == null) {
                         Toast.makeText(getActivity(), "Please Choose photo", Toast.LENGTH_LONG).show();
                         return;
-                    }else {
+                    } else {
 
                         btn_add.setEnabled(false);
                         btn_add.setClickable(false);
@@ -515,17 +508,17 @@ public class AddNewProduct extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == 0 && resultCode == getActivity().RESULT_OK && data != null) {
-                path = data.getData();
-                img.setImageURI(path);
-            } else if (requestCode == 1 && resultCode == getActivity().RESULT_OK) {
-                Bitmap bitmapImage = BitmapFactory.decodeFile(Image_path);
-                int nh = (int) ( bitmapImage.getHeight() * (512.0 / bitmapImage.getWidth()) );
-                Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, 512, nh, true);
-                img.setImageBitmap(scaled);
-            }
-
+        if (requestCode == 0 && resultCode == getActivity().RESULT_OK && data != null) {
+            path = data.getData();
+            img.setImageURI(path);
+        } else if (requestCode == 1 && resultCode == getActivity().RESULT_OK) {
+            Bitmap bitmapImage = BitmapFactory.decodeFile(Image_path);
+            int nh = (int) (bitmapImage.getHeight() * (512.0 / bitmapImage.getWidth()));
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmapImage, 512, nh, true);
+            img.setImageBitmap(scaled);
         }
+
+    }
 
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -543,8 +536,7 @@ public class AddNewProduct extends Fragment {
     }
 
 
-
-    public void POST_NEW_PRODUCT(String coll_name, final String date1, int amount1 , String barcode , String name1 ,  double price1, String brand1 , String image_path){
+    public void POST_NEW_PRODUCT(String coll_name, final String date1, int amount1, String barcode, String name1, double price1, String brand1, String image_path) {
 
         try {
             Database db = new Database(getActivity());
@@ -570,78 +562,78 @@ public class AddNewProduct extends Fragment {
             //Product_class productClass = new Product_class(date1,amount1,barcode,name1,price1,brand1,image_path);
             //Product_class productClass2 = new Product_class(date1,amount1,barcode,name1,price1,brand1,image_path,coll_name);
 
-            RetrofitClient.getInstance().ADDPRODUCT(db.getAllusers().get(0).getToken(),coll_name,date1, amount1, code, nam, price1, bran, part)
-            .enqueue(new Callback<Product_class>() {
-                @Override
-                public void onResponse(Call<Product_class> call, Response<Product_class> response) {
-                    if (!response.isSuccessful()) {
-                        Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
-                        btn_add.setEnabled(true);
-                        btn_add.setClickable(true);
-                        btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
+            RetrofitClient.getInstance().ADDPRODUCT(db.getAllusers().get(0).getToken(), coll_name, date1, amount1, code, nam, price1, bran, part)
+                    .enqueue(new Callback<Product_class>() {
+                        @Override
+                        public void onResponse(Call<Product_class> call, Response<Product_class> response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(getActivity(), response.message(), Toast.LENGTH_LONG).show();
+                                btn_add.setEnabled(true);
+                                btn_add.setClickable(true);
+                                btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
 
-                        return;
-                    }
-
-                    Notification_Class notification_class = new Notification_Class(
-                            db.getAllusers().get(0).getAdmin(),"Admin Added New Product",
-                            "details",coll_name,response.body()
-                    );
-                    Gson gson = new Gson();
-
-                    mSocket.emit("dbchanged",gson.toJson(notification_class));
-
-                    amount.setText("");
-                    brand.setText("");
-                    collection.setText("");
-                    id.setText("");
-                    name.setText("");
-                    price.setText("");
-                    date.setText("");
-                    img.setImageResource(R.drawable.pick);
-                    Product_class productClass =new Product_class(response.body().getDate(),response.body().getAmount(),
-                            response.body().getBarcode(),response.body().getName(),response.body().getPrice(),response.body().getBrand(),
-                            response.body().getImage(),coll_name);
-                    db.insert_product_toAlldata("AllData",productClass);
-                    alertDialog.dismiss();
-
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                            .setTitleText("Add Product")
-                            .setContentText("product added successfully")
-                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                    btn_add.setEnabled(true);
-                                    btn_add.setClickable(true);
-                                    btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
-                                }
-                            })
-                            .show();
-                }
-
-                @Override
-            public void onFailure(Call<Product_class> call, Throwable t) {
-                alertDialog.dismiss();
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                        .setTitleText("Oops...")
-                        .setContentText("Something went wrong!")
-                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.dismissWithAnimation();
+                                return;
                             }
-                        })
-                        .show();
-                btn_add.setEnabled(true);
-                btn_add.setClickable(true);
-                btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
 
-            }
-        });
+                            Notification_Class notification_class = new Notification_Class(
+                                    db.getAllusers().get(0).getAdmin(), "Admin Added New Product",
+                                    "details", coll_name, response.body()
+                            );
+                            Gson gson = new Gson();
 
-        }catch (Exception e){
-            Toast.makeText(getActivity(),e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                            mSocket.emit("dbchanged", gson.toJson(notification_class));
+
+                            amount.setText("");
+                            brand.setText("");
+                            collection.setText("");
+                            id.setText("");
+                            name.setText("");
+                            price.setText("");
+                            date.setText("");
+                            img.setImageResource(R.drawable.pick);
+                            Product_class productClass = new Product_class(response.body().getDate(), response.body().getAmount(),
+                                    response.body().getBarcode(), response.body().getName(), response.body().getPrice(), response.body().getBrand(),
+                                    response.body().getImage(), coll_name);
+                            db.insert_product_toAlldata("AllData", productClass);
+                            alertDialog.dismiss();
+
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Add Product")
+                                    .setContentText("product added successfully")
+                                    .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                            btn_add.setEnabled(true);
+                                            btn_add.setClickable(true);
+                                            btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
+                                        }
+                                    })
+                                    .show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Product_class> call, Throwable t) {
+                            alertDialog.dismiss();
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Oops...")
+                                    .setContentText("Something went wrong!")
+                                    .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                        }
+                                    })
+                                    .show();
+                            btn_add.setEnabled(true);
+                            btn_add.setClickable(true);
+                            btn_add.setBackground(getResources().getDrawable(R.drawable.btn_click));
+
+                        }
+                    });
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -649,23 +641,23 @@ public class AddNewProduct extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.barcode,menu);
+        inflater.inflate(R.menu.barcode, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id==R.id.bar){
+        if (id == R.id.bar) {
             getActivity().getSupportFragmentManager()
-                    .beginTransaction().replace(R.id.cotainers,new ScannerView()).addToBackStack(null).commit();
+                    .beginTransaction().replace(R.id.cotainers, new ScannerView()).addToBackStack(null).commit();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private void validateEditText(Editable s ,TextInputLayout layout) {
+    private void validateEditText(Editable s, TextInputLayout layout) {
         if (!TextUtils.isEmpty(s)) {
             layout.setError(null);
         }

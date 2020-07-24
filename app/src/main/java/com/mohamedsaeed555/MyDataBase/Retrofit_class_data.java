@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Retrofit_class_data {
 
-    private ArrayList<Product_class> products=null;
+    private ArrayList<Product_class> products = null;
     private String current;
     private int pages;
 

@@ -3,26 +3,25 @@ package com.mohamedsaeed555.MyDataBase;
 import java.util.ArrayList;
 
 public class Poset_Orders {
-   private User by;
-   private ArrayList<ObjectProduct> products;
-   private ArrayList<Double> total;
-   private Boolean delivery;
-   private String deliveryAt;
-   private Boolean paid;
-   private String paidAt;
-   private String _id;
+    private User by;
+    private ArrayList<ObjectProduct> products;
+    private ArrayList<Double> total;
+    private Boolean delivery;
+    private String deliveryAt;
+    private Boolean paid;
+    private String paidAt;
+    private String _id;
 
-    public Poset_Orders(User by, ArrayList<ObjectProduct> products , ArrayList<Double> total) {
+    public Poset_Orders(User by, ArrayList<ObjectProduct> products, ArrayList<Double> total) {
         this.by = by;
         this.products = products;
-        this.total=total;
+        this.total = total;
     }
 
     public Poset_Orders(Boolean paid, String paidAt) {
         this.paid = paid;
         this.paidAt = paidAt;
     }
-
 
 
     public ArrayList<Double> getTotal() {
@@ -90,30 +89,30 @@ public class Poset_Orders {
     }
 
 
-   public static class User {
+    public static class User {
         private String name;
         private String email;
         private String tel;
         private String adress;
         private String city;
 
-       public User(String name, String email, String tel, String adress, String city) {
-           this.name = name;
-           this.email = email;
-           this.tel = tel;
-           this.adress = adress;
-           this.city = city;
-       }
+        public User(String name, String email, String tel, String adress, String city) {
+            this.name = name;
+            this.email = email;
+            this.tel = tel;
+            this.adress = adress;
+            this.city = city;
+        }
 
-       public String getEmail() {
-           return email;
-       }
+        public String getEmail() {
+            return email;
+        }
 
-       public void setEmail(String email) {
-           this.email = email;
-       }
+        public void setEmail(String email) {
+            this.email = email;
+        }
 
-       public String getName() {
+        public String getName() {
             return name;
         }
 

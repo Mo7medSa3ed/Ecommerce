@@ -10,10 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -26,16 +24,16 @@ import java.util.ArrayList;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_order> {
 
-    ArrayList<Product_class> product_data=new ArrayList<>();
+    ArrayList<Product_class> product_data = new ArrayList<>();
     Context context;
-    Boolean check =false;
+    Boolean check = false;
 
-    private int lastPosition=-1;
+    private int lastPosition = -1;
 
-    public void setproductdata(ArrayList<Product_class> product_data, Context context , boolean check  ) {
+    public void setproductdata(ArrayList<Product_class> product_data, Context context, boolean check) {
         this.product_data = product_data;
         this.context = context;
-        this.check=check;
+        this.check = check;
 
         notifyDataSetChanged();
     }
@@ -53,7 +51,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
 
     @Override
     public void onBindViewHolder(@NonNull final Product_order holder, int position) {
-        setAnimation(holder.cardView,position);
+        setAnimation(holder.cardView, position);
         final Product_class details = product_data.get(position);
         Picasso.get().load(details.getImage()).placeholder(R.drawable.haircode).into(holder.product_image);
         holder.product_name.setText(details.getName());
@@ -68,14 +66,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
                     int amount = Integer.parseInt(String.valueOf(holder.text_amount.getText()));
                     double price = Double.parseDouble(String.valueOf(holder.product_price.getText()));
                     amount++;
-                    if (amount > 0 ) {
+                    if (amount > 0) {
                         holder.text_amount.setText(String.valueOf(amount));
                         holder.final_price.setText(String.valueOf(amount * price));
                     }
                 }
             });
 
-        }else {
+        } else {
             holder.text_amount.setText("1");
 
             holder.plus.setOnClickListener(new View.OnClickListener() {
@@ -112,16 +110,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
             holder.calc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.text_amount.getText().toString().isEmpty()){
+                    if (holder.text_amount.getText().toString().isEmpty()) {
                         holder.text_amount.setText("1");
                         holder.calc.setVisibility(View.GONE);
                         holder.text_amount.setFocusable(false);
-                    }else {
-                        int amount=Integer.parseInt(String.valueOf(holder.text_amount.getText()));
-                        double price=Double.parseDouble(String.valueOf(holder.product_price.getText()));
-                        if (amount>0){
+                    } else {
+                        int amount = Integer.parseInt(String.valueOf(holder.text_amount.getText()));
+                        double price = Double.parseDouble(String.valueOf(holder.product_price.getText()));
+                        if (amount > 0) {
                             holder.text_amount.setText(String.valueOf(amount));
-                            holder.final_price.setText(String.valueOf(amount*price));
+                            holder.final_price.setText(String.valueOf(amount * price));
                             holder.calc.setVisibility(View.GONE);
                             holder.text_amount.setFocusable(false);
                         }
@@ -145,7 +143,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
         });
 
 
-
     }
 
     @Override
@@ -153,13 +150,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
         return product_data.size();
     }
 
-    class Product_order extends RecyclerView.ViewHolder{
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
 
-        TextView product_name, product_price , final_price;
-        ImageView product_image , plus , substract;
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
+    }
+
+    class Product_order extends RecyclerView.ViewHolder {
+
+        TextView product_name, product_price, final_price;
+        ImageView product_image, plus, substract;
         AutoCompleteTextView text_amount;
         CardView cardView;
-        Button calc ;
+        Button calc;
 
         public Product_order(@NonNull View itemView) {
             super(itemView);
@@ -169,21 +176,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Product_orde
             product_price = itemView.findViewById(R.id.textView30);
             plus = itemView.findViewById(R.id.imageButton2);
             substract = itemView.findViewById(R.id.imageButton);
-            final_price= itemView.findViewById(R.id.textView28);
+            final_price = itemView.findViewById(R.id.textView28);
             text_amount = itemView.findViewById(R.id.filled_exposed_dropdown3);
-            calc=itemView.findViewById(R.id.button3);
-        }
-    }
-
-    private void setAnimation(View viewToAnimate, int position)
-    {
-        // If the bound view wasn't previously displayed on screen, it's animated
-
-        if (position > lastPosition)
-        {
-            Animation animation = AnimationUtils.loadAnimation(context,R.anim.anim);
-            viewToAnimate.startAnimation(animation);
-            lastPosition=position;
+            calc = itemView.findViewById(R.id.button3);
         }
     }
 

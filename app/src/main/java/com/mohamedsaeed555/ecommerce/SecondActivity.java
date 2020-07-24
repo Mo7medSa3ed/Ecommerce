@@ -1,5 +1,18 @@
 package com.mohamedsaeed555.ecommerce;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,21 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.FragmentManager;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -38,8 +36,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.navigation.NavigationView;
-
-
 import com.google.gson.Gson;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
@@ -48,15 +44,15 @@ import com.mohamedsaeed555.Notification.Notification_Class;
 import com.mohamedsaeed555.Notification.Notification_Service;
 import com.squareup.picasso.Picasso;
 
-
 import java.io.File;
 import java.util.ArrayList;
-
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SecondActivity extends AppCompatActivity {
-    final  static  String FB_URL="https://www.facebook.com/Makkamedical";
+    final static String FB_URL = "https://www.facebook.com/Makkamedical";
+    public static String collection_name = "cosmatics";
+    public Boolean check = true;
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount acct;
     ArrayList<Product_class> data2 = new ArrayList<>();
@@ -65,30 +61,28 @@ public class SecondActivity extends AppCompatActivity {
     ViewModel viewModel;
     SearchView searchView;
     RecyclerView.LayoutManager layoutManager;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
     ChipGroup chipGroup;
     //Database db = new Database(this);
     int page = 1;
     Boolean isloading = true;
-    private int visibleItemCount = 0;
-    private int totalItemCount = 0;
-    private int pastVisibleItems = 0;
     ProgressBar progressBar;
-    public Boolean check = true;
-    public static String collection_name = "cosmatics";
-    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face ,share ,location;
+    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face, share, location;
     ImageView dropimage;
-    TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge ,email;
+    TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge, email;
     ExpandableRelativeLayout myLayout, mylayout2;
     CircleImageView image_uri;
-    private String check_Activity = "";
     Gson gson = new Gson();
     Notification_Class notification_class;
     String c = "s";
     Database db = new Database(this);
     int cart_size = 0;
     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private int visibleItemCount = 0;
+    private int totalItemCount = 0;
+    private int pastVisibleItems = 0;
+    private String check_Activity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +148,7 @@ public class SecondActivity extends AppCompatActivity {
         if (user.get_id() != null) {
             if (user.getName() != null)
                 username.setText(user.getName());
-                email.setText(user.getEmail());
+            email.setText(user.getEmail());
             if (user.getImage() != null)
                 Picasso.get().load(Uri.parse(user.getImage())).placeholder(R.drawable.haircode).into(image_uri);
         }
@@ -389,12 +383,12 @@ public class SecondActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplicationInfo info =getApplicationContext().getApplicationInfo();
+                ApplicationInfo info = getApplicationContext().getApplicationInfo();
                 String apkpath = info.sourceDir;
-                Intent intent =new Intent(Intent.ACTION_SEND);
+                Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("application/vnd.android.package-archive");
-                intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(apkpath)));
-                startActivity(Intent.createChooser(intent,"SHARE APP USING"));
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(apkpath)));
+                startActivity(Intent.createChooser(intent, "SHARE APP USING"));
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
@@ -402,10 +396,10 @@ public class SecondActivity extends AppCompatActivity {
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("geo:30.5122314,31.3543281,15z"));
-                if (intent.resolveActivity(getPackageManager())!=null)
-                    startActivity(Intent.createChooser(intent,"Launch Map"));
+                    Intent intent2 = new Intent(Intent.ACTION_VIEW);
+                    intent2.setData(Uri.parse("https://www.google.com/maps/place/%D9%85%D9%83%D9%87+%D9%84%D9%84%D9%85%D8%B3%D8%AA%D9%84%D8%B2%D9%85%D8%A7%D8%AA+%D8%A7%D9%84%D8%B7%D8%A8%D9%8A%D8%A9+%D9%88+%D9%85%D8%B3%D8%AA%D8%AD%D8%B6%D8%B1%D8%A7%D8%AA+%D8%A7%D9%84%D8%AA%D8%AC%D9%85%D9%8A%D9%84%E2%80%AD/@30.517151,31.353748,19.25z/data=!4m16!1m10!4m9!1m4!2m2!1d31.3427256!2d30.5135962!4e1!1m3!2m2!1d31.3531244!2d30.5170797!3m4!1s0x14f7e79878b898a3:0xe6953de154273ffd!8m2!3d30.5170772!4d31.3532511"));
+                    startActivity(Intent.createChooser(intent2, "Launch Map"));
+
             }
         });
 
@@ -501,10 +495,17 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
+
             super.onBackPressed();
             //adapter.notifyDataSetChanged();
         }
@@ -565,13 +566,13 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void gotofacebook() {
-       try {
+        try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("fb://facewebmodal/f?href="+FB_URL));
+            intent.setData(Uri.parse("fb://facewebmodal/f?href=" + FB_URL));
             startActivity(intent);
-       }catch (ActivityNotFoundException e){
-            Intent intent =new Intent(Intent.ACTION_VIEW,Uri.parse(FB_URL));
+        } catch (ActivityNotFoundException e) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(FB_URL));
             startActivity(intent);
-       }
+        }
     }
 }

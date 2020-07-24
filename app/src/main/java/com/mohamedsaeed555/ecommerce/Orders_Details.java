@@ -1,7 +1,6 @@
 package com.mohamedsaeed555.ecommerce;
 
 
-import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,33 +18,23 @@ import androidx.fragment.app.Fragment;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.DetailsProductOrder;
 import com.mohamedsaeed555.MyDataBase.ObjectProduct;
 import com.mohamedsaeed555.MyDataBase.Orders;
-import com.mohamedsaeed555.MyDataBase.Poset_Orders;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Users;
 import com.mohamedsaeed555.Notification.Notification_Class;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,47 +43,52 @@ import retrofit2.Response;
 public class Orders_Details extends Fragment {
 
     ListView list;
-    Button paid , contact;
+    Button paid, contact;
     ImageView cimage;
-    TextView price , cname, ccity, cphone , caddress ;
+    TextView price, cname, ccity, cphone, caddress;
     Database db;
-    Users  users;
-    Boolean pid =false;
-    Boolean dele =false;
+    Users users;
+    Boolean pid = false;
+    Boolean dele = false;
     String id = "";
     DetailsOrderAdapter adapter;
     String total = "";
-    ArrayList<ObjectProduct> products =new ArrayList<>();
-    ArrayList<ObjectProduct> new_pr =new ArrayList<>();
-    ArrayList<DetailsProductOrder> data =new ArrayList<>();
+    ArrayList<ObjectProduct> products = new ArrayList<>();
+    ArrayList<ObjectProduct> new_pr = new ArrayList<>();
+    ArrayList<DetailsProductOrder> data = new ArrayList<>();
+    Gson gson = new Gson();
+    Date date = new Date();
+    Orders o;
     private Socket mSocket;
+
     {
         try {
             mSocket = IO.socket("https://newaccsys.herokuapp.com");
-        } catch (URISyntaxException e) {}
+        } catch (URISyntaxException e) {
+        }
     }
-    Gson gson =new Gson();
-    Date date  =new Date();
-    Orders o;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       try {
-           db = new Database(getActivity());
-           users = db.getAllusers().get(0);
-           o = gson.fromJson(getArguments().getString("order"), Orders.class);
-           id = o.get_id();
-           pid = o.getPaid();
-           dele = o.getDelivery();
-           total = String.valueOf(o.getTotal().get(0));
-           if (o == null) {
-               o = gson.fromJson(getArguments().getString("o"), Orders.class);
-               id = o.get_id();
-               pid = o.getPaid();
-               dele = o.getDelivery();
-               total = String.valueOf(o.getTotal().get(0));
-           }
-       }catch (Exception e){e.printStackTrace();}
+        try {
+            db = new Database(getActivity());
+            users = db.getAllusers().get(0);
+            o = gson.fromJson(getArguments().getString("order"), Orders.class);
+            id = o.get_id();
+            pid = o.getPaid();
+            dele = o.getDelivery();
+            total = String.valueOf(o.getTotal().get(0));
+            if (o == null) {
+                o = gson.fromJson(getArguments().getString("o"), Orders.class);
+                id = o.get_id();
+                pid = o.getPaid();
+                dele = o.getDelivery();
+                total = String.valueOf(o.getTotal().get(0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return inflater.inflate(R.layout.fragment_orders__details, container, false);
     }
@@ -109,7 +103,7 @@ public class Orders_Details extends Fragment {
         contact = view.findViewById(R.id.button9);
         price = view.findViewById(R.id.textView46);
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.order_header,list,false);
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.order_header, list, false);
         list.addHeaderView(header);
         cname = header.findViewById(R.id.textView14);
         ccity = header.findViewById(R.id.textView41);
@@ -122,39 +116,39 @@ public class Orders_Details extends Fragment {
         cphone.setText(users.getTel());
         caddress.setText(users.getAdress());
 
-        if (db.getAllusers().get(0).getToken() == null){
+        if (db.getAllusers().get(0).getToken() == null) {
             paid.setVisibility(View.GONE);
             contact.setVisibility(View.GONE);
         }
 
 
-        if (pid){
+        if (pid) {
             cimage.setImageResource(R.drawable.ic_check_black_24dp);
             paid.setClickable(false);
             paid.setEnabled(false);
             paid.setBackgroundResource(R.drawable.btn_shape_enable);
-        }else {
+        } else {
             cimage.setImageResource(R.drawable.ic_clear_black_24dp);
         }
 
 
-        if (dele){
+        if (dele) {
             contact.setClickable(false);
             contact.setEnabled(false);
             contact.setBackgroundResource(R.drawable.btn_shape_enable);
         }
 
 
-
-        adapter = new DetailsOrderAdapter(data,getActivity());
+        adapter = new DetailsOrderAdapter(data, getActivity());
         list.setAdapter(adapter);
+
         GETDATA();
 
         paid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                updatepaid(id,  true,getDate());
+                updatepaid(id);
 
             }
         });
@@ -164,7 +158,7 @@ public class Orders_Details extends Fragment {
             @Override
             public void onClick(View view) {
 
-                updatecontact(id,true,getDate());
+                updatecontact(id);
 
             }
         });
@@ -172,43 +166,43 @@ public class Orders_Details extends Fragment {
 
     }
 
-    private void GETDATA (){
-        RetrofitClient.getInstance().GetOneOrder(users.getToken(),id).enqueue(new Callback<Orders>() {
+    private void GETDATA() {
+        RetrofitClient.getInstance().GetOneOrder(users.getToken(), id).enqueue(new Callback<Orders>() {
             @Override
-            public void onResponse(Call<Orders> call, Response<Orders>response) {
-                if (response.isSuccessful()){
+            public void onResponse(Call<Orders> call, Response<Orders> response) {
+                if (response.isSuccessful()) {
 
                     products.clear();
                     data.clear();
                     products = response.body().getProducts();
                     new_pr.add(response.body().getProducts().get(0));
 
-                    for (int x=1; x<products.size(); x++){
-                        if (products.get(x).getBarcode().equals(new_pr.get(x-1).getBarcode())){
+                    for (int x = 1; x < products.size(); x++) {
+                        if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
                             int old_amount = products.get(x).getAmount();
-                            int amount = new_pr.get(x-1).getAmount();
-                            new_pr.get(x-1).setAmount(old_amount+amount);
-                        }else {
+                            int amount = new_pr.get(x - 1).getAmount();
+                            new_pr.get(x - 1).setAmount(old_amount + amount);
+                        } else {
                             new_pr.add(products.get(x));
                         }
                     }
 
 
-                    for (int x=0; x<new_pr.size(); x++){
-                        if (db.Search_product2("AllData",new_pr.get(x).getBarcode()).size()>0){
-                            Product_class p = db.Search_product2("AllData",new_pr.get(x).getBarcode()).get(0);
-                            data.add(new DetailsProductOrder(p,new_pr.get(x).getAmount()));
+                    for (int x = 0; x < new_pr.size(); x++) {
+                        if (db.Search_product2("AllData", new_pr.get(x).getBarcode()).size() > 0) {
+                            Product_class p = db.Search_product2("AllData", new_pr.get(x).getBarcode()).get(0);
+                            data.add(new DetailsProductOrder(p, new_pr.get(x).getAmount()));
                         }
                     }
 
 
-                    adapter.setdata(data,getActivity());
+                    adapter.setdata(data, getActivity());
 
 
-                }else{
+                } else {
 
-                    Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(),response.errorBody().toString(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -216,26 +210,28 @@ public class Orders_Details extends Fragment {
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
     }
 
-    private void updatepaid(String id , Boolean paid2,String date){
-        RetrofitClient.getInstance().UpdateOrderPaid(users.getToken(),id,paid2,date).enqueue(new Callback<Orders>() {
+    private void updatepaid(String id) {
+
+        RetrofitClient.getInstance().UpdateOrderPaid(users.getToken(), id,true, getDate() ).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
-                if (response.isSuccessful()){
-                    Notification_Class notification_class =new Notification_Class(users.getAdmin(),"Admin Contact with your order","orderdetails",o);
+                if (response.isSuccessful()) {
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o);
 
-                    mSocket.emit("dbchanged",gson.toJson(notification_class));
+                    mSocket.emit("dbchanged", gson.toJson(notification_class));
 
-                    Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     paid.setClickable(false);
                     paid.setEnabled(false);
-                }else {
-                    Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                    paid.setBackgroundResource(R.drawable.btn_shape_enable);
+                } else {
+                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     paid.setClickable(true);
                     paid.setEnabled(true);
                 }
@@ -243,26 +239,28 @@ public class Orders_Details extends Fragment {
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 paid.setClickable(true);
                 paid.setEnabled(true);
             }
         });
     }
 
-    private void updatecontact(String id , Boolean paid,String date){
-        RetrofitClient.getInstance().UpdateOrderDeleviry(users.getToken(),id,paid,date).enqueue(new Callback<Orders>() {
+    private void updatecontact(String id) {
+
+        RetrofitClient.getInstance().UpdateOrderDeleviry(users.getToken(), id, true, getDate()).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
-                if (response.isSuccessful()){
-                    Notification_Class notification_class =new Notification_Class(users.getAdmin(),"Admin Contact with your order","orderdetails",o);
-                    mSocket.emit("dbchanged",gson.toJson(notification_class));
+                if (response.isSuccessful()) {
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o);
+                    mSocket.emit("dbchanged", gson.toJson(notification_class));
 
-                    Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     contact.setClickable(false);
                     contact.setEnabled(false);
-                }else {
-                    Toast.makeText(getActivity(),String.valueOf(response.code()),Toast.LENGTH_SHORT).show();
+                    contact.setBackgroundResource(R.drawable.btn_shape_enable);
+                } else {
+                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     contact.setClickable(true);
                     contact.setEnabled(true);
                 }
@@ -270,16 +268,21 @@ public class Orders_Details extends Fragment {
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(),t.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 contact.setClickable(true);
                 contact.setEnabled(true);
             }
         });
     }
 
-    private  String getDate(){
+    private Date getDate() {
         DateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
-        return dtf.format(date);
+        try {
+           date =dtf.parse(String.valueOf(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

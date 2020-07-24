@@ -29,11 +29,12 @@ import retrofit2.Response;
 
 public class ChangePassword extends Fragment {
 
-    TextInputLayout oldpass , new_pass , confirm;
-    AutoCompleteTextView oldtext,new_text,Confirm_Text;
+    TextInputLayout oldpass, new_pass, confirm;
+    AutoCompleteTextView oldtext, new_text, Confirm_Text;
     Button change;
-    Users users ;
+    Users users;
     Database db;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class ChangePassword extends Fragment {
     }
 
     @Override
-    public void   onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         oldpass = view.findViewById(R.id.inputlayout1);
@@ -54,81 +55,81 @@ public class ChangePassword extends Fragment {
         Confirm_Text = view.findViewById(R.id.filled_exposed_dropdown3);
         change = view.findViewById(R.id.button4);
 
-       change.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (oldtext.getText().toString().trim().isEmpty()){
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (oldtext.getText().toString().trim().isEmpty()) {
                     oldpass.setErrorEnabled(true);
                     oldpass.setError("Please enter old password ,first");
-               }else if (new_text.getText().toString().trim().isEmpty()){
-                   new_pass.setErrorEnabled(true);
-                   new_pass.setError("Please enter new password");
-               }else if (Confirm_Text.getText().toString().trim().isEmpty()){
-                   confirm.setErrorEnabled(true);
-                   confirm.setError("Please rewrite new password again");
-               }
+                } else if (new_text.getText().toString().trim().isEmpty()) {
+                    new_pass.setErrorEnabled(true);
+                    new_pass.setError("Please enter new password");
+                } else if (Confirm_Text.getText().toString().trim().isEmpty()) {
+                    confirm.setErrorEnabled(true);
+                    confirm.setError("Please rewrite new password again");
+                }
 
-               String new_pass , confirmpass;
-               new_pass = new_text.getText().toString().trim();
-               confirmpass=Confirm_Text.getText().toString().trim();
-               if (new_pass.equals(confirmpass)){
+                String new_pass, confirmpass;
+                new_pass = new_text.getText().toString().trim();
+                confirmpass = Confirm_Text.getText().toString().trim();
+                if (new_pass.equals(confirmpass)) {
 
-                   RetrofitClient.getInstance().ChangePassword(users.getToken(),users.get_id(),confirmpass).enqueue(new Callback<Users>() {
-                       @Override
-                       public void onResponse(Call<Users> call, Response<Users> response) {
-                         if (response.isSuccessful()) {
-                             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                                     .setTitleText("Change Password")
-                                     .setContentText("Password Changed successfully")
-                                     .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
-                                         @Override
-                                         public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                             sweetAlertDialog.dismissWithAnimation();
-                                         }
-                                     })
-                                     .show();
-                         }
-                       }
+                    RetrofitClient.getInstance().ChangePassword(users.getToken(), users.get_id(), confirmpass).enqueue(new Callback<Users>() {
+                        @Override
+                        public void onResponse(Call<Users> call, Response<Users> response) {
+                            if (response.isSuccessful()) {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                        .setTitleText("Change Password")
+                                        .setContentText("Password Changed successfully")
+                                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismissWithAnimation();
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
 
-                       @Override
-                       public void onFailure(Call<Users> call, Throwable t) {
-                           new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                   .setTitleText("Oops...")
-                                   .setContentText("Something went wrong!")
-                                   .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
-                                       @Override
-                                       public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                           sweetAlertDialog.dismissWithAnimation();
-                                       }
-                                   })
-                                   .show();
-                       }
-                   });
+                        @Override
+                        public void onFailure(Call<Users> call, Throwable t) {
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Oops...")
+                                    .setContentText("Something went wrong!")
+                                    .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
 
-               }else {
-                   Confirm_Text.setText("");
-                   confirm.setErrorEnabled(true);
-                   confirm.setError("Re write password again ,please");
-                   LottieAlertDialog alertDialog = new LottieAlertDialog.Builder(getActivity(), DialogTypes.TYPE_ERROR)
-                           .setTitle("Error")
-                           .setDescription("Make sure confirm password please")
-                           .setPositiveText("Okay")
-                           .setPositiveListener(new ClickListener() {
-                               @Override
-                               public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
-                                   lottieAlertDialog.dismiss();
-                                   getActivity().getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.cotainers,new HomeFragment()).commit();
-                               }
-                           })
-                           .build();
-                   alertDialog.setCancelable(false);
-                   alertDialog.show();
-               }
+                } else {
+                    Confirm_Text.setText("");
+                    confirm.setErrorEnabled(true);
+                    confirm.setError("Re write password again ,please");
+                    LottieAlertDialog alertDialog = new LottieAlertDialog.Builder(getActivity(), DialogTypes.TYPE_ERROR)
+                            .setTitle("Error")
+                            .setDescription("Make sure confirm password please")
+                            .setPositiveText("Okay")
+                            .setPositiveListener(new ClickListener() {
+                                @Override
+                                public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                    lottieAlertDialog.dismiss();
+                                    getActivity().getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.cotainers, new HomeFragment()).commit();
+                                }
+                            })
+                            .build();
+                    alertDialog.setCancelable(false);
+                    alertDialog.show();
+                }
 
 
-           }
-       });
+            }
+        });
 
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.icu.lang.UScript;
 
 import androidx.annotation.Nullable;
 
@@ -59,39 +58,33 @@ public class Database extends SQLiteOpenHelper {
             return true;
     }*/
 
-    public  Boolean insert_product_tocart (String table_name , Product_class product_class){
+    public Boolean insert_product_tocart(String table_name, Product_class product_class) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("date",product_class.getDate());
-        contentValues.put("amount",product_class.getAmount());
-        contentValues.put("barcode",product_class.getBarcode());
-        contentValues.put("name",product_class.getName());
-        contentValues.put("price",product_class.getPrice());
-        contentValues.put("brand",product_class.getBrand());
-        contentValues.put("image",product_class.getImage());
-        long result = db.insert(table_name,null,contentValues);
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("date", product_class.getDate());
+        contentValues.put("amount", product_class.getAmount());
+        contentValues.put("barcode", product_class.getBarcode());
+        contentValues.put("name", product_class.getName());
+        contentValues.put("price", product_class.getPrice());
+        contentValues.put("brand", product_class.getBrand());
+        contentValues.put("image", product_class.getImage());
+        long result = db.insert(table_name, null, contentValues);
+        return result != -1;
     }
 
-    public  Boolean insert_product_toAlldata (String table_name , Product_class product_class){
+    public Boolean insert_product_toAlldata(String table_name, Product_class product_class) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("date",product_class.getDate());
-        contentValues.put("amount",product_class.getAmount());
-        contentValues.put("barcode",product_class.getBarcode());
-        contentValues.put("name",product_class.getName());
-        contentValues.put("price",product_class.getPrice());
-        contentValues.put("brand",product_class.getBrand());
-        contentValues.put("image",product_class.getImage());
-        contentValues.put("collection",product_class.getCollection());
-        long result = db.insert(table_name,null,contentValues);
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("date", product_class.getDate());
+        contentValues.put("amount", product_class.getAmount());
+        contentValues.put("barcode", product_class.getBarcode());
+        contentValues.put("name", product_class.getName());
+        contentValues.put("price", product_class.getPrice());
+        contentValues.put("brand", product_class.getBrand());
+        contentValues.put("image", product_class.getImage());
+        contentValues.put("collection", product_class.getCollection());
+        long result = db.insert(table_name, null, contentValues);
+        return result != -1;
     }
 
 
@@ -114,42 +107,36 @@ public class Database extends SQLiteOpenHelper {
     }
 */
 
-    public  Boolean update_product3 (String table_name , int amount,String barcode){
+    public Boolean update_product3(String table_name, int amount, String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("amount",amount);
-        int result = db.update(table_name,contentValues,"barcode=?",new String[] {barcode});
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("amount", amount);
+        int result = db.update(table_name, contentValues, "barcode=?", new String[]{barcode});
+        return result != -1;
     }
 
 
-    public  Boolean update_product2 (String table_name , Product_class product_class,String barcode){
+    public Boolean update_product2(String table_name, Product_class product_class, String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("date",product_class.getDate());
-        contentValues.put("amount",product_class.getAmount());
-        contentValues.put("barcode",product_class.getBarcode());
-        contentValues.put("name",product_class.getName());
-        contentValues.put("price",product_class.getPrice());
-        contentValues.put("brand",product_class.getBrand());
-        contentValues.put("image",product_class.getImage());
-        contentValues.put("collection",product_class.getCollection());
-        int result = db.update(table_name,contentValues,"barcode=?",new String[] {barcode});
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("date", product_class.getDate());
+        contentValues.put("amount", product_class.getAmount());
+        contentValues.put("barcode", product_class.getBarcode());
+        contentValues.put("name", product_class.getName());
+        contentValues.put("price", product_class.getPrice());
+        contentValues.put("brand", product_class.getBrand());
+        contentValues.put("image", product_class.getImage());
+        contentValues.put("collection", product_class.getCollection());
+        int result = db.update(table_name, contentValues, "barcode=?", new String[]{barcode});
+        return result != -1;
     }
 
-    public ArrayList<Product_class> getAllProducts(String table_name){
+    public ArrayList<Product_class> getAllProducts(String table_name) {
         ArrayList<Product_class> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+table_name,null);
+        Cursor cursor = db.rawQuery("select * from " + table_name, null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String t1 = cursor.getString(0);
             String t2 = cursor.getString(1);
             int t3 = cursor.getInt(2);
@@ -158,19 +145,19 @@ public class Database extends SQLiteOpenHelper {
             double t6 = cursor.getDouble(5);
             String t7 = cursor.getString(6);
             String t8 = cursor.getString(7);
-            Product_class productClass = new Product_class(t2,t3,t4,t5,t6,t7,t8);
+            Product_class productClass = new Product_class(t2, t3, t4, t5, t6, t7, t8);
             arrayList.add(productClass);
             cursor.moveToNext();
         }
         return arrayList;
     }
 
-    public ArrayList<Product_class> getAllProducts2(String table_name){
+    public ArrayList<Product_class> getAllProducts2(String table_name) {
         ArrayList<Product_class> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+table_name,null);
+        Cursor cursor = db.rawQuery("select * from " + table_name, null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String t1 = cursor.getString(0);
             String t2 = cursor.getString(1);
             int t3 = cursor.getInt(2);
@@ -180,36 +167,36 @@ public class Database extends SQLiteOpenHelper {
             String t7 = cursor.getString(6);
             String t8 = cursor.getString(7);
             String t9 = cursor.getString(8);
-            Product_class productClass = new Product_class(t2,t3,t4,t5,t6,t7,t8,t9);
+            Product_class productClass = new Product_class(t2, t3, t4, t5, t6, t7, t8, t9);
             arrayList.add(productClass);
             cursor.moveToNext();
         }
         return arrayList;
     }
 
-    public ArrayList<Product_class> Search_product(String table_name , String barcode2){
+    public ArrayList<Product_class> Search_product(String table_name, String barcode2) {
         ArrayList<Product_class> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+table_name + " WHERE barcode ='"+barcode2+"'",null);
+        Cursor cursor = db.rawQuery("select * from " + table_name + " WHERE barcode ='" + barcode2 + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String t4 = cursor.getString(3);
             String t5 = cursor.getString(4);
             double t6 = cursor.getDouble(5);
             String t8 = cursor.getString(7);
-            Product_class productClass = new Product_class(t4,t5,t6,t8);
+            Product_class productClass = new Product_class(t4, t5, t6, t8);
             arrayList.add(productClass);
             cursor.moveToNext();
         }
         return arrayList;
     }
 
-    public ArrayList<Product_class> Search_product2(String table_name , String barcode2){
+    public ArrayList<Product_class> Search_product2(String table_name, String barcode2) {
         ArrayList<Product_class> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from "+table_name + " WHERE barcode ='"+barcode2+"'",null);
+        Cursor cursor = db.rawQuery("select * from " + table_name + " WHERE barcode ='" + barcode2 + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String t1 = cursor.getString(0);
             String t2 = cursor.getString(1);
             int t3 = cursor.getInt(2);
@@ -219,7 +206,7 @@ public class Database extends SQLiteOpenHelper {
             String t7 = cursor.getString(6);
             String t8 = cursor.getString(7);
             String t9 = cursor.getString(8);
-            Product_class productClass = new Product_class(t2,t3,t4,t5,t6,t7,t8,t9);
+            Product_class productClass = new Product_class(t2, t3, t4, t5, t6, t7, t8, t9);
             arrayList.add(productClass);
             cursor.moveToNext();
         }
@@ -227,30 +214,30 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public void Delete_All(String table_name){
+    public void Delete_All(String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(table_name, null, null);
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + table_name + "'");
     }
 
-    public void Delete_product(String table_name,String id){
+    public void Delete_product(String table_name, String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(table_name, "id=?",new String[]{id} );
-        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +table_name+ "'");
+        db.delete(table_name, "id=?", new String[]{id});
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + table_name + "'");
     }
 
-    public void Delete_product2(String table_name,String barcode){
+    public void Delete_product2(String table_name, String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(table_name, "barcode=?",new String[]{barcode} );
-        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +table_name+ "'");
+        db.delete(table_name, "barcode=?", new String[]{barcode});
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + table_name + "'");
     }
 
-    public Boolean isEmpty(String table_name){
+    public Boolean isEmpty(String table_name) {
         boolean empty = true;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cur = db.rawQuery("SELECT COUNT(*) FROM "+table_name, null);
+        Cursor cur = db.rawQuery("SELECT COUNT(*) FROM " + table_name, null);
         if (cur != null && cur.moveToFirst()) {
-            empty = (cur.getInt (0) == 0);
+            empty = (cur.getInt(0) == 0);
         }
         cur.close();
 
@@ -259,34 +246,32 @@ public class Database extends SQLiteOpenHelper {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public  Boolean insert_user ( Users users,String token){
+    public Boolean insert_user(Users users, String token) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name",users.getName());
-        contentValues.put("tel",users.getTel());
-        contentValues.put("address",users.getAdress());
-        contentValues.put("image",users.getImage());
-        contentValues.put("email",users.getEmail());
-        contentValues.put("password",users.getPassword());
-        contentValues.put("city",users.getCity());
-        contentValues.put("fbid",users.getFb_id());
-        contentValues.put("goid",users.getGo_id());
-        contentValues.put("superAdmin",users.getSuperAdmin().toString());
-        contentValues.put("admin",users.getAdmin().toString());
-        contentValues.put("_id",users.get_id());
-        contentValues.put("token",token);
-        long result = db.insert("Users",null,contentValues);
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("name", users.getName());
+        contentValues.put("tel", users.getTel());
+        contentValues.put("address", users.getAdress());
+        contentValues.put("image", users.getImage());
+        contentValues.put("email", users.getEmail());
+        contentValues.put("password", users.getPassword());
+        contentValues.put("city", users.getCity());
+        contentValues.put("fbid", users.getFb_id());
+        contentValues.put("goid", users.getGo_id());
+        contentValues.put("superAdmin", users.getSuperAdmin().toString());
+        contentValues.put("admin", users.getAdmin().toString());
+        contentValues.put("_id", users.get_id());
+        contentValues.put("token", token);
+        long result = db.insert("Users", null, contentValues);
+        return result != -1;
     }
-    public ArrayList<Users> getAllusers(){
+
+    public ArrayList<Users> getAllusers() {
         ArrayList<Users> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from  Users",null);
+        Cursor cursor = db.rawQuery("select * from  Users", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String t1 = cursor.getString(0);
             String t2 = cursor.getString(1);
             String t3 = cursor.getString(2);
@@ -301,7 +286,7 @@ public class Database extends SQLiteOpenHelper {
             String t12 = cursor.getString(11);
             String t13 = cursor.getString(12);
             String t14 = cursor.getString(13);
-            Users users = new Users(t2,t3,t4,t5,t6,t7,t8,t9,t10,Boolean.parseBoolean(t11),Boolean.parseBoolean(t12),t13,t14);
+            Users users = new Users(t2, t3, t4, t5, t6, t7, t8, t9, t10, Boolean.parseBoolean(t11), Boolean.parseBoolean(t12), t13, t14);
             arrayList.add(users);
             cursor.moveToNext();
         }
@@ -378,35 +363,29 @@ public class Database extends SQLiteOpenHelper {
 ////////////////////////////////////////////////////////////
 
 
-    public  Boolean insert_fav ( String fav){
+    public Boolean insert_fav(String fav) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("Fav",fav);
-        long result = db.insert("Favourite",null,contentValues);
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("Fav", fav);
+        long result = db.insert("Favourite", null, contentValues);
+        return result != -1;
     }
 
-    public  Boolean insert_brand ( String brand){
+    public Boolean insert_brand(String brand) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("Brand",brand);
-        long result = db.insert("BRAND",null,contentValues);
-        if (result== -1)
-            return false;
-        else
-            return true;
+        contentValues.put("Brand", brand);
+        long result = db.insert("BRAND", null, contentValues);
+        return result != -1;
     }
 
 
-    public ArrayList<String> Search_fav( String Fav){
+    public ArrayList<String> Search_fav(String Fav) {
         ArrayList<String> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from Favourite WHERE Fav ='"+Fav+"'",null);
+        Cursor cursor = db.rawQuery("select * from Favourite WHERE Fav ='" + Fav + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String id = cursor.getString(0);
             String fav = cursor.getString(1);
             arrayList.add(fav);
@@ -415,12 +394,12 @@ public class Database extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public ArrayList<String> GETALLFAV(){
+    public ArrayList<String> GETALLFAV() {
         ArrayList<String> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from Favourite",null);
+        Cursor cursor = db.rawQuery("select * from Favourite", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String id = cursor.getString(0);
             String fav = cursor.getString(1);
             arrayList.add(fav);
@@ -430,12 +409,12 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> GETALLBRAND(){
+    public ArrayList<String> GETALLBRAND() {
         ArrayList<String> arrayList = new ArrayList();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from BRAND",null);
+        Cursor cursor = db.rawQuery("select * from BRAND", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
+        while (cursor.isAfterLast() == false) {
             String id = cursor.getString(0);
             String fav = cursor.getString(1);
             arrayList.add(fav);
@@ -444,18 +423,11 @@ public class Database extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public void Delete_Fav(String Fav){
+    public void Delete_Fav(String Fav) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("Favourite", "Fav=?",new String[]{Fav} );
-        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" +"Favourite"+ "'");
+        db.delete("Favourite", "Fav=?", new String[]{Fav});
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + "Favourite" + "'");
     }
-
-
-
-
-
-
-
 
 
 }

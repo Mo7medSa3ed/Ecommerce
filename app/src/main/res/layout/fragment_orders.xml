@@ -97,6 +97,21 @@
                         app:chipStrokeWidth="1dp"
                         app:rippleColor="@color/colorPrimary" />
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_papers2"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="Latest"
+                        android:textColor="@android:color/black"
+                        app:chipBackgroundColor="@drawable/chip_select"
+                        app:chipStrokeColor="@android:color/darker_gray"
+                        app:chipStrokeWidth="1dp"
+                        app:rippleColor="@color/colorPrimary" />
+
 
                 </com.google.android.material.chip.ChipGroup>
 

@@ -98,10 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/expa"
             android:background="#EEE"
-            android:descendantFocusability="beforeDescendants"
-            android:focusable="false"
             app:ael_duration="400"
-            app:ael_expanded="false"
+            app:ael_expanded="true"
             app:ael_interpolator="accelerate"
             app:ael_orientation="vertical">
 
@@ -124,7 +122,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtView43"
+                        android:id="@+id/txtVi43"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -146,7 +144,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView43"
+                        android:id="@+id/textV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -168,7 +166,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tetView43"
+                        android:id="@+id/tetew43"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

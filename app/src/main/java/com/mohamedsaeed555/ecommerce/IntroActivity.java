@@ -1,23 +1,20 @@
 package com.mohamedsaeed555.ecommerce;
 
-        import androidx.appcompat.app.AppCompatActivity;
-        import androidx.viewpager.widget.ViewPager;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.View;
 
-        import android.content.Intent;
-        import android.graphics.Color;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.view.animation.AlphaAnimation;
+import androidx.viewpager.widget.ViewPager;
 
-        import com.github.paolorotolo.appintro.AppIntro;
-        import com.github.paolorotolo.appintro.AppIntroFragment;
+import com.github.paolorotolo.appintro.AppIntro;
+import com.github.paolorotolo.appintro.AppIntroFragment;
 
 public class IntroActivity extends AppIntro {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
         addSlide(AppIntroFragment.newInstance("Mohamed",
@@ -43,20 +40,20 @@ public class IntroActivity extends AppIntro {
 
         setFadeAnimation();
         //setZoomAnimation();
-       // setFlowAnimation();
-      //  setCustomTransformer(new ZoomOutPageTransformer());
+        // setFlowAnimation();
+        //  setCustomTransformer(new ZoomOutPageTransformer());
 
     }
 
     @Override
     public void onDonePressed() {
-        startActivity(new Intent(this,SecondActivity.class));
+        startActivity(new Intent(this, SecondActivity.class));
         finish();
     }
 
     @Override
     public void onSkipPressed() {
-        startActivity(new Intent(this,SecondActivity.class));
+        startActivity(new Intent(this, SecondActivity.class));
         finish();
     }
 

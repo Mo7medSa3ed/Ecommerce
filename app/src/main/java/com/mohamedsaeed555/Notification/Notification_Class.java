@@ -9,9 +9,9 @@ public class Notification_Class {
     private Boolean Admin;
     private String msg;
     private String Go_Activity;
-    private String Collection ;
+    private String Collection;
     private Product_class product_class;
-    private Orders orders ;
+    private Orders orders;
     private Poset_Orders ord;
 
     public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class) {
@@ -66,8 +66,6 @@ public class Notification_Class {
     public void setAdmin(Boolean admin) {
         Admin = admin;
     }
-
-
 
 
     public String getSender_id() {

@@ -3,15 +3,15 @@ package com.mohamedsaeed555.MyDataBase;
 import java.util.ArrayList;
 
 public class Orders {
-   private Users by;
-   private ArrayList<ObjectProduct> products;
-   private ArrayList<Double>total;
-   private Boolean delivery;
-   private String deliveryAt;
-   private Boolean paid;
-   private String paidAt;
-   private String _id;
-   private String created_at;
+    private Users by;
+    private ArrayList<ObjectProduct> products;
+    private ArrayList<Double> total;
+    private Boolean delivery;
+    private String deliveryAt;
+    private Boolean paid;
+    private String paidAt;
+    private String _id;
+    private String created_at;
 
     public Orders(Users by, ArrayList<ObjectProduct> products) {
         this.by = by;
@@ -19,6 +19,15 @@ public class Orders {
     }
 
 
+    public Orders(Boolean delivery, String deliveryAt , String created_at) {
+        this.delivery = delivery;
+        this.deliveryAt = deliveryAt;
+    }
+
+    public Orders(Boolean paid, String paidAt) {
+        this.paid = paid;
+        this.paidAt = paidAt;
+    }
 
     public String getCreated_at() {
         return created_at;
@@ -89,3 +98,4 @@ public class Orders {
     }
 
 }
+
