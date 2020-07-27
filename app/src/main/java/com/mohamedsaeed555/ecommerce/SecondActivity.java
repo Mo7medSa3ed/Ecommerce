@@ -147,9 +147,9 @@ public class SecondActivity extends AppCompatActivity {
         Alluser = navigationView.findViewById(R.id.linearuser);
         favourite = navigationView.findViewById(R.id.linearfavourite);
         if (user.get_id() != null) {
-            if (user.getName() != null)
+            if (user.getName() != null){
                 username.setText(user.getName());
-            email.setText(user.getEmail());
+                email.setText(user.getEmail());}
             if (user.getImage() != null)
                 Picasso.get().load(Uri.parse(user.getImage())).placeholder(R.drawable.haircode).into(image_uri);
         }
@@ -194,6 +194,14 @@ public class SecondActivity extends AppCompatActivity {
                 AddNewProduct product = new AddNewProduct();
                 product.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, product).addToBackStack(null).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        image_uri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new UserSetting()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });

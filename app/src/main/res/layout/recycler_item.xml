@@ -8,6 +8,7 @@
     android:elevation="4dp"
     android:clickable="true"
     app:cardCornerRadius="8dp"
+    android:layoutDirection="ltr"
     app:cardElevation="6dp"
     app:cardUseCompatPadding="true">
 
@@ -47,7 +48,7 @@
                 android:text="هير كود 180 مللى "
                 android:textAlignment="viewStart"
                 android:textColor="#000"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -67,7 +68,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:clickable="false"
-                android:text="15 EGP"
+                android:text="14 EGP"
                 android:textColor="#FDD80C2A"
                 android:textSize="16sp"
                 android:textStyle="bold" />

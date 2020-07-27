@@ -7,6 +7,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:layoutDirection="ltr"
     android:focusedByDefault="true"
     android:orientation="vertical"
     tools:context=".AddNewProduct">

@@ -9,6 +9,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".SecondActivity"
+    android:layoutDirection="ltr"
     tools:openDrawer="start">
 
 
@@ -609,6 +610,7 @@
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="16dp"
+                                android:padding="2.5dp"
                                 android:src="@drawable/whatsapp" />
 
                             <TextView

@@ -179,18 +179,22 @@ public class Orders_Details extends Fragment {
                     products.clear();
                     data.clear();
                     products = response.body().getProducts();
-                    new_pr.add(response.body().getProducts().get(0));
-                    if (products.size()>1) {
-                        for (int x = 1; x < products.size(); x++) {
-                            if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
-                                int old_amount = products.get(x).getAmount();
-                                int amount = new_pr.get(x - 1).getAmount();
-                                new_pr.get(x - 1).setAmount(old_amount + amount);
-                            } else {
-                                new_pr.add(products.get(x));
+                    try {
+                        if (products.size() > 0)
+                            new_pr.add(response.body().getProducts().get(0));
+
+                        if (products.size() > 1) {
+                            for (int x = 1; x < products.size(); x++) {
+                                if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
+                                    int old_amount = products.get(x).getAmount();
+                                    int amount = new_pr.get(x - 1).getAmount();
+                                    new_pr.get(x - 1).setAmount(old_amount + amount);
+                                } else {
+                                    new_pr.add(products.get(x));
+                                }
                             }
                         }
-                    }
+                    }catch (Exception e){e.printStackTrace();}
 
 
                     for (int x = 0; x < new_pr.size(); x++) {

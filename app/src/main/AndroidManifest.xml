@@ -31,8 +31,10 @@
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="true">
 
-    <activity android:name=".LoginActivity"/>
-    <activity android:name=".IntroActivity" />
+    <activity android:name=".LoginActivity"
+        android:noHistory="true"/>
+    <activity android:name=".IntroActivity"
+        android:noHistory="true"/>
 
     <activity
         android:name=".SecondActivity"
@@ -45,7 +47,8 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".MainActivity"/>
+    <activity android:name=".MainActivity"
+        android:noHistory="true"/>
 
     <service android:name="com.mohamedsaeed555.Notification.Notification_Service"
         android:stopWithTask="false"

@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
@@ -377,5 +380,20 @@ public class UserSetting extends Fragment {
             cursor.close();
         }
         return result;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.updatepassword,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.updatepass){
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.cotainers,new ChangePassword()).addToBackStack(null).commit();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

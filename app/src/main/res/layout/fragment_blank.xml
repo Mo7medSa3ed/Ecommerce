@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
     android:focusable="false"
+
     android:layoutDirection="ltr"
     android:orientation="vertical"
     tools:context=".AmountFragment">

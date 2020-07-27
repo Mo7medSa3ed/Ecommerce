@@ -665,7 +665,7 @@ public class updateActivity extends Fragment {
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                         sweetAlertDialog.dismissWithAnimation();
                                         getActivity().getSupportFragmentManager().beginTransaction()
-                                                .replace(R.id.cotainers, new HomeFragment()).commit();
+                                                .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
                                     }
                                 })
                                 .show();
@@ -736,6 +736,8 @@ public class updateActivity extends Fragment {
                                                             @Override
                                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                                 sweetAlertDialog.dismissWithAnimation();
+                                                                getActivity().getSupportFragmentManager().beginTransaction()
+                                                                        .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
                                                             }
                                                         })
                                                         .show();

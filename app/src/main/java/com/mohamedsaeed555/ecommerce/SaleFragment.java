@@ -257,8 +257,6 @@ public class SaleFragment extends Fragment {
                                             return;
                                         }
                                         int calc = amount += amount2;
-                                        db.update_product3(collection_name, calc, code);
-                                        db.update_product3("Products", calc, code);
                                         db.update_product3("AllData", calc, code);
 
                                         if (count == Products.size() - 1) {

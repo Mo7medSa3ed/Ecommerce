@@ -268,8 +268,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-            //if (task !=null)
-            Add_user(users, false);
+            if (resultCode == RESULT_OK)
+                Add_user(users, false);
         } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }

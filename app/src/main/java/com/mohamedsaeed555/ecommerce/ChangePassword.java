@@ -84,7 +84,11 @@ public class ChangePassword extends Fragment {
                                         .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                oldtext.setText("");
+                                                new_text.setText("");
+                                                Confirm_Text.setText("");
                                                 sweetAlertDialog.dismissWithAnimation();
+
                                             }
                                         })
                                         .show();

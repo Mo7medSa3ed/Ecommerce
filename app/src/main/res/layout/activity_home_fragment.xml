@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
     tools:context=".HomeFragment" >
 
     <FrameLayout
@@ -51,12 +52,12 @@
                                 android:focusable="true"
                                 android:text="Cosmatics"
                                 android:textColor="@android:color/black"
+                                android:textSize="14sp"
                                 app:chipBackgroundColor="@drawable/chip_select"
                                 app:chipStrokeColor="@android:color/darker_gray"
                                 app:chipStrokeWidth="1dp"
-                                app:rippleColor="@color/colorPrimary"
 
-                                />
+                                app:rippleColor="@color/colorPrimary" />
 
                             <com.google.android.material.chip.Chip
                                 android:id="@+id/chip_Medical"
@@ -66,6 +67,7 @@
                                 android:checkable="true"
                                 android:clickable="true"
                                 android:focusable="true"
+                                android:textSize="14sp"
                                 android:text="Medical Supplies"
                                 android:textColor="@android:color/black"
                                 app:chipBackgroundColor="@drawable/chip_select"
@@ -83,6 +85,7 @@
                                 android:checkable="true"
                                 android:clickable="true"
                                 android:focusable="true"
+                                android:textSize="14sp"
                                 android:text="Makeup"
                                 android:textColor="@android:color/black"
                                 app:chipBackgroundColor="@drawable/chip_select"
@@ -96,6 +99,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checkable="true"
+                                android:textSize="14sp"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:text="papers"
@@ -113,6 +117,7 @@
                                 android:checkable="true"
                                 android:clickable="true"
                                 android:focusable="true"
+                                android:textSize="14sp"
                                 android:text="Others"
                                 android:textColor="@android:color/black"
                                 app:chipBackgroundColor="@drawable/chip_select"

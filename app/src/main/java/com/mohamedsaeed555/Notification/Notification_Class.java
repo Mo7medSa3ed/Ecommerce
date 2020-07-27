@@ -15,6 +15,7 @@ public class Notification_Class {
     private String image;
     private Poset_Orders ord;
 
+
     public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class , String image,String sender_id) {
         Admin = admin;
         this.msg = msg;

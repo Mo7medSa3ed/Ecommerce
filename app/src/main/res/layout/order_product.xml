@@ -9,6 +9,7 @@
     android:elevation="4dp"
     android:focusable="false"
     android:layout_margin="16dp"
+    android:layoutDirection="ltr"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 

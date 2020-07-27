@@ -188,7 +188,7 @@ public class Order_List extends Fragment {
                                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                     sweetAlertDialog.dismissWithAnimation();
                                                     getActivity().getSupportFragmentManager().beginTransaction()
-                                                            .replace(R.id.cotainers, new HomeFragment()).commit();
+                                                            .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
                                                 }
                                             })
                                             .show();

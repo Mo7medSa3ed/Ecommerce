@@ -22,6 +22,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.ecommerce.R;
+import com.mohamedsaeed555.ecommerce.RecyclerAdapter;
 import com.mohamedsaeed555.ecommerce.SecondActivity;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +34,7 @@ import java.util.Random;
 public class Notification_Service extends Service {
     private static final String CHANNEL_ID = "Ecommerce";
     int x = 0;
+    NotificationManagerCompat managerCompat;
     Gson gson = new Gson();
     Database db = new Database(this);
     private Socket mSocket;
@@ -41,7 +43,7 @@ public class Notification_Service extends Service {
         public void call(Object... args) {
 
             Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
-            if (notification_class.getAdmin()){
+            /*if (notification_class.getAdmin()){
                 if(!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))){
                     if (notification_class.getGo_Activity().equals("allusers")){
                         createNotificationchannel(notification_class);
@@ -59,9 +61,8 @@ public class Notification_Service extends Service {
                         }
                     }
                 }
-            }
-
-            //createNotificationchannel(notification_class);
+            }*/
+            createNotificationchannel(notification_class);
 
             /*if (notification_class.getGo_Activity().equals("orderdetails")){
                 if (notification_class.getOrders().getBy().get_id().equals(db.getAllusers().get(0).get_id())){
@@ -107,6 +108,7 @@ public class Notification_Service extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        managerCompat.cancelAll();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction("restartservice");
@@ -120,7 +122,7 @@ public class Notification_Service extends Service {
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("c", "c");
         intent.putExtra("go", gson.toJson(arg));
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
 
@@ -147,13 +149,13 @@ public class Notification_Service extends Service {
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentIntent(pendingIntent);
-        builder.setOngoing(true);
         if (Build.VERSION.SDK_INT >= 21)
             builder.setVibrate(new long[0]);
         builder.setAutoCancel(true);
+        builder.setOngoing(false);
         builder.setChannelId(CHANNEL_ID);
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(++x, builder.build());
+        managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(123456789, builder.build());
 
     }
 
@@ -182,14 +184,15 @@ public class Notification_Service extends Service {
         builder.setContentText(msg);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setPriority(Notification.PRIORITY_HIGH);
-        builder.setOngoing(true);
+        builder.setOngoing(false);
         if (Build.VERSION.SDK_INT >= 21)
             builder.setVibrate(new long[0]);
         builder.setAutoCancel(true);
         builder.setChannelId(CHANNEL_ID);
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(656,builder.build());
+        managerCompat.notify(123456789,builder.build());
 
     }
+
 
 }
