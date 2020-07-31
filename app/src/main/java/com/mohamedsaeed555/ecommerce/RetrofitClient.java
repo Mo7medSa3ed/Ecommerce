@@ -59,9 +59,9 @@ public class RetrofitClient {
         return retrofit_interface.UPDATEPRODUCT(token, coll_name, date1, amount1, barcode, name1, price1, brand1, image);
     }
 
-    public Call<List<Product_class>> GETALLPRODUCTS(String token, String collection_name) {
+    public Call<List<Product_class>> GETALLPRODUCTS(String token) {
 
-        return retrofit_interface.GETALLPRODUCTS(token, collection_name);
+        return retrofit_interface.GETALLPRODUCTS(token);
     }
 
     public Call<Retrofit_class_data> GETALLPRODUCTSPAGINATION(String token, String collection_name, String page_number) {
@@ -69,8 +69,11 @@ public class RetrofitClient {
         return retrofit_interface.GETPRODUCTPAGINATION(token, collection_name, page_number);
     }
 
-    public Call<One_product_class> GETONEPRODUCTDETAILS(String token, String collection_name, String barcode) {
-        return retrofit_interface.GETONEPRODUCTDETAILS(token, collection_name, barcode);
+    public Call<List<Product_class>> GETALLPRODUCTSCOLLECTION(String token, String collection_name) {
+        return retrofit_interface.GETALLPRODUCTSINCOLLECTION(token, collection_name);
+    }
+    public Call<One_product_class> GETONEPRODUCTDETAILS(String token, String barcode) {
+        return retrofit_interface.GETONEPRODUCTDETAILS(token, barcode);
     }
 
     public Call<Void> DELETEPRODUCT(String token, String collection_name, String barcode) {
@@ -81,8 +84,8 @@ public class RetrofitClient {
         return retrofit_interface.GETSEARCHRODUCTNAME(token, collection_name, name);
     }
 
-    public Call<List<Product_class>> GETSEARCHRODUCTBARCODE(String token, String collection_name, String barcode) {
-        return retrofit_interface.GETSEARCHRODUCTBARCODE(token, collection_name, barcode);
+    public Call<List<Product_class>> GETSEARCHRODUCTBARCODE(String token, String barcode) {
+        return retrofit_interface.GETSEARCHRODUCTBARCODE(token, barcode);
     }
 
     public Call<Void> UPDATEAMOUNTFORPRODUCT(String token, String collection_name, String barcode, int amount) {

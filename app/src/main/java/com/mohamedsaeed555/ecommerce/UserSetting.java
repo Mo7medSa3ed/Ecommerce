@@ -71,6 +71,7 @@ public class UserSetting extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         getActivity().setTitle("Profile");
 
         namelayout = view.findViewById(R.id.inputlayout2);

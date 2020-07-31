@@ -32,7 +32,7 @@
       android:usesCleartextTraffic="true">
 
     <activity android:name=".LoginActivity"
-        android:noHistory="true"/>
+        />
     <activity android:name=".IntroActivity"
         android:noHistory="true"/>
 
@@ -47,8 +47,7 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".MainActivity"
-        android:noHistory="true"/>
+    <activity android:name=".MainActivity" />
 
     <service android:name="com.mohamedsaeed555.Notification.Notification_Service"
         android:stopWithTask="false"

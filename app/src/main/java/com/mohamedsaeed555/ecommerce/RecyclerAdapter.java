@@ -106,7 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
             url = "https://www.mezashop.com/image/cache/catalog/Johnson/Johnson%20Baby%20Shampoo%20-%20100ml-600x600-0.jpg";
         }
         Picasso.get().load(url)
-                .placeholder(R.drawable.haircode)
+                .placeholder(R.drawable.makkah)
                 .into(holder.product_image);
 
         if (fav) {

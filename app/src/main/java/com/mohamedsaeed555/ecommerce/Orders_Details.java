@@ -33,7 +33,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -56,6 +58,7 @@ public class Orders_Details extends Fragment {
     String total = "";
     ArrayList<ObjectProduct> products = new ArrayList<>();
     ArrayList<ObjectProduct> new_pr = new ArrayList<>();
+    ArrayList<ObjectProduct> test = new ArrayList<>();
     ArrayList<DetailsProductOrder> data = new ArrayList<>();
     Gson gson = new Gson();
     Date date = new Date();
@@ -178,19 +181,32 @@ public class Orders_Details extends Fragment {
 
                     products.clear();
                     data.clear();
+                    new_pr.clear();
                     products = response.body().getProducts();
                     try {
-                        if (products.size() > 0)
+                        if (products.size() > 0) {
                             new_pr.add(response.body().getProducts().get(0));
-
+                        }
                         if (products.size() > 1) {
                             for (int x = 1; x < products.size(); x++) {
-                                if (products.get(x).getBarcode().equals(new_pr.get(x - 1).getBarcode())) {
-                                    int old_amount = products.get(x).getAmount();
-                                    int amount = new_pr.get(x - 1).getAmount();
-                                    new_pr.get(x - 1).setAmount(old_amount + amount);
-                                } else {
-                                    new_pr.add(products.get(x));
+                                for (int i=0 ; i<new_pr.size(); i++) {
+                                    if (products.get(x).getBarcode().equals(new_pr.get(i).getBarcode())) {
+                                        int old_amount = products.get(x).getAmount();
+                                        int amount = new_pr.get(i).getAmount();
+                                        new_pr.get(i).setAmount(old_amount+amount);
+                                        break;
+                                    } else {
+                                        Boolean test =null;
+                                        for (int z =0 ;z<new_pr.size();z++ ){
+                                          if (products.get(x).getBarcode().equals(new_pr.get(z).getBarcode())){
+                                                test =true;
+                                          }else {test =false;}
+
+                                        }
+                                        if (test == false){
+                                            new_pr.add(products.get(x));break;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -198,9 +214,13 @@ public class Orders_Details extends Fragment {
 
 
                     for (int x = 0; x < new_pr.size(); x++) {
-                        if (db.Search_product2("AllData", new_pr.get(x).getBarcode()).size() > 0) {
-                            Product_class p = db.Search_product2("AllData", new_pr.get(x).getBarcode()).get(0);
-                            data.add(new DetailsProductOrder(p, new_pr.get(x).getAmount()));
+                        if (users.getAdmin()) {
+                            if (db.Search_product2("AllData", new_pr.get(x).getBarcode()).size() > 0) {
+                                Product_class p = db.Search_product2("AllData", new_pr.get(x).getBarcode()).get(0);
+                                data.add(new DetailsProductOrder(p, new_pr.get(x).getAmount()));
+                            }
+                        }else {
+                            SEARCH(new_pr.get(x).getBarcode());
                         }
                     }
 
@@ -210,16 +230,32 @@ public class Orders_Details extends Fragment {
 
                 } else {
 
-                    Toast.makeText(getActivity(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
             }
         });
     }
@@ -292,5 +328,46 @@ public class Orders_Details extends Fragment {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public void SEARCH (String barcode){
+        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<List<Product_class>>() {
+            @Override
+            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+                if (response.isSuccessful()){
+                    for (Product_class p : response.body()){
+                        if (p != null){
+                            data.add(new DetailsProductOrder(p, new_pr.get(x).getAmount()));
+                        }
+                    }
+                    return;
+                }else {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
     }
 }

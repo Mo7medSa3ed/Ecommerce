@@ -62,7 +62,7 @@ public class Notification_Service extends Service {
                     }
                 }
             }*/
-            createNotificationchannel(notification_class);
+            createNotificationchannel(notification_class,++x);
 
             /*if (notification_class.getGo_Activity().equals("orderdetails")){
                 if (notification_class.getOrders().getBy().get_id().equals(db.getAllusers().get(0).get_id())){
@@ -91,10 +91,12 @@ public class Notification_Service extends Service {
     public void onCreate() {
         super.onCreate();
         mSocket.connect();
+        mSocket.on("yapa", onNewMessage);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mSocket.connect();
         mSocket.on("yapa", onNewMessage);
         return START_STICKY;
     }
@@ -108,7 +110,8 @@ public class Notification_Service extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        managerCompat.cancelAll();
+        mSocket.connect();
+        mSocket.on("yapa", onNewMessage);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction("restartservice");
@@ -117,7 +120,7 @@ public class Notification_Service extends Service {
         }
     }
 
-    public void createNotificationchannel(Notification_Class arg ) {
+    public void createNotificationchannel(Notification_Class arg , int y ) {
 
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("c", "c");
@@ -136,7 +139,7 @@ public class Notification_Service extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         Bitmap bitmap = null;
         try {
-            bitmap = Picasso.get().load(arg.getImage()).placeholder(R.drawable.haircode).get();
+            bitmap = Picasso.get().load(arg.getImage()).placeholder(R.drawable.makkah).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -155,7 +158,7 @@ public class Notification_Service extends Service {
         builder.setOngoing(false);
         builder.setChannelId(CHANNEL_ID);
         managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(123456789, builder.build());
+        managerCompat.notify(1325, builder.build());
 
     }
 
@@ -163,13 +166,13 @@ public class Notification_Service extends Service {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "ECommerce", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(arg.getSender_id(), "ECommerce", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription(arg.getMsg());
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, arg.getSender_id());
         Bitmap bitmap = null;
         try {
             bitmap = Picasso.get().load(arg.getImage()).placeholder(R.drawable.haircode).get();
@@ -194,5 +197,10 @@ public class Notification_Service extends Service {
 
     }
 
-
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        mSocket.connect();
+        mSocket.on("yapa", onNewMessage);
+    }
 }

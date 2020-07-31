@@ -17,21 +17,21 @@ public class IntroActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 
 
-        addSlide(AppIntroFragment.newInstance("Mohamed",
-                "Saeed",
-                R.drawable.haircode,
-                Color.parseColor("#51e2b7")));
+        addSlide(AppIntroFragment.newInstance("Cosmatics",
+                "",
+                R.drawable.cos,
+                Color.parseColor("#ffffff")));
 
 
-        addSlide(AppIntroFragment.newInstance("Mohamed",
-                "Ayman",
-                R.drawable.haircode,
-                Color.parseColor("#0B0E4D")));
+        addSlide(AppIntroFragment.newInstance("Medical Supplies",
+                "",
+                R.drawable.med,
+                Color.parseColor("#ffffff")));
 
-        addSlide(AppIntroFragment.newInstance("Mohamed",
-                "Elawah",
-                R.drawable.haircode,
-                Color.parseColor("#51e2b7")));
+        addSlide(AppIntroFragment.newInstance("Baby Needs",
+                "",
+                R.drawable.baby,
+                Color.parseColor("#ffffff")));
 
 
         showStatusBar(true);

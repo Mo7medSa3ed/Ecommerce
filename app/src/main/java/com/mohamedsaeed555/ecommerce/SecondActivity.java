@@ -89,7 +89,7 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Users user = db.getAllusers().get(0);
-
+       // Toast.makeText(this,String.valueOf(db.getAllProducts2("AllData").size()),Toast.LENGTH_LONG).show();
         StartService2();
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
@@ -151,7 +151,7 @@ public class SecondActivity extends AppCompatActivity {
                 username.setText(user.getName());
                 email.setText(user.getEmail());}
             if (user.getImage() != null)
-                Picasso.get().load(Uri.parse(user.getImage())).placeholder(R.drawable.haircode).into(image_uri);
+                Picasso.get().load(Uri.parse(user.getImage())).placeholder(R.drawable.makkah).into(image_uri);
         }
 
         LinearLayout btn_addactivity = navigationView.findViewById(R.id.btn);
@@ -442,7 +442,7 @@ public class SecondActivity extends AppCompatActivity {
                 if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                    //db.Delete_All("Products");
+                    db.Delete_All("Products");
                     db.Delete_All("Favourite");
 
                     LoginManager.getInstance().logOut();
@@ -452,14 +452,14 @@ public class SecondActivity extends AppCompatActivity {
                 } else if (acct != null) {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                   // db.Delete_All("Products");
+                    db.Delete_All("Products");
                     db.Delete_All("Favourite");
 
                     signOut();
                 } else {
                     db.Delete_All("Users");
                     db.Delete_All("Cart");
-                    //db.Delete_All("Products");
+                    db.Delete_All("Products");
                     db.Delete_All("Favourite");
                     Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
                     startActivity(intent);

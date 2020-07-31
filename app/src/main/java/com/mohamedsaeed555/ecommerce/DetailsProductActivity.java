@@ -159,7 +159,7 @@ public class DetailsProductActivity extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        GETONEPRODUCTDETAILS(collection_name, barcode);
+        GETONEPRODUCTDETAILS(barcode);
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,8 +199,8 @@ public class DetailsProductActivity extends Fragment {
             public void onClick(View view) {
                 Database db = new Database(getActivity());
                 ArrayList<String> fav = new ArrayList<>();
-                String name, tel, city, image, address, email, pass, _id, goid, fid;
-                Boolean admin, superadmin;
+                String  _id;
+
 
                 if (db.Search_fav(barcode).size() > 0) {
                     fav.clear();
@@ -245,8 +245,8 @@ public class DetailsProductActivity extends Fragment {
 
     }
 
-    private void GETONEPRODUCTDETAILS(final String colection_name, final String barcode) {
-        RetrofitClient.getInstance().GETONEPRODUCTDETAILS(db.getAllusers().get(0).getToken(), colection_name, barcode).enqueue(new Callback<One_product_class>() {
+    private void GETONEPRODUCTDETAILS( final String barcode) {
+        RetrofitClient.getInstance().GETONEPRODUCTDETAILS(db.getAllusers().get(0).getToken(), barcode).enqueue(new Callback<One_product_class>() {
             @Override
             public void onResponse(Call<One_product_class> call, Response<One_product_class> response) {
                 if (!(response.isSuccessful())) {

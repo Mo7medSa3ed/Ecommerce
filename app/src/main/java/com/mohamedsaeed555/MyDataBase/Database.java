@@ -21,6 +21,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("create table Products ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table AllData ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
         db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT ,token TEXT)");
@@ -30,7 +31,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS Products");
         db.execSQL("DROP TABLE IF EXISTS BRAND");
         db.execSQL("DROP TABLE IF EXISTS AllData");
         db.execSQL("DROP TABLE IF EXISTS Cart");
@@ -171,6 +172,30 @@ public class Database extends SQLiteOpenHelper {
         }
         return arrayList;
     }
+
+    public ArrayList<Product_class> getAllProductsForAdmin(String table_name , String collection) {
+        ArrayList<Product_class> arrayList = new ArrayList();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + table_name + " WHERE collection ='"+collection+"'" , null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            String t1 = cursor.getString(0);
+            String t2 = cursor.getString(1);
+            int t3 = cursor.getInt(2);
+            String t4 = cursor.getString(3);
+            String t5 = cursor.getString(4);
+            double t6 = cursor.getDouble(5);
+            String t7 = cursor.getString(6);
+            String t8 = cursor.getString(7);
+            String t9 = cursor.getString(8);
+            Product_class productClass = new Product_class(t2, t3, t4, t5, t6, t7, t8, t9);
+            arrayList.add(productClass);
+            cursor.moveToNext();
+        }
+        return arrayList;
+    }
+
+
 
     public ArrayList<Product_class> Search_product(String table_name, String barcode2) {
         ArrayList<Product_class> arrayList = new ArrayList();

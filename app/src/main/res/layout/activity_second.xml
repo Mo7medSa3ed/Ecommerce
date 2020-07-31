@@ -81,6 +81,7 @@
                             android:id="@+id/profile_image"
                             android:layout_width="75dp"
                             android:layout_height="75dp"
+                            android:layout_marginTop="5dp"
                             android:src="@mipmap/ic_launcher"
                             app:civ_border_color="#e5e5e5"
                             app:civ_border_width="2dp" />
@@ -91,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center|start"
                             android:gravity="center_vertical|start"
-                            android:paddingTop="10dp"
+                            android:paddingTop="6dp"
                             android:paddingBottom="2dp"
                             android:text="UserName"
                             android:textAlignment="gravity"
@@ -128,7 +129,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageView5"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -136,7 +136,6 @@
                                 android:src="@drawable/ic_baseline_home_24" />
 
                             <TextView
-                                android:id="@+id/textView10"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -164,7 +163,6 @@
                                 android:src="@drawable/ic_baseline_playlist_add_24" />
 
                             <TextView
-                                android:id="@+id/tv_parent"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -251,7 +249,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageView7"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -259,7 +256,6 @@
                                 android:src="@drawable/ic_baseline_search_24" />
 
                             <TextView
-                                android:id="@+id/textView12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -277,7 +273,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageV9"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -285,7 +280,6 @@
                                 android:src="@drawable/ic_baseline_shopping_cart_24" />
 
                             <TextView
-                                android:id="@+id/textVie"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -306,7 +300,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageView8"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -314,7 +307,6 @@
                                 android:src="@drawable/ic_baseline_list_alt_24" />
 
                             <TextView
-                                android:id="@+id/textView13"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -422,7 +414,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageVi8"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -430,7 +421,6 @@
                                 android:src="@drawable/ic_baseline_account_circle_24" />
 
                             <TextView
-                                android:id="@+id/textVie11"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -448,7 +438,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageVi"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -456,7 +445,6 @@
                                 android:src="@drawable/ic_baseline_supervisor_account_24" />
 
                             <TextView
-                                android:id="@+id/textVie1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -474,7 +462,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageVi2"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -482,7 +469,6 @@
                                 android:src="@drawable/ic_baseline_favorite_24" />
 
                             <TextView
-                                android:id="@+id/textVie12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -500,7 +486,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imagVi"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -508,7 +493,6 @@
                                 android:src="@drawable/ic_baseline_format_list_bulleted_24" />
 
                             <TextView
-                                android:id="@+id/textVi2"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -526,7 +510,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imag"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -553,7 +536,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imageView6"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -561,7 +543,6 @@
                                 android:src="@drawable/ic_baseline_exit_to_app_24" />
 
                             <TextView
-                                android:id="@+id/textView11"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -581,12 +562,10 @@
                             android:background="@android:color/darker_gray" />
 
                         <LinearLayout
-                            android:id="@+id/cominication"
                             android:layout_width="match_parent"
                             android:layout_height="40dp">
 
                             <TextView
-                                android:id="@+id/textcomin"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -605,16 +584,14 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imagwhats"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="16dp"
-                                android:padding="2.5dp"
+                                android:padding="3.5dp"
                                 android:src="@drawable/whatsapp" />
 
                             <TextView
-                                android:id="@+id/textwhats"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -633,7 +610,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imagface"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -641,7 +617,6 @@
                                 android:src="@drawable/facebook" />
 
                             <TextView
-                                android:id="@+id/textface"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -659,7 +634,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imagloca"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -667,7 +641,6 @@
                                 android:src="@drawable/ic_baseline_location_on_24" />
 
                             <TextView
-                                android:id="@+id/textloca"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -685,7 +658,6 @@
                             android:layout_height="40dp">
 
                             <ImageView
-                                android:id="@+id/imagshare"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
@@ -693,7 +665,6 @@
                                 android:src="@drawable/ic_baseline_share_24" />
 
                             <TextView
-                                android:id="@+id/textshare"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -716,16 +687,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
+                android:padding="10dp"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/applogo" />
+                    android:adjustViewBounds="false"
+                    android:background="@drawable/applogo"
+                    />
             </LinearLayout>
 
         </LinearLayout>

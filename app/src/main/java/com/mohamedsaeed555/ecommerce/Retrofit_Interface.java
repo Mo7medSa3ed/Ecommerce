@@ -28,18 +28,22 @@ import retrofit2.http.Path;
 
 public interface Retrofit_Interface {
 
-    @GET("{collection_name}/products/all")
-    Call<List<Product_class>> GETALLPRODUCTS(@Header("x-auth-token") String token, @Path("collection_name") String collection_name);
+    @GET("product/")
+    Call<List<Product_class>> GETALLPRODUCTS(@Header("x-auth-token") String token);
 
-    @GET("{collection_name}/{page_number}")
+    @GET("product/{collection_name}/products/all")
+    Call<List<Product_class>> GETALLPRODUCTSINCOLLECTION(@Header("x-auth-token") String token, @Path("collection_name") String collection_name);
+
+
+    @GET("product/{collection_name}/{page_number}")
     Call<Retrofit_class_data> GETPRODUCTPAGINATION(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Path("page_number") String page_number);
 
-    @GET("{collection_name}/one/{barcode}")
-    Call<One_product_class> GETONEPRODUCTDETAILS(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Path("barcode") String barcode);
+    @GET("product/one/{barcode}")
+    Call<One_product_class> GETONEPRODUCTDETAILS(@Header("x-auth-token") String token, @Path("barcode") String barcode);
 
 
     @Multipart
-    @POST("{collection_name}")
+    @POST("product/{collection_name}/")
     Call<Product_class> ADD_PRODUCT(@Header("x-auth-token") String token,
                                     @Path("collection_name") String collection_name,
                                     @Part("date") String date,
@@ -51,12 +55,12 @@ public interface Retrofit_Interface {
                                     @Part MultipartBody.Part image);
 
 
-    @DELETE("{collection_name}/{barcode}")
+    @DELETE("product/{collection_name}/{barcode}")
     Call<Void> DELETEPRODUCT(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Path("barcode") String barcode);
 
 
     @Multipart
-    @PUT("{collection_name}")
+    @PUT("product/{collection_name}")
     Call<Product_class> UPDATEPRODUCT(@Header("x-auth-token") String token,
                                       @Path("collection_name") String collection_name,
                                       @Part("date") String date,
@@ -69,17 +73,17 @@ public interface Retrofit_Interface {
 
 
     @FormUrlEncoded
-    @POST("{collection_name}/filter")
+    @POST("product/{collection_name}/filter")
     Call<List<Product_class>> GETSEARCHRODUCTNAME(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Field("name") String name);
 
 
     @FormUrlEncoded
-    @POST("{collection_name}/filter")
-    Call<List<Product_class>> GETSEARCHRODUCTBARCODE(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Field("barcode") String barcode);
+    @POST("product/barcode/{barcode}")
+    Call<List<Product_class>> GETSEARCHRODUCTBARCODE(@Header("x-auth-token") String token, @Path("barcode") String collection_name);
 
 
     @FormUrlEncoded
-    @PUT("{collection_name}/amount")
+    @PUT("product/{collection_name}/amount")
     Call<Void> UPDATEAMOUNT(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Field("barcode") String barcode, @Field("amount") int amount);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////

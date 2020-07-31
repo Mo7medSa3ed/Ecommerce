@@ -10,10 +10,10 @@ public class Product_class {
     private double price;
     private String brand;
     private String image;
-    private String collection;
+    private String collectionName;
 
 
-    public Product_class(String date, int amount, String barcode, String name, double price, String brand, String image, String collection) {
+    public Product_class(String date, int amount, String barcode, String name, double price, String brand, String image, String collectionName) {
         this.date = date;
         this.amount = amount;
         this.barcode = barcode;
@@ -21,7 +21,7 @@ public class Product_class {
         this.price = price;
         this.brand = brand;
         this.image = image;
-        this.collection = collection;
+        this.collectionName = collectionName;
     }
 
     public Product_class(String date, int amount, String barcode, String name, double price, String brand, String image) {
@@ -98,6 +98,19 @@ public class Product_class {
     }
 
     public String getCollection() {
-        return collection;
+        return collectionName;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+
+    public void setCollectionName(String collectionName) {
+        this.collectionName = collectionName;
     }
 }

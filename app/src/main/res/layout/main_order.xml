@@ -115,7 +115,6 @@
                     android:layout_margin="4dp">
 
                     <TextView
-                        android:id="@+id/textVew47"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Paid Date"
@@ -137,7 +136,6 @@
                     android:layout_margin="4dp">
 
                     <TextView
-                        android:id="@+id/textView47"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Order Date"
@@ -159,7 +157,6 @@
                     android:layout_margin="4dp">
 
                     <TextView
-                        android:id="@+id/textew47"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Delevary Date"

@@ -83,12 +83,12 @@ public class UserAdapter extends BaseAdapter {
         } else {
             group.check(R.id.user);
         }
-
+        final  int pos = position;
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Database db = new Database(context);
-                String _id = arrayList.get(position).get_id();
+                String _id = arrayList.get(pos).get_id();
                 new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Are you sure?")
                         .setContentText("You want to delete this user!")
@@ -101,7 +101,7 @@ public class UserAdapter extends BaseAdapter {
                                     public void onResponse(Call<Void> call, Response<Void> response) {
                                         if (response.isSuccessful()) {
 
-                                            arrayList.remove(position);
+                                            arrayList.remove(pos);
                                             notifyDataSetChanged();
                                             sweetAlertDialog.dismissWithAnimation();
 

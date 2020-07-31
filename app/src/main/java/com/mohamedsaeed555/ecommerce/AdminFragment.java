@@ -221,18 +221,7 @@ public class AdminFragment extends Fragment {
 
     public void Get_gata() {
         final Database db = new Database(getActivity());
-        RetrofitClient.getInstance().GETALLPRODUCTS(db.getAllusers().get(0).getToken(), activity.toLowerCase()).enqueue(new Callback<List<Product_class>>() {
-            @Override
-            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
-                if (!(response.isSuccessful())) {
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                }
-                data.clear();
-                for (Product_class p : response.body()) {
-                    data.add(p);
-                    //db.insert_product(activity.toLowerCase(),p);
-                }
-
+        data=db.getAllProductsForAdmin("AllData",activity.toLowerCase());
                 Collections.sort(data, new Comparator<Product_class>() {
                     @Override
                     public int compare(Product_class o1, Product_class o2) {
@@ -242,13 +231,6 @@ public class AdminFragment extends Fragment {
 
                 adapter.setdata(data, getActivity());
                 alertDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<List<Product_class>> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

@@ -36,7 +36,6 @@
                 app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Camera"
@@ -61,7 +60,6 @@
                 app:srcCompat="@drawable/ic_photo_album_black_24dp" />
 
             <TextView
-                android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

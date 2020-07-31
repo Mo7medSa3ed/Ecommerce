@@ -19,12 +19,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Users;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +37,6 @@ import retrofit2.Response;
 public class FavouriteFragment extends Fragment implements RecyclerAdapter.onclick {
 
     ArrayList<Product_class> arrayList = new ArrayList<>();
-    ArrayList<Product_class> check_array = new ArrayList<>();
     String barcode;
     RecyclerView recyclerView;
     RecyclerAdapter adapter;
@@ -41,7 +44,8 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
     SearchView searchView;
     Users users;
     Boolean admin=true;
-
+    Database db;
+    LottieAlertDialog alertDialog;
     public static int calculateNoOfColumns(Context context, float columnWidthDp) { // For example columnWidthdp=180
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
@@ -52,7 +56,7 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        db = new Database(getActivity());
         return inflater.inflate(R.layout.fragment_favourite, container, false);
     }
 
@@ -61,25 +65,35 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle("Favourite");
-        Database db = new Database(getActivity());
+
         users=db.getAllusers().get(0);
         admin = users.getAdmin();
         recyclerView = view.findViewById(R.id.recycler_fav);
         int size = db.GETALLFAV().size();
         if (size > 0) {
             arrayList.clear();
-            if (admin){
-                for (int x = 0; x < size; x++) {
-                    barcode = db.GETALLFAV().get(x);
-                    //SEARCH(barcode,check_array);
-                    arrayList.add(db.Search_product2("AllData", barcode).get(0));
+            alertDialog = new LottieAlertDialog.Builder(getActivity(), DialogTypes.TYPE_LOADING)
+                    .setTitle("Loading")
+                    .setDescription("Please wait until get favourite")
+                    .build();
+            alertDialog.setCancelable(false);
+            alertDialog.show();
+            try {
+                if (admin) {
+                    for (int x = 0; x < size; x++) {
+                        barcode = db.GETALLFAV().get(x);
+                        arrayList.add(db.Search_product2("AllData", barcode).get(0));
+                    }
+                    alertDialog.dismiss();
+                } else {
+                    for (int x = 0; x < size; x++) {
+                        barcode = db.GETALLFAV().get(x);
+                        SEARCH(barcode);
+                    }
+                    alertDialog.dismiss();
                 }
-            }else {
-                for (int x = 0; x < size; x++) {
-                    barcode = db.GETALLFAV().get(x);
-                    SEARCH(barcode,check_array);
-                    // arrayList.add(db.Search_product2("AllData", barcode).get(0));
-                }
+            }catch (Exception e){
+                Toast.makeText(getActivity(),"Something went wrong!",Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -157,42 +171,51 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<Product_class> SEARCH (String barcode ,ArrayList<Product_class> check_array){
-        String col="";
-        for (int x=0; x<5 ;x++) {
-             if (x==0){col="cosmatics";}
-             else if (x==1){col="medical";}
-             else if (x==2){col="makeup";}
-             else if (x==3){col="papers";}
-             else if (x==4){col="others";}
-            String finalCol = col;
-            if (arrayList.size()>0){
-                break;}
-            RetrofitClient.getInstance().GETONEPRODUCTDETAILS(null, finalCol, barcode).enqueue(new Callback<One_product_class>() {
-                @Override
-                public void onResponse(Call<One_product_class> call, Response<One_product_class> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            arrayList.add(response.body().getProduct());
+    public void SEARCH (String barcode){
+        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<List<Product_class>>() {
+            @Override
+            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+                if (response.isSuccessful()){
+                    for (Product_class p : response.body()){
+                        if (p != null){
+                            arrayList.add(p);
                         }
-                        adapter.setdate2(arrayList, getActivity(), FavouriteFragment.this, true);
-                            return;
-
                     }
-
+                    adapter.setdate2(arrayList, getActivity(), FavouriteFragment.this, true);
+                    return;
+                }else {
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<One_product_class> call, Throwable t) {
-
-                }
-            });
-
+            @Override
+            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+            }
+        });
         }
 
-    return check_array;
+
     }
 
 
 
-}
+

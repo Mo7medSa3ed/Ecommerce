@@ -345,11 +345,8 @@ public class LoginActivity extends AppCompatActivity {
                         db.insert_brand(brand_list[i]);
                     }
 
-                    GET(response.body().getToken(), "cosmatics");
-                    GET(response.body().getToken(), "medical");
-                    GET(response.body().getToken(), "papers");
-                    GET(response.body().getToken(), "makeup");
-                    GET(response.body().getToken(), "others");
+                    GET(response.body().getToken());
+
 
 
                     if (calc == db.getAllProducts2("AllData").size()) {
@@ -393,8 +390,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void GET(String token, String collection_name) {
-        RetrofitClient.getInstance().GETALLPRODUCTS(token, collection_name).enqueue(new Callback<List<Product_class>>() {
+    public void GET(String token) {
+        RetrofitClient.getInstance().GETALLPRODUCTS(token).enqueue(new Callback<List<Product_class>>() {
             @Override
             public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
                 if (!(response.isSuccessful())) {
@@ -402,17 +399,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 calc += response.body().size();
                 for (Product_class p : response.body()) {
-                    Product_class productClass = new Product_class(p.getDate(), p.getAmount(),
-                            p.getBarcode(), p.getName(), p.getPrice(), p.getBrand(),
-                            p.getImage(), collection_name);
-                    db.insert_product_toAlldata("AllData", productClass);
+                    db.insert_product_toAlldata("AllData", p);
                 }
-              try {
 
-                  if (collection_name.equals("others")) {
-                      alert.dismiss();
-                  }
-              }catch (Exception e){e.printStackTrace();}
+                try {
+                alert.dismiss();
+                }catch (Exception e){e.printStackTrace();}
 
             }
 

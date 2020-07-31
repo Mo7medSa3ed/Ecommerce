@@ -18,18 +18,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
+import com.labters.lottiealertdialoglibrary.ClickListener;
+import com.labters.lottiealertdialoglibrary.DialogTypes;
+import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Orders;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +53,7 @@ public class OrdersFragment extends Fragment {
     SearchView searchView;
     Double total = 0.0;
     Gson gson = new Gson();
+    SwipeRefreshLayout refreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,12 +68,20 @@ public class OrdersFragment extends Fragment {
         setHasOptionsMenu(true);
 
         list = view.findViewById(R.id.orderlist);
+        refreshLayout= view.findViewById(R.id.SwipeRefresh);
         chipGroup = view.findViewById(R.id.chipgroup2);
 
         adapter = new OrdersAdapter(orders, getActivity());
         list.setAdapter(adapter);
-
         GETALLORDERS();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GETALLORDERS();
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -172,8 +188,11 @@ public class OrdersFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.search2, menu);
-        MenuItem menuItem = menu.findItem(R.id.search2);
+        inflater.inflate(R.menu.search_delete, menu);
+
+
+
+        MenuItem menuItem = menu.findItem(R.id.search3);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
@@ -213,6 +232,66 @@ public class OrdersFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.search2) {
+            return true;
+        }else if (id == R.id.deleteAll){
+
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Are you sure?")
+                    .setContentText("You want to delete all orders!")
+                    .setConfirmText("Yes,delete it!")
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            RetrofitClient.getInstance().DeleteAllOrder(database.getAllusers().get(0).getToken()).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        orders.clear();
+                                        filter_orders.clear();
+                                        adapter.notifyDataSetChanged();
+                                    } else {
+                                        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                                .setTitleText("Oops...")
+                                                .setContentText("Something went wrong!")
+                                                .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        sweetAlertDialog.dismissWithAnimation();
+                                                    }
+                                                })
+                                                .show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    LottieAlertDialog alertDialog = new LottieAlertDialog.Builder(getActivity(), DialogTypes.TYPE_ERROR)
+                                            .setTitle("Error")
+                                            .setDescription("Some error has happened.")
+                                            .setPositiveText("Okay")
+                                            .setPositiveListener(new ClickListener() {
+                                                @Override
+                                                public void onClick(@NotNull LottieAlertDialog lottieAlertDialog) {
+                                                    lottieAlertDialog.dismiss();
+                                                }
+                                            })
+                                            .build();
+                                    alertDialog.setCancelable(false);
+                                    alertDialog.show();
+                                }
+                            });
+
+                        }
+                    })
+                    .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    })
+                    .show();
+
             return true;
         }
         return super.onOptionsItemSelected(item);

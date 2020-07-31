@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
+    android:descendantFocusability="beforeDescendants"
     android:focusable="false"
     android:focusableInTouchMode="true"
-    android:descendantFocusability="beforeDescendants"
-    android:orientation="vertical"
     android:layoutDirection="ltr"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
@@ -35,13 +36,13 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView13"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    app:srcCompat="@drawable/dd" />
+                    android:layout_height="100dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/makkah2" />
 
                 <TextView
-                    android:id="@+id/textView34"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
@@ -91,7 +92,6 @@
                 app:ael_orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/lo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -220,8 +220,8 @@
                             android:id="@+id/filled_exposed_dropdown1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"
                             android:background="@null"
+                            android:inputType="textPassword"
                             android:padding="10dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,11 +231,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="10dp"
-                        android:text="Sign Up"
-                        android:textSize="16sp"
-                        android:textColor="#fff"
                         android:background="@drawable/btn_click"
+                        android:text="Sign Up"
                         android:textAllCaps="false"
+                        android:textColor="#fff"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -243,12 +243,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"                        android:text="Already Have Account ?"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="Already Have Account ?"
                         android:textAlignment="textStart"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-
 
 
                 </LinearLayout>
