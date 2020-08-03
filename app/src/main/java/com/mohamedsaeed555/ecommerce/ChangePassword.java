@@ -46,7 +46,7 @@ public class ChangePassword extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        getActivity().setTitle("Change Password");
         oldpass = view.findViewById(R.id.inputlayout1);
         new_pass = view.findViewById(R.id.inputlayout2);
         confirm = view.findViewById(R.id.inputlayout3);

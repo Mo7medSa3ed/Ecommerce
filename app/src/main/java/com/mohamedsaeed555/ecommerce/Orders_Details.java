@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.MediaType;
@@ -266,26 +267,55 @@ public class Orders_Details extends Fragment {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
-                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id());
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id(),new Random().nextInt());
 
                     mSocket.emit("dbchanged", gson.toJson(notification_class));
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Update Paid")
+                            .setContentText("Paid successfully")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    paid.setClickable(false);
+                                    paid.setEnabled(false);
+                                    paid.setBackgroundResource(R.drawable.btn_shape_enable);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
 
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    paid.setClickable(false);
-                    paid.setEnabled(false);
-                    paid.setBackgroundResource(R.drawable.btn_shape_enable);
                 } else {
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    paid.setClickable(true);
-                    paid.setEnabled(true);
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    paid.setClickable(true);
+                                    paid.setEnabled(true);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                paid.setClickable(true);
-                paid.setEnabled(true);
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                paid.setClickable(true);
+                                paid.setEnabled(true);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+
             }
         });
     }
@@ -296,25 +326,53 @@ public class Orders_Details extends Fragment {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
-                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id());
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id(),new Random().nextInt());
                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    contact.setClickable(false);
-                    contact.setEnabled(false);
-                    contact.setBackgroundResource(R.drawable.btn_shape_enable);
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Update Contacted")
+                            .setContentText("Paid successfully")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    contact.setClickable(false);
+                                    contact.setEnabled(false);
+                                    contact.setBackgroundResource(R.drawable.btn_shape_enable);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
+
                 } else {
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    contact.setClickable(true);
-                    contact.setEnabled(true);
+                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Something went wrong!")
+                            .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    contact.setClickable(true);
+                                    contact.setEnabled(true);
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
                 }
             }
 
             @Override
             public void onFailure(Call<Orders> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                contact.setClickable(true);
-                contact.setEnabled(true);
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("Oops...")
+                        .setContentText("Something went wrong!")
+                        .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                contact.setClickable(true);
+                                contact.setEnabled(true);
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
             }
         });
     }
@@ -331,15 +389,14 @@ public class Orders_Details extends Fragment {
     }
 
     public void SEARCH (String barcode){
-        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<List<Product_class>>() {
+        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<Product_class>() {
             @Override
-            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+            public void onResponse(Call<Product_class> call, Response<Product_class> response) {
                 if (response.isSuccessful()){
-                    for (Product_class p : response.body()){
-                        if (p != null){
-                            data.add(new DetailsProductOrder(p, new_pr.get(x).getAmount()));
+                        if (response.body() != null){
+                            data.add(new DetailsProductOrder(response.body(), new_pr.get(x).getAmount()));
                         }
-                    }
+
                     return;
                 }else {
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
@@ -356,7 +413,7 @@ public class Orders_Details extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+            public void onFailure(Call<Product_class> call, Throwable t) {
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Oops...")
                         .setContentText("Something went wrong!")

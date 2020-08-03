@@ -58,7 +58,7 @@ public class SecondActivity extends AppCompatActivity {
     ArrayList<Product_class> data2 = new ArrayList<>();
     RecyclerView recyclerView;
     RecyclerAdapter adapter;
-    ViewModel viewModel;
+
     SearchView searchView;
     RecyclerView.LayoutManager layoutManager;
     ChipGroup chipGroup;
@@ -66,7 +66,7 @@ public class SecondActivity extends AppCompatActivity {
     int page = 1;
     Boolean isloading = true;
     ProgressBar progressBar;
-    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, changepassword, whats, face, share, location;
+    LinearLayout home, search, logout, tasafoh, cart, updateprofile, Alluser, favourite, orders, whats, face, share, location;
     ImageView dropimage;
     TextView addnew, addamount, sale_product, cos, med, mak, pap, oth, username, cartbadge, email;
     ExpandableRelativeLayout myLayout, mylayout2;
@@ -126,8 +126,16 @@ public class SecondActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.cotainers, frag)
                         .addToBackStack(null).commit();
             } else if (notification_class.getGo_Activity().equals("alluser")) {
-                fragmentTransaction.replace(R.id.cotainers,new  AlluserFragment())
-                        .addToBackStack(null).commit();
+                if (user.getAdmin()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("i","u");
+                    AlluserFragment alluserFragment = new AlluserFragment();
+                    alluserFragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.cotainers,alluserFragment)
+                            .addToBackStack(null).commit();
+                }else {
+                    fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
+                }
             }
         } else {
             fragmentTransaction.replace(R.id.cotainers, new HomeFragment()).commit();
@@ -168,7 +176,6 @@ public class SecondActivity extends AppCompatActivity {
         addamount = navigationView.findViewById(R.id.tv_chiled2);
         sale_product = navigationView.findViewById(R.id.tv_sale);
         orders = navigationView.findViewById(R.id.linearorders);
-        changepassword = navigationView.findViewById(R.id.linearpassword);
         cartbadge = navigationView.findViewById(R.id.notification_badge);
         whats = navigationView.findViewById(R.id.linearwhats);
         face = navigationView.findViewById(R.id.linearface);
@@ -357,13 +364,13 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
 
-        changepassword.setOnClickListener(new View.OnClickListener() {
+       /* changepassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.cotainers, new ChangePassword()).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
-        });
+        });*/
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

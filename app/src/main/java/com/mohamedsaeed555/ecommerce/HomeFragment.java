@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick {
         super.onViewCreated(view, savedInstanceState);
 
         setHasOptionsMenu(true);
-        getActivity().setTitle("Ecommerce");
+        getActivity().setTitle(getResources().getString(R.string.app_name));
 
         recyclerView = view.findViewById(R.id.recycler);
         chipGroup = (ChipGroup) view.findViewById(R.id.chipgroup);

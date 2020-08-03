@@ -43,39 +43,34 @@ public class Notification_Service extends Service {
         public void call(Object... args) {
 
             Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
-            /*if (notification_class.getAdmin()){
+
+            if (notification_class.getAdmin()){
                 if(!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))){
-                    if (notification_class.getGo_Activity().equals("allusers")){
+                   /* if (notification_class.getGo_Activity().equals("allusers")){
                         createNotificationchannel(notification_class);
                     }else if (notification_class.getGo_Activity().equals("orderdetails")){
                         createNotificationchannel(notification_class);
-                    }
+                    }*/
+                    createNotificationchannel(notification_class);
                 }
             }else {
-                if(!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
-                    if (notification_class.getGo_Activity().equals("details")){
+                if (notification_class.getGo_Activity().equals("allusers")) {
+                    return;
+                }
+                if (!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
+
+                    if (!(notification_class.getGo_Activity().equals("allusers"))) {
                         createNotificationchannel(notification_class);
-                    }else if (notification_class.getGo_Activity().equals("orderdetails")){
-                        if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())){
-                            createNotificationchannelnotclick(notification_class);
+                    }
+                }else if (notification_class.getGo_Activity().equals("orderdetails")){
+                    if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())){
+                        if (notification_class.getMsg().equals("Admin Contact with your order")){
+                            createNotificationchannel(notification_class);
                         }
                     }
                 }
-            }*/
-            createNotificationchannel(notification_class,++x);
 
-            /*if (notification_class.getGo_Activity().equals("orderdetails")){
-                if (notification_class.getOrders().getBy().get_id().equals(db.getAllusers().get(0).get_id())){
-                    createNotificationchannel(notification_class);
-                }else {
-                    if (notification_class.getAdmin()){
-                        createNotificationchannel(notification_class);
-                    }
-                }
-            }else {
-                createNotificationchannel(notification_class);
             }
-            */
 
         }
     };
@@ -120,7 +115,7 @@ public class Notification_Service extends Service {
         }
     }
 
-    public void createNotificationchannel(Notification_Class arg , int y ) {
+    public void createNotificationchannel(Notification_Class arg  ) {
 
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("c", "c");
@@ -130,7 +125,7 @@ public class Notification_Service extends Service {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "ECommerce", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getResources().getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription(arg.getMsg());
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
@@ -139,13 +134,13 @@ public class Notification_Service extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         Bitmap bitmap = null;
         try {
-            bitmap = Picasso.get().load(arg.getImage()).placeholder(R.drawable.makkah).get();
+            bitmap = Picasso.get().load(arg.getImage()).placeholder(R.mipmap.ic_launcher_round).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
         builder.setLargeIcon(bitmap);
-        builder.setSmallIcon(R.drawable.cart2);
-        builder.setContentTitle("ECommerce" + ++x );
+        builder.setSmallIcon(R.mipmap.ic_launcher_round);
+        builder.setContentTitle(getResources().getString(R.string.app_name));
         String msg = arg.getMsg() +"\nMohamed Saeed And Mohamed Ayman Make this Simple APP";
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(msg));
         builder.setContentText(msg);
@@ -158,8 +153,7 @@ public class Notification_Service extends Service {
         builder.setOngoing(false);
         builder.setChannelId(CHANNEL_ID);
         managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify(1325, builder.build());
-
+        managerCompat.notify(arg.getNotification_id(), builder.build());
     }
 
     public void createNotificationchannelnotclick(Notification_Class arg) {

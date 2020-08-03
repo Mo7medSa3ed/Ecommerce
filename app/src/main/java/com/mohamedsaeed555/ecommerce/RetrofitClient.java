@@ -84,7 +84,7 @@ public class RetrofitClient {
         return retrofit_interface.GETSEARCHRODUCTNAME(token, collection_name, name);
     }
 
-    public Call<List<Product_class>> GETSEARCHRODUCTBARCODE(String token, String barcode) {
+    public Call<Product_class> GETSEARCHRODUCTBARCODE(String token, String barcode) {
         return retrofit_interface.GETSEARCHRODUCTBARCODE(token, barcode);
     }
 

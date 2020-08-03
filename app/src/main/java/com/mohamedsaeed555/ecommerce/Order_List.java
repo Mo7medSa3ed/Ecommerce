@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -109,6 +110,24 @@ public class Order_List extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Cart");
+
+        if (orders.size()==0){
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                    .setCustomImage(R.drawable.ic_baseline_shopping_cart_24)
+                    .setTitleText("Cart")
+                    .setContentText("Cart is Empty")
+                    .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                        }
+                    })
+                    .show();
+        }
+
 
         Button btn = view.findViewById(R.id.order_btn);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -172,7 +191,7 @@ public class Order_List extends Fragment {
                             public void onResponse(Call<Poset_Orders> call, Response<Poset_Orders> response) {
                                 if (response.isSuccessful()) {
                                     check = true;
-                                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "New Order From User", "orderdetails", response.body() , users.getImage(),users.get_id());
+                                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "New Order From User", "orderdetails", response.body() , users.getImage(),users.get_id(),new Random().nextInt());
                                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 
                                     db.Delete_All("Cart");

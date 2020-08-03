@@ -14,9 +14,10 @@ public class Notification_Class {
     private Orders orders;
     private String image;
     private Poset_Orders ord;
+    private  int Notification_id;
 
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class , String image,String sender_id) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, String collection, Product_class product_class , String image,String sender_id,int Notification_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
@@ -24,33 +25,44 @@ public class Notification_Class {
         this.product_class = product_class;
         this.image=image;
         Sender_id=sender_id;
+        this.Notification_id=Notification_id;
     }
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, Orders orders, String image,String sender_id) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, Orders orders, String image,String sender_id,int Notification_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
         this.orders = orders;
         this.image=image;
         Sender_id=sender_id;
+        this.Notification_id=Notification_id;
     }
 
 
-    public Notification_Class(Boolean admin, String msg, String go_Activity, Poset_Orders ord, String image,String sender_id) {
+    public Notification_Class(Boolean admin, String msg, String go_Activity, Poset_Orders ord, String image,String sender_id,int Notification_id) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
         this.ord = ord;
         this.image=image;
         Sender_id=sender_id;
+        this.Notification_id=Notification_id;
     }
 
     public Notification_Class(Boolean admin, String msg, String go_Activity) {
         Admin = admin;
         this.msg = msg;
         Go_Activity = go_Activity;
+
     }
 
+    public int getNotification_id() {
+        return Notification_id;
+    }
+
+    public void setNotification_id(int notification_id) {
+        Notification_id = notification_id;
+    }
 
     public String getImage() {
         return image;

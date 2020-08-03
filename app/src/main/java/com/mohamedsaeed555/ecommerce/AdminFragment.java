@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -231,6 +232,23 @@ public class AdminFragment extends Fragment {
 
                 adapter.setdata(data, getActivity());
                 alertDialog.dismiss();
+
+                if (data.size()==0){
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                                .setCustomImage(R.drawable.ic_baseline_list_alt_24)
+                                .setTitleText(activity)
+                                .setContentText(activity+" is Empty")
+                                .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                                    }
+                                })
+                                .show();
+
+                }
     }
 
     @Override

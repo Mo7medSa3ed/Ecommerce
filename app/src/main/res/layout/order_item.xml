@@ -155,6 +155,7 @@
                                 android:layout_weight="1"
                                 android:background="@null"
                                 android:inputType="number"
+                                android:gravity="center"
                                 android:padding="8dp"
                                 android:text="1"
                                 android:textAlignment="center" />

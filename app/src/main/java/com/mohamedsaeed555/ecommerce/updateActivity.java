@@ -59,6 +59,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import id.zelory.compressor.Compressor;
@@ -633,7 +634,7 @@ public class updateActivity extends Fragment {
 
                         Notification_Class notification_class = new Notification_Class(
                                 users.getAdmin(), "Admin Updated Product",
-                                "details", collection_name, response.body(),response.body().getImage(),users.get_id());
+                                "details", collection_name, response.body(),response.body().getImage(),users.get_id(),new Random().nextInt());
 
                         Gson gson = new Gson();
 
@@ -653,8 +654,6 @@ public class updateActivity extends Fragment {
                                 response.body().getImage(), collection_name);
 
                         db.update_product2("AllData", productClass, barcode);
-
-                        img.setImageResource(R.drawable.haircode);
                         alertDialog.dismiss();
 
                         new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
@@ -726,7 +725,7 @@ public class updateActivity extends Fragment {
                                                 db.Delete_product2("Cart", barcode);
                                                 db.Delete_Fav(barcode);
                                                 img.setImageResource(R.drawable.pick);
-                                                img.setImageResource(R.drawable.haircode);
+
                                                 sweetAlertDialog.dismissWithAnimation();
 
                                                 new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)

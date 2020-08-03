@@ -54,6 +54,9 @@ public class OrdersFragment extends Fragment {
     Double total = 0.0;
     Gson gson = new Gson();
     SwipeRefreshLayout refreshLayout;
+    Boolean city_test = true;
+    Boolean price_test = true;
+    Boolean latest_test=true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +69,7 @@ public class OrdersFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-
+        getActivity().setTitle("All Orders");
         list = view.findViewById(R.id.orderlist);
         refreshLayout= view.findViewById(R.id.SwipeRefresh);
         chipGroup = view.findViewById(R.id.chipgroup2);
@@ -78,9 +81,12 @@ public class OrdersFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                chipGroup.clearCheck();
                 GETALLORDERS();
                 refreshLayout.setRefreshing(false);
             }
+
+
         });
 
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
@@ -107,34 +113,69 @@ public class OrdersFragment extends Fragment {
                         adapter.setdata(filter_orders, getActivity());
 
                     } else if (checkedId == R.id.chip_Makups) {
-                        Collections.sort(orders, new Comparator<Orders>() {
-                            @Override
-                            public int compare(Orders orders, Orders t1) {
-                                return orders.getBy().getCity().compareTo(t1.getBy().getCity());
-                            }
-                });
+                        if (city_test) {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return orders.getBy().getCity().compareTo(t1.getBy().getCity());
+                                }
+                            });
 
-                        adapter.setdata(orders, getActivity());
+                            adapter.setdata(orders, getActivity());
+                            city_test=false;
+                        }else {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return t1.getBy().getCity().compareTo(orders.getBy().getCity());
+                                }
+                            });
 
+                            adapter.setdata(orders, getActivity());
+                            city_test=true;
+                        }
                     } else if (checkedId == R.id.chip_papers) {
-                        Collections.sort(orders, new Comparator<Orders>() {
-                            @Override
-                            public int compare(Orders orders, Orders t1) {
-                                return (int) (orders.getTotal().get(0) - t1.getTotal().get(0));
-                            }
-                        });
-
-                        adapter.setdata(orders, getActivity());
+                        if (price_test) {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return (int) (orders.getTotal().get(0) - t1.getTotal().get(0));
+                                }
+                            });
+                            adapter.setdata(orders, getActivity());
+                            price_test=false;
+                        }else {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return (int) (t1.getTotal().get(0) - orders.getTotal().get(0));
+                                }
+                            });
+                            adapter.setdata(orders, getActivity());
+                            price_test=true;
+                        }
                     }else if (checkedId == R.id.chip_papers2){
-                        Collections.sort(orders, new Comparator<Orders>() {
-                            @Override
-                            public int compare(Orders orders, Orders t1) {
-                                return t1.getCreated_at().compareTo(orders.getCreated_at());
-                            }
-                        });
+                        if (latest_test) {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return t1.getCreated_at().compareTo(orders.getCreated_at());
+                                }
+                            });
 
-                        adapter.setdata(orders, getActivity());
+                            adapter.setdata(orders, getActivity());
+                            latest_test=false;
+                        }else {
+                            Collections.sort(orders, new Comparator<Orders>() {
+                                @Override
+                                public int compare(Orders orders, Orders t1) {
+                                    return orders.getCreated_at().compareTo(t1.getCreated_at());
+                                }
+                            });
 
+                            adapter.setdata(orders, getActivity());
+                            latest_test=true;
+                        }
                     }
                 }
 
@@ -170,10 +211,24 @@ public class OrdersFragment extends Fragment {
                         orders.add(response.body().get(x));
                     }
                     adapter.setdata(orders, getActivity());
-
+                    if (orders.size()==0) {
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                                .setCustomImage(R.drawable.ic_baseline_format_list_bulleted_24)
+                                .setTitleText("All Orders")
+                                .setContentText("Orders is Empty")
+                                .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                                    }
+                                })
+                                .show();
+                    }
 
                 } else {
-                    Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Some thing went wrong..", Toast.LENGTH_SHORT).show();
                 }
             }
 

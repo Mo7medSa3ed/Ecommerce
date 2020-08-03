@@ -47,10 +47,9 @@
 
 
                         <ImageView
-                            android:id="@+id/imageView3"
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
-                            android:padding="2dp"
+                            android:padding="5dp"
                             app:srcCompat="@drawable/makkah2" />
 
                         <TextView
@@ -59,7 +58,7 @@
                             android:layout_marginTop="5dp"
                             android:fontFamily="@font/abril_fatface"
                             android:gravity="center"
-                            android:text="Find,Discover,Choose and buy any thing online"
+                            android:text="Find,Discover,Choose,Delivery and buy any thing online"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="@android:color/secondary_text_light"

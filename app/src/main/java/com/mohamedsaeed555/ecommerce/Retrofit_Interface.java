@@ -77,9 +77,9 @@ public interface Retrofit_Interface {
     Call<List<Product_class>> GETSEARCHRODUCTNAME(@Header("x-auth-token") String token, @Path("collection_name") String collection_name, @Field("name") String name);
 
 
-    @FormUrlEncoded
-    @POST("product/barcode/{barcode}")
-    Call<List<Product_class>> GETSEARCHRODUCTBARCODE(@Header("x-auth-token") String token, @Path("barcode") String collection_name);
+
+    @GET("product/barcode/{barcode}")
+    Call<Product_class> GETSEARCHRODUCTBARCODE(@Header("x-auth-token") String token, @Path("barcode") String barcode);
 
 
     @FormUrlEncoded

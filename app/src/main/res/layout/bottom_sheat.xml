@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="ltr"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:behavior_hideable="true"
     android:background="#fff"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Camera"
                 android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="#000" />
         </LinearLayout>
 

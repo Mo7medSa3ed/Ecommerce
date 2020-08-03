@@ -71,7 +71,8 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="15dp"
                     android:text="55 EGP"
-                    android:textAlignment="textEnd"
+                    android:gravity="center_vertical|end"
+                    android:textAlignment="gravity"
                     android:textColor="@android:color/holo_red_dark"
                     android:textSize="24sp"
                     android:textStyle="bold" />

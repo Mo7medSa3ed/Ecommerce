@@ -1,11 +1,13 @@
 package com.mohamedsaeed555.ecommerce;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -73,6 +75,10 @@ public class UserSetting extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         getActivity().setTitle("Profile");
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 8);
+        }
 
         namelayout = view.findViewById(R.id.inputlayout2);
         citylayout = view.findViewById(R.id.inputlayout4);

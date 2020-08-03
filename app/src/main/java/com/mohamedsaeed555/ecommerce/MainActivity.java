@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
                     return;
                 }
-                Notification_Class notification_class = new Notification_Class(response.body().getAdmin(), "New User Create Account", "alluser");
+                Notification_Class notification_class = new Notification_Class(false, "New User Create Account", "alluser");
                 mSocket.emit("dbchanged", gson.toJson(notification_class));
 
                 db.Delete_All("Users");

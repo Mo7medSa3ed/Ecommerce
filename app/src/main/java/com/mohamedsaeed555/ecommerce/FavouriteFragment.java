@@ -76,7 +76,7 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
                     .setTitle("Loading")
                     .setDescription("Please wait until get favourite")
                     .build();
-            alertDialog.setCancelable(false);
+            alertDialog.setCancelable(true);
             alertDialog.show();
             try {
                 if (admin) {
@@ -93,8 +93,23 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
                     alertDialog.dismiss();
                 }
             }catch (Exception e){
-                Toast.makeText(getActivity(),"Something went wrong!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),e.getMessage(),Toast.LENGTH_SHORT).show();
             }
+
+        }else {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                    .setCustomImage(R.drawable.ic_baseline_favorite_24)
+                    .setTitleText("Favourite")
+                    .setContentText("Favourite is Empty")
+                    .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                        }
+                    })
+                    .show();
 
         }
 
@@ -172,15 +187,14 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
     }
 
     public void SEARCH (String barcode){
-        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<List<Product_class>>() {
+        RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<Product_class>() {
             @Override
-            public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+            public void onResponse(Call<Product_class> call, Response<Product_class> response) {
                 if (response.isSuccessful()){
-                    for (Product_class p : response.body()){
-                        if (p != null){
-                            arrayList.add(p);
-                        }
+                    if (response.body() != null){
+                        arrayList.add(response.body());
                     }
+
                     adapter.setdate2(arrayList, getActivity(), FavouriteFragment.this, true);
                     return;
                 }else {
@@ -196,9 +210,10 @@ public class FavouriteFragment extends Fragment implements RecyclerAdapter.oncli
                             .show();
                 }
             }
+            //Something went wrong!
 
             @Override
-            public void onFailure(Call<List<Product_class>> call, Throwable t) {
+            public void onFailure(Call<Product_class> call, Throwable t) {
                 new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("Oops...")
                         .setContentText("Something went wrong!")

@@ -39,10 +39,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
+                    android:fontFamily="@font/abril_fatface"
                     android:paddingTop="8dp"
                     android:text="Hallo ,Sir again"
                     android:textAlignment="center"
+                    android:gravity="center"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -119,6 +120,7 @@
                     android:padding="20sp"
                     android:text="--------------- OR ---------------  "
                     android:textAlignment="center"
+                    android:gravity="center"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -137,7 +139,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp" />
+                    android:layout_marginRight="23dp"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

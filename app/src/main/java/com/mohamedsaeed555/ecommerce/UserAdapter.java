@@ -66,7 +66,7 @@ public class UserAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(R.layout.user_item, parent, false);
+            view = layoutInflater.inflate(R.layout.user_item, null, false);
         }
 
         CircleImageView img = view.findViewById(R.id.user_image);
@@ -75,7 +75,7 @@ public class UserAdapter extends BaseAdapter {
         ImageButton btn_delete = view.findViewById(R.id.button6);
         group = view.findViewById(R.id.group);
 
-        Picasso.get().load(arrayList.get(position).getImage()).placeholder(R.drawable.cart2).into(img);
+        Picasso.get().load(arrayList.get(position).getImage()).placeholder(R.drawable.makkah).into(img);
         txtname.setText(arrayList.get(position).getName());
         txtemail.setText(arrayList.get(position).getEmail());
         if (arrayList.get(position).getAdmin()) {

@@ -82,7 +82,7 @@
                             android:layout_width="75dp"
                             android:layout_height="75dp"
                             android:layout_marginTop="5dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@drawable/makkah"
                             app:civ_border_color="#e5e5e5"
                             app:civ_border_width="2dp" />
 
@@ -356,6 +356,8 @@
                                     android:textSize="15sp"
                                     android:textStyle="bold" />
 
+
+
                                 <TextView
                                     android:id="@+id/tv_chiled4"
                                     android:layout_width="match_parent"
@@ -408,29 +410,7 @@
 
                         </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linear6"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="16dp"
-                                android:src="@drawable/ic_baseline_account_circle_24" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="36dp"
-                                android:layout_marginRight="8dp"
-                                android:text="Update Profile"
-                                android:textColor="@color/nav_color"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/linearuser"
@@ -451,6 +431,29 @@
                                 android:layout_marginLeft="36dp"
                                 android:layout_marginRight="8dp"
                                 android:text="All Users"
+                                android:textColor="@color/nav_color"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/linearorders"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_baseline_format_list_bulleted_24" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="36dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Orders"
                                 android:textColor="@color/nav_color"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -480,31 +483,9 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearorders"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp">
 
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="16dp"
-                                android:src="@drawable/ic_baseline_format_list_bulleted_24" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="36dp"
-                                android:layout_marginRight="8dp"
-                                android:text="Orders"
-                                android:textColor="@color/nav_color"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <!--<LinearLayout
                             android:id="@+id/linearpassword"
                             android:layout_width="match_parent"
                             android:layout_height="40dp">
@@ -528,6 +509,29 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
+                        </LinearLayout>-->
+                        <LinearLayout
+                            android:id="@+id/linear6"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="16dp"
+                                android:src="@drawable/ic_baseline_account_circle_24" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="36dp"
+                                android:layout_marginRight="8dp"
+                                android:text="Update Profile"
+                                android:textColor="@color/nav_color"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -597,7 +601,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="36dp"
                                 android:layout_marginRight="8dp"
-                                android:text="Whats App"
+                                android:text="WhatsApp"
                                 android:textColor="@color/nav_color"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -685,21 +689,18 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="55dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:padding="10dp"
+                android:layout_margin="2dp"
                 android:orientation="vertical">
-
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:background="@drawable/applogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/applogo"
+                    android:padding="1dp"
                     />
+
+
             </LinearLayout>
 
         </LinearLayout>

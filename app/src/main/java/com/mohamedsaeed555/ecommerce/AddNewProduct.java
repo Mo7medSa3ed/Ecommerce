@@ -55,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import id.zelory.compressor.Compressor;
@@ -578,7 +579,7 @@ public class AddNewProduct extends Fragment {
                             Notification_Class notification_class = new Notification_Class(
                                     db.getAllusers().get(0).getAdmin(), "Admin Added New Product",
                                     "details", coll_name, response.body(),response.body().getImage(),
-                                    db.getAllusers().get(0).get_id());
+                                    db.getAllusers().get(0).get_id(),new Random().nextInt());
                             Gson gson = new Gson();
 
                             mSocket.emit("dbchanged", gson.toJson(notification_class));

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.labters.lottiealertdialoglibrary.ClickListener;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
@@ -39,11 +40,14 @@ public class AlluserFragment extends Fragment {
     ArrayList<Users> users = new ArrayList<>();
     Database db;
     Users user;
-
+    SwipeRefreshLayout refreshLayout;
+    String i ="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //getAllUser();
+        try {
+            i = getArguments().getString("i", "f");
+        }catch (Exception e){e.printStackTrace();}
         db = new Database(getActivity());
         user = db.getAllusers().get(0);
         return inflater.inflate(R.layout.fragment_alluser, container, false);
@@ -53,15 +57,27 @@ public class AlluserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle("All Users");
         list = view.findViewById(R.id.userlist);
+        refreshLayout=view.findViewById(R.id.Swipefresh);
 
         // users.add(new Users("dsdsa","asd","sadasd","adsd","asdsad","asdsa","sda","asdas","ads",false,false,"sadsa"));
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllUser();
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
         adapter = new UserAdapter(users, getActivity());
         list.setAdapter(adapter);
         getAllUser();
+       // if (i.equals("u")) {}
+            //list.setSelection(users.size()-1);
 
+        //list.smoothScrollToPosition(users.size()-1);
     }
 
 

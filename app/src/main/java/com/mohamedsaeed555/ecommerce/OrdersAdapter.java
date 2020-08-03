@@ -72,7 +72,6 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
         TextView order_date = v.findViewById(R.id.textV);
         ImageView img = v.findViewById(R.id.imageView11);
         LinearLayout ly = v.findViewById(R.id.expa);
-        ImageView arrow = v.findViewById(R.id.imageView15);
         ExpandableRelativeLayout ex = v.findViewById(R.id.expandableLayout1);
 
 
@@ -113,13 +112,6 @@ public class OrdersAdapter extends BaseAdapter implements Filterable {
         ly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  if (ex.isExpanded()) {
-                    ex.collapse();
-                    arrow.setImageResource(R.drawable.ic_arrow_drop_down_black_24dp);
-                } else {
-                    ex.expand();
-                    arrow.setImageResource(R.drawable.ic_arrow_drop_up_black_24dp);
-                }*/
               ex.toggle();
             }
         });
