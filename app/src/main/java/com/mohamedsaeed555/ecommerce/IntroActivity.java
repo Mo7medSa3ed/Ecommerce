@@ -24,9 +24,9 @@ public class IntroActivity extends AppIntro {
                 R.drawable.med,
                 Color.parseColor("#9370DB")));
 
-        addSlide(AppIntroFragment.newInstance("Baby Needs",
+        addSlide(AppIntroFragment.newInstance("Baby Products",
                 "",
-                R.drawable.baby2,
+                R.drawable.baby,
                 Color.parseColor("#f0add0")));
 
 

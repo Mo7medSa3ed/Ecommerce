@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(3300);
+                        Thread.sleep(4000);
                         if (db.getAllusers().size() != 0 || db.getAllusers().size() > 0) {
                             //second
                             Intent intent = new Intent(SplashActivity.this, SecondActivity.class);

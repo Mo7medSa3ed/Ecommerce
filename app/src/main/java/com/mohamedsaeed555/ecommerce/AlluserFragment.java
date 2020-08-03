@@ -77,7 +77,7 @@ public class AlluserFragment extends Fragment {
        // if (i.equals("u")) {}
             //list.setSelection(users.size()-1);
 
-        //list.smoothScrollToPosition(users.size()-1);
+        list.smoothScrollToPosition(users.size()-1);
     }
 
 
