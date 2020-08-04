@@ -151,7 +151,7 @@ public class UserSetting extends Fragment {
 
                     String image = "";
                     
-                    if (users.getImage() == null || users.getImage().equals("")) {
+                    if (users.getGo_id()==null) {
                         if (Image_path.isEmpty() && path != null) {
                             image = getRealPathFromURI(path);
                         } else {
@@ -186,7 +186,8 @@ public class UserSetting extends Fragment {
                         RequestBody cit = RequestBody.create(MediaType.parse("text/plain"), city);
                         RequestBody adress = RequestBody.create(MediaType.parse("text/plain"), address);
                         RequestBody te = RequestBody.create(MediaType.parse("text/plain"), tel);
-                        RetrofitClient.getInstance().UpdateUser(users.getToken(), _id, nam, te, adress, cit, emai, part, false, false, null, null).enqueue(new Callback<Users>() {
+
+                        RetrofitClient.getInstance().UpdateUser(users.getToken(), _id, nam, te, adress, cit, emai, part/*, users.getAdmin(), users.getSuperAdmin(), null, null*/).enqueue(new Callback<Users>() {
                             @Override
                             public void onResponse(Call<Users> call, Response<Users> response) {
                                 if (response.isSuccessful()) {
@@ -196,7 +197,7 @@ public class UserSetting extends Fragment {
                                     } else {
                                         db.insert_user(response.body(), null);
                                     }
-                                    db.insert_user(response.body(), null);
+                                    //db.insert_user(response.body(), null);
                                     new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                             .setTitleText("Update Profile")
                                             .setContentText("Profile Updated successfully")
@@ -205,7 +206,7 @@ public class UserSetting extends Fragment {
                                                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                     sweetAlertDialog.dismissWithAnimation();
                                                     getActivity().getSupportFragmentManager().beginTransaction()
-                                                            .replace(R.id.cotainers, new HomeFragment()).commit();
+                                                            .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
 
                                                 }
                                             })

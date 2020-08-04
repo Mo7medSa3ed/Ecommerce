@@ -109,8 +109,8 @@ public class RetrofitClient {
         return retrofit_interface.GETALLUSERS(token);
     }
 
-    public Call<Users> UpdateUser(String token, String _id, RequestBody name, RequestBody tel, RequestBody adress, RequestBody city, RequestBody email, MultipartBody.Part image, Boolean admin, Boolean superAdmin, RequestBody fbid, RequestBody goid) {
-        return retrofit_interface.UPDATEUSER(token, _id, name, tel, adress, city, email, image, admin, superAdmin, fbid, goid);
+    public Call<Users> UpdateUser(String token, String _id, RequestBody name, RequestBody tel, RequestBody adress, RequestBody city, RequestBody email, MultipartBody.Part image/*, Boolean admin, Boolean superAdmin, RequestBody fbid, RequestBody goid*/) {
+        return retrofit_interface.UPDATEUSER(token, _id, name, tel, adress, city, email, image/*, admin, superAdmin, fbid, goid*/);
     }
 
     public Call<Users> UpdateUser2(String token, String _id, Users users) {

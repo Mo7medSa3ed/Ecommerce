@@ -23,7 +23,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table Products ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
         db.execSQL("create table AllData ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT , collection TEXT )");
-        db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT )");
+        db.execSQL("create table Cart ( id INTEGER PRIMARY KEY AUTOINCREMENT ,date TEXT , amount INTEGER , barcode TEXT ,name TEXT , price DOUBLE , brand TEXT , image TEXT ,collection TEXT )");
         db.execSQL("create table Users (id INTEGER PRIMARY KEY AUTOINCREMENT , name TEXT , tel TEXT , address TEXT , image TEXT , email TEXT , password TEXT , city TEXT , fbid TEXT , goid TEXT ,admin TEXT , superAdmin TEXT , _id TEXT ,token TEXT)");
         db.execSQL("create table Favourite (id INTEGER PRIMARY KEY AUTOINCREMENT , Fav TEXT)");
         db.execSQL("create table BRAND (id INTEGER PRIMARY KEY AUTOINCREMENT ,Brand TEXT)");
@@ -67,6 +67,7 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put("price", product_class.getPrice());
         contentValues.put("brand", product_class.getBrand());
         contentValues.put("image", product_class.getImage());
+        contentValues.put("collection", product_class.getCollection());
         long result = db.insert(table_name, null, contentValues);
         return result != -1;
     }

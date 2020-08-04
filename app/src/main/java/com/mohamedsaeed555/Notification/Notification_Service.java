@@ -58,7 +58,6 @@ public class Notification_Service extends Service {
                     return;
                 }
                 if (!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
-
                     if (!(notification_class.getGo_Activity().equals("allusers"))) {
                         createNotificationchannel(notification_class);
                     }

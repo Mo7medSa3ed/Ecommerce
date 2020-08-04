@@ -112,11 +112,11 @@ public interface Retrofit_Interface {
                            @Part("adress") RequestBody adress,
                            @Part("city") RequestBody city,
                            @Part("email") RequestBody email,
-                           @Part MultipartBody.Part image,
-                           @Part("admin") Boolean Admin,
+                           @Part MultipartBody.Part image
+                           /*@Part("admin") Boolean Admin,
                            @Part("superAdmin") Boolean SuperAdmin,
                            @Part("fbid") RequestBody fbid,
-                           @Part("goid") RequestBody goid);
+                           @Part("goid") RequestBody goid*/);
 
 
     @PATCH("users/{id}")

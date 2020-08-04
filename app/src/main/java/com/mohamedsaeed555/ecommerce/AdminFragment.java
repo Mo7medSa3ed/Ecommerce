@@ -25,6 +25,7 @@ import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Product_class;
+import com.mohamedsaeed555.MyDataBase.Users;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -222,33 +223,92 @@ public class AdminFragment extends Fragment {
 
     public void Get_gata() {
         final Database db = new Database(getActivity());
-        data=db.getAllProductsForAdmin("AllData",activity.toLowerCase());
-                Collections.sort(data, new Comparator<Product_class>() {
-                    @Override
-                    public int compare(Product_class o1, Product_class o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                });
+        Users user = db.getAllusers().get(0);
+       RetrofitClient.getInstance().GETALLPRODUCTSCOLLECTION(user.getToken(),activity.toLowerCase()).enqueue(new Callback<List<Product_class>>() {
+           @Override
+           public void onResponse(Call<List<Product_class>> call, Response<List<Product_class>> response) {
+               if (response.isSuccessful()){
+                   data.clear();
+                   for (Product_class p : response.body()){
+                       data.add(p);
+                   }
+                   adapter.setdata(data, getActivity());
+                   alertDialog.dismiss();
+                   if (data.size()==0){
+                       new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                               .setCustomImage(R.drawable.ic_baseline_list_alt_24)
+                               .setTitleText(activity)
+                               .setContentText(activity+" is Empty")
+                               .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                   @Override
+                                   public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                       sweetAlertDialog.dismissWithAnimation();
+                                       getActivity().getSupportFragmentManager().beginTransaction()
+                                               .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                                   }
+                               })
+                               .show();
+                   }
 
-                adapter.setdata(data, getActivity());
-                alertDialog.dismiss();
+               }else {
+                   data=db.getAllProductsForAdmin("AllData",activity.toLowerCase());
+                   Collections.sort(data, new Comparator<Product_class>() {
+                       @Override
+                       public int compare(Product_class o1, Product_class o2) {
+                           return o1.getName().compareTo(o2.getName());
+                       }
+                   });
+                   adapter.setdata(data, getActivity());
+                   alertDialog.dismiss();
+                   if (data.size()==0){
+                       new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                               .setCustomImage(R.drawable.ic_baseline_list_alt_24)
+                               .setTitleText(activity)
+                               .setContentText(activity+" is Empty")
+                               .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                                   @Override
+                                   public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                       sweetAlertDialog.dismissWithAnimation();
+                                       getActivity().getSupportFragmentManager().beginTransaction()
+                                               .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                                   }
+                               })
+                               .show();
+                   }
+               }
+           }
 
-                if (data.size()==0){
-                        new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
-                                .setCustomImage(R.drawable.ic_baseline_list_alt_24)
-                                .setTitleText(activity)
-                                .setContentText(activity+" is Empty")
-                                .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismissWithAnimation();
-                                        getActivity().getSupportFragmentManager().beginTransaction()
-                                                .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
-                                    }
-                                })
-                                .show();
+           @Override
+           public void onFailure(Call<List<Product_class>> call, Throwable t) {
+               data=db.getAllProductsForAdmin("AllData",activity.toLowerCase());
+               Collections.sort(data, new Comparator<Product_class>() {
+                   @Override
+                   public int compare(Product_class o1, Product_class o2) {
+                       return o1.getName().compareTo(o2.getName());
+                   }
+               });
+               adapter.setdata(data, getActivity());
+               alertDialog.dismiss();
+               if (data.size()==0){
+                   new SweetAlertDialog(getActivity(), SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                           .setCustomImage(R.drawable.ic_baseline_list_alt_24)
+                           .setTitleText(activity)
+                           .setContentText(activity+" is Empty")
+                           .setConfirmButton("OK", new SweetAlertDialog.OnSweetClickListener() {
+                               @Override
+                               public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                   sweetAlertDialog.dismissWithAnimation();
+                                   getActivity().getSupportFragmentManager().beginTransaction()
+                                           .replace(R.id.cotainers, new HomeFragment()).addToBackStack(null).commit();
+                               }
+                           })
+                           .show();
+               }
+           }
+       });
 
-                }
+
+
     }
 
     @Override
