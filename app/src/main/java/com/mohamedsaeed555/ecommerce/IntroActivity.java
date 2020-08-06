@@ -22,7 +22,7 @@ public class IntroActivity extends AppIntro {
         addSlide(AppIntroFragment.newInstance("Medical Supplies",
                 "",
                 R.drawable.med,
-                Color.parseColor("#5dc425")));
+                Color.parseColor("#4287f5")));
 
         addSlide(AppIntroFragment.newInstance("Baby Products",
                 "",

@@ -45,28 +45,48 @@ public class Notification_Service extends Service {
             Notification_Class notification_class = gson.fromJson(args[0].toString(),Notification_Class.class);
 
             if (notification_class.getAdmin()){
-                if(!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))){
+                if (notification_class.getGo_Activity().equals("orderdetails")) {
+                    if (!(db.getAllusers().get(0).getAdmin())) {
+                        if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())) {
+                            if (notification_class.getMsg().equals("Admin Contact with your order")) {
+                                createNotificationchannel(notification_class);
+                            }
+                        }
+                    }
+                }else if (notification_class.getGo_Activity().equals("admin")){
+                    if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())){
+                        createNotificationchannel(notification_class);
+                    }
+                } else {
+                    if (!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
                    /* if (notification_class.getGo_Activity().equals("allusers")){
                         createNotificationchannel(notification_class);
                     }else if (notification_class.getGo_Activity().equals("orderdetails")){
                         createNotificationchannel(notification_class);
                     }*/
-                    createNotificationchannel(notification_class);
-                }
-            }else {
-                if (notification_class.getGo_Activity().equals("allusers")) {
-                    return;
-                }
-                if (!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
-                    if (!(notification_class.getGo_Activity().equals("allusers"))) {
-                        createNotificationchannel(notification_class);
-                    }
-                }else if (notification_class.getGo_Activity().equals("orderdetails")){
-                    if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())){
-                        if (notification_class.getMsg().equals("Admin Contact with your order")){
+                        if (db.getAllusers().get(0).getAdmin()) {
                             createNotificationchannel(notification_class);
                         }
                     }
+                }
+            }else {
+                if (notification_class.getGo_Activity().equals("allusers")) {
+                    if (db.getAllusers().get(0).getAdmin()){
+                        createNotificationchannel(notification_class);
+                    }
+                }else {
+
+                    if (!(db.getAllusers().get(0).get_id().equals(notification_class.getSender_id()))) {
+                        if (!(notification_class.getGo_Activity().equals("allusers"))) {
+                            createNotificationchannel(notification_class);
+                        }
+                    } /*else if (notification_class.getGo_Activity().equals("orderdetails")) {
+                        if (notification_class.getSender_id().equals(db.getAllusers().get(0).get_id())) {
+                            if (notification_class.getMsg().equals("Admin Contact with your order")) {
+                                createNotificationchannel(notification_class);
+                            }
+                        }
+                    }*/
                 }
 
             }

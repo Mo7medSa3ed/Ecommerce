@@ -56,7 +56,6 @@
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:fontFamily="@font/abril_fatface"
                             android:gravity="center"
                             android:text="Find,Discover,Choose,Delivery and buy any thing online"
                             android:textAlignment="center"

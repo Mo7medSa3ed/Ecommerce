@@ -56,6 +56,13 @@ public class Notification_Class {
 
     }
 
+    public Notification_Class( Boolean admin, String msg, String go_Activity,String sender_id) {
+        Sender_id = sender_id;
+        Admin = admin;
+        this.msg = msg;
+        Go_Activity = go_Activity;
+    }
+
     public int getNotification_id() {
         return Notification_id;
     }

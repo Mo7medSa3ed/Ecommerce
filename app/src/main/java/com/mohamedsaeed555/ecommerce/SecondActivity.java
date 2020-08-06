@@ -125,7 +125,7 @@ public class SecondActivity extends AppCompatActivity {
                 frag.setArguments(bundle);
                 fragmentTransaction.replace(R.id.cotainers, frag)
                         .addToBackStack(null).commit();
-            } else if (notification_class.getGo_Activity().equals("alluser")) {
+            } else if (notification_class.getGo_Activity().equals("allusers")) {
                 if (user.getAdmin()) {
                     Bundle bundle = new Bundle();
                     bundle.putString("i","u");

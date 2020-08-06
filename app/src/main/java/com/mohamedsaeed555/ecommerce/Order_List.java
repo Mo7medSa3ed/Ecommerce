@@ -103,7 +103,7 @@ public class Order_List extends Fragment {
         db = new Database(getActivity());
         orders = db.getAllProducts("Cart");
         users = db.getAllusers().get(0);
-        user = new Poset_Orders.User(users.getName(), users.getEmail(), users.getTel(), users.getAdress(), users.getCity());
+        user = new Poset_Orders.User(users.getName(), users.getEmail(), users.getTel(), users.getAdress(), users.getCity(),users.get_id());
         return inflater.inflate(R.layout.fragment_order__list, container, false);
     }
 
@@ -181,6 +181,9 @@ public class Order_List extends Fragment {
                             fprice = v.findViewById(R.id.textView30);
                             Double t = Double.parseDouble(fprice.getText().toString());
                             int a = Integer.parseInt(pamount.getText().toString().trim());
+                            if (a>orders.get(x).getAmount()){
+                                a=orders.get(x).getAmount();
+                            }
                             total += (t * a);
                             products.add(new ObjectProduct(orders.get(x).getBarcode(), a));
                         }
@@ -192,6 +195,7 @@ public class Order_List extends Fragment {
                             public void onResponse(Call<Poset_Orders> call, Response<Poset_Orders> response) {
                                 if (response.isSuccessful()) {
                                     check = true;
+                                    //Toast.makeText(getActivity(),response.body().get_id(),Toast.LENGTH_LONG).show();
                                     Notification_Class notification_class = new Notification_Class(users.getAdmin(), "New Order From User", "orderdetails", response.body() , users.getImage(),users.get_id(),new Random().nextInt());
                                     mSocket.emit("dbchanged", gson.toJson(notification_class));
 

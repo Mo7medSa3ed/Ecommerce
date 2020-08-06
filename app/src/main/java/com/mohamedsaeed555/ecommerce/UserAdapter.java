@@ -9,15 +9,20 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+import com.google.gson.Gson;
 import com.labters.lottiealertdialoglibrary.ClickListener;
 import com.labters.lottiealertdialoglibrary.DialogTypes;
 import com.labters.lottiealertdialoglibrary.LottieAlertDialog;
 import com.mohamedsaeed555.MyDataBase.Database;
 import com.mohamedsaeed555.MyDataBase.Users;
+import com.mohamedsaeed555.Notification.Notification_Class;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -27,6 +32,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserAdapter extends BaseAdapter {
+
+    private Socket mSocket;
+
+    {
+        try {
+            mSocket = IO.socket("https://newaccsys.herokuapp.com");
+        } catch (URISyntaxException e) {
+        }
+    }
+    Gson gson = new Gson();
 
     ArrayList<Users> arrayList = new ArrayList<>();
     Context context;
@@ -78,12 +93,15 @@ public class UserAdapter extends BaseAdapter {
         Picasso.get().load(arrayList.get(position).getImage()).placeholder(R.drawable.makkah).into(img);
         txtname.setText(arrayList.get(position).getName());
         txtemail.setText(arrayList.get(position).getEmail());
+
         if (arrayList.get(position).getAdmin()) {
             group.check(R.id.admin);
         } else {
             group.check(R.id.user);
         }
+
         final  int pos = position;
+
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,9 +183,9 @@ public class UserAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.user) {
-                    make_user(arrayList.get(position).getToken(), arrayList.get(position).get_id(), false);
+                    make_user(arrayList.get(pos).getToken(), arrayList.get(pos).get_id(), false);
                 } else if (checkedId == R.id.admin) {
-                    make_admin(arrayList.get(position).getToken(), arrayList.get(position).get_id(), true);
+                    make_admin(arrayList.get(pos).getToken(), arrayList.get(pos).get_id(), true);
                 }
             }
         });
@@ -181,6 +199,8 @@ public class UserAdapter extends BaseAdapter {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
                 if (response.isSuccessful()) {
+                    Notification_Class notification_class=new Notification_Class(true,"Admin make you user now \nlogout and login again to make change","admin",id);
+                    mSocket.emit("dbchanged", gson.toJson(notification_class));
                     new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText("Update User")
                             .setContentText("This User Become Now User")
@@ -227,6 +247,8 @@ public class UserAdapter extends BaseAdapter {
             @Override
             public void onResponse(Call<Users> call, Response<Users> response) {
                 if (response.isSuccessful()) {
+                    Notification_Class notification_class=new Notification_Class(true,"Admin make you Admin,Too \nlogout and login again to make change","admin",id);
+                    mSocket.emit("dbchanged", gson.toJson(notification_class));
                     new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                             .setTitleText("Update User")
                             .setContentText("This User Become Now Admin")

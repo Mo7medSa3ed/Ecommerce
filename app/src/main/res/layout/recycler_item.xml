@@ -43,13 +43,11 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:clickable="false"
-                android:fontFamily="sans-serif-black"
                 android:gravity="start|center_vertical"
                 android:text="هير كود 180 مللى "
                 android:textAlignment="viewStart"
                 android:textColor="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 

@@ -47,12 +47,12 @@ public class SplashActivity extends AppCompatActivity {
                         Thread.sleep(4000);
                         if (db.getAllusers().size() != 0 || db.getAllusers().size() > 0) {
                             //second
-                            Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, SecondActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
                             //main
-                            Intent intent = new Intent(SplashActivity.this, IntroActivity.class);
+                            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         }

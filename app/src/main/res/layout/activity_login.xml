@@ -30,12 +30,12 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     app:srcCompat="@drawable/makkah2" />
-
+<!--
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                     android:textAlignment="center"
                     android:gravity="center"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" />-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputlayout5"
@@ -94,7 +94,7 @@
                 <Button
                     android:id="@+id/button7"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/btn_click"
                     android:text="Login"
@@ -111,7 +111,7 @@
                     android:fontFamily="sans-serif-black"
                     android:text="Do you Sign Up ?"
                     android:textAlignment="textStart"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView

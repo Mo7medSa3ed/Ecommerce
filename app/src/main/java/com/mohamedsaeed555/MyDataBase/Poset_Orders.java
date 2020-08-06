@@ -95,13 +95,23 @@ public class Poset_Orders {
         private String tel;
         private String adress;
         private String city;
+        private String _id;
 
-        public User(String name, String email, String tel, String adress, String city) {
+        public User(String name, String email, String tel, String adress, String city,String _id) {
             this.name = name;
             this.email = email;
             this.tel = tel;
             this.adress = adress;
             this.city = city;
+            this._id=_id;
+        }
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
         }
 
         public String getEmail() {

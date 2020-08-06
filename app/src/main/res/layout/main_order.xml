@@ -59,9 +59,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif-black"
-                android:gravity="center"
+                android:gravity="center_vertical|start"
                 android:text="TextView"
-                android:textAlignment="center"
+                android:textAlignment="gravity"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -105,7 +105,7 @@
             android:layout_below="@+id/expa"
             android:background="#EEE"
             app:ael_duration="400"
-            app:ael_expanded="false"
+            app:ael_expanded="true"
             app:ael_interpolator="accelerate"
             app:ael_orientation="vertical">
 
@@ -123,6 +123,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Paid Date"
+                        android:gravity="start"
                         android:textColor="@color/gray"
                         android:textStyle="bold" />
 
@@ -132,6 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="2020-08-07"
+                        android:gravity="center"
                         android:textAlignment="center" />
                 </LinearLayout>
 
@@ -144,6 +146,7 @@
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Order Date"
+                        android:gravity="start"
                         android:textColor="@color/gray"
                         android:textStyle="bold" />
 
@@ -152,6 +155,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="2020-08-07"
                         android:textAlignment="center" />
                 </LinearLayout>
@@ -166,6 +170,7 @@
                         android:layout_height="wrap_content"
                         android:text="Delevary Date"
                         android:textColor="@color/gray"
+                        android:gravity="start"
                         android:textStyle="bold" />
 
                     <TextView
@@ -174,6 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="2020-08-07"
+                        android:gravity="center"
                         android:textAlignment="center" />
                 </LinearLayout>
             </LinearLayout>

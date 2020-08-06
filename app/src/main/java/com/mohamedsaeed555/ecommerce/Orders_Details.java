@@ -23,6 +23,7 @@ import com.mohamedsaeed555.MyDataBase.DetailsProductOrder;
 import com.mohamedsaeed555.MyDataBase.ObjectProduct;
 import com.mohamedsaeed555.MyDataBase.Orders;
 import com.mohamedsaeed555.MyDataBase.Poset_Orders;
+import com.mohamedsaeed555.MyDataBase.Poset_Orders.User;
 import com.mohamedsaeed555.MyDataBase.Product_class;
 import com.mohamedsaeed555.MyDataBase.Users;
 import com.mohamedsaeed555.Notification.Notification_Class;
@@ -50,8 +51,10 @@ public class Orders_Details extends Fragment {
     Button paid, contact;
     ImageView cimage;
     TextView price, cname, ccity, cphone, caddress;
+    String oprice, oname, ocity, ophone, oaddress;
     Database db;
-    Users users;
+    Users users ,order_user;
+     DetailsProductOrder n;
     Boolean pid = false;
     Boolean dele = false;
     String id = "";
@@ -66,6 +69,9 @@ public class Orders_Details extends Fragment {
     Orders o;
     int x=0;
     Poset_Orders o2;
+    User user ;
+    String oid;
+    Boolean admin=false;
     private Socket mSocket;
 
     {
@@ -87,12 +93,25 @@ public class Orders_Details extends Fragment {
                pid = o.getPaid();
                dele = o.getDelivery();
                total = String.valueOf(o.getTotal().get(0));
+               order_user=o.getBy();
+               oname=order_user.getName();
+               ocity=order_user.getCity();
+               ophone=order_user.getTel();
+               oaddress=order_user.getAdress();
+               oid=order_user.get_id();
+
            } else {
                o2 = gson.fromJson(getArguments().getString("os"), Poset_Orders.class);
                id = o2.get_id();
                pid = o2.getPaid();
                dele = o2.getDelivery();
                total = String.valueOf(o2.getTotal().get(0));
+               user = o2.getBy();
+               oname=user.getName();
+               ocity=user.getCity();
+               ophone=user.getTel();
+               oaddress=user.getAdress();
+               oid=user.get_id();
            }
        }catch (Exception e){e.printStackTrace();}
 
@@ -118,10 +137,10 @@ public class Orders_Details extends Fragment {
         caddress = header.findViewById(R.id.textView44);
         cimage = header.findViewById(R.id.imageView11);
         price.setText(total + " EGP");
-        cname.setText(users.getName());
-        ccity.setText(users.getCity());
-        cphone.setText(users.getTel());
-        caddress.setText(users.getAdress());
+        cname.setText(oname);
+        ccity.setText(ocity);
+        cphone.setText(ophone);
+        caddress.setText(oaddress);
 
         if (db.getAllusers().get(0).getToken() == null) {
             paid.setVisibility(View.GONE);
@@ -149,7 +168,7 @@ public class Orders_Details extends Fragment {
         adapter = new DetailsOrderAdapter(data, getActivity());
         list.setAdapter(adapter);
 
-
+       // Toast.makeText(getActivity(),id,Toast.LENGTH_LONG).show();
         GETDATA();
 
         paid.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +194,7 @@ public class Orders_Details extends Fragment {
     }
 
     private void GETDATA() {
-        RetrofitClient.getInstance().GetOneOrder(users.getToken(), id).enqueue(new Callback<Orders>() {
+        RetrofitClient.getInstance().GetOneOrder(null, id).enqueue(new Callback<Orders>() {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
@@ -226,7 +245,7 @@ public class Orders_Details extends Fragment {
                     }
 
 
-                    adapter.setdata(data, getActivity());
+                    //adapter.setdata(data, getActivity());
 
 
                 } else {
@@ -267,7 +286,7 @@ public class Orders_Details extends Fragment {
             @Override
             public void onResponse(Call<Orders> call, Response<Orders> response) {
                 if (response.isSuccessful()) {
-                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),users.get_id(),new Random().nextInt());
+                    Notification_Class notification_class = new Notification_Class(users.getAdmin(), "Admin Contact with your order", "orderdetails", o , users.getImage(),oid,new Random().nextInt());
 
                     mSocket.emit("dbchanged", gson.toJson(notification_class));
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
@@ -392,12 +411,13 @@ public class Orders_Details extends Fragment {
         RetrofitClient.getInstance().GETSEARCHRODUCTBARCODE(users.getToken(),barcode).enqueue(new Callback<Product_class>() {
             @Override
             public void onResponse(Call<Product_class> call, Response<Product_class> response) {
+
                 if (response.isSuccessful()){
                         if (response.body() != null){
                             data.add(new DetailsProductOrder(response.body(), new_pr.get(x).getAmount()));
                         }
-
-                    return;
+                    adapter.setdata(data, getActivity());
+                   return;
                 }else {
                     new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")
@@ -410,6 +430,8 @@ public class Orders_Details extends Fragment {
                             })
                             .show();
                 }
+
+
             }
 
             @Override
@@ -426,5 +448,6 @@ public class Orders_Details extends Fragment {
                         .show();
             }
         });
+
     }
 }
