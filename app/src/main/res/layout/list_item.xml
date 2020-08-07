@@ -17,9 +17,9 @@
         <TextView
             android:id="@+id/textView9"
             android:layout_column="3"
-            android:gravity="start|left|center_vertical"
+            android:gravity="left|center_vertical"
             android:padding="10dp"
-            android:text="20/8/2020"
+            android:text="20/8/2000"
             android:textAlignment="gravity" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_span="10"
-            android:gravity="center_vertical|end"
+            android:gravity="center_vertical|right"
             android:padding="10dp"
             android:text="25"
             android:textAlignment="gravity" />
@@ -46,9 +46,9 @@
             android:id="@+id/textView4"
             android:layout_column="0"
             android:layout_span="21"
-            android:gravity="right|center_vertical|end"
+            android:gravity="right|center_vertical"
             android:padding="10dp"
-            android:text="dasdsadsads"
+            android:text=""
             android:textAlignment="gravity" />
 
 

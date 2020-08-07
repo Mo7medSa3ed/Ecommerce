@@ -43,9 +43,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:clickable="false"
-                android:gravity="start|center_vertical"
-                android:text="هير كود 180 مللى "
-                android:textAlignment="viewStart"
+                android:gravity="left|center_vertical"
+                android:text="ا "
+                android:textAlignment="gravity"
                 android:textColor="#000"
                 android:textSize="14sp" />
 

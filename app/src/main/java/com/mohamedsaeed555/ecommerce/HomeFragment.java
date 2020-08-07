@@ -206,7 +206,7 @@ public class HomeFragment extends Fragment implements RecyclerAdapter.onclick {
                 visibleItemCount = layoutManager.getChildCount();
                 totalItemCount = layoutManager.getItemCount();
                 pastVisibleItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                if (check && isloading && (visibleItemCount + pastVisibleItems == totalItemCount)) {
+                if ( isloading && (visibleItemCount + pastVisibleItems == totalItemCount)) {
                     progressBar.setVisibility(View.VISIBLE);
                     page++;
                     Getcosmatics(collection_name, String.valueOf(page));

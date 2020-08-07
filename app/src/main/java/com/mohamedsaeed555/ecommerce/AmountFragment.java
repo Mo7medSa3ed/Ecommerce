@@ -182,7 +182,7 @@ public class AmountFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 13) {
+                if (s.length() > 0) {
                     btn_search.setVisibility(View.VISIBLE);
                 } else {
                     btn_search.setVisibility(View.GONE);
@@ -197,7 +197,6 @@ public class AmountFragment extends Fragment {
                 Product_class productClass;
                 String bar = pcode.getText().toString().trim();
                 if (db.Search_product2("AllData", bar).size() > 0) {
-
                     productClass = db.Search_product2("AllData", bar).get(0);
                     Bundle bundle = new Bundle();
                     bundle.putString("collection_name", productClass.getCollection());

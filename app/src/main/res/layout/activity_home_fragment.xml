@@ -171,6 +171,10 @@
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
                 android:padding="2dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/nav_color"
+                android:indeterminateTintMode="src_atop"
+                android:progressTint="@color/nav_color"
                 tools:visibility="visible" />
 
         </LinearLayout>

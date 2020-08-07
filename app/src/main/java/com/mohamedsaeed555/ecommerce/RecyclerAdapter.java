@@ -56,14 +56,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Produc
         this.fav = fav;
     }
 
-    public void setdate(ArrayList<Product_class> product_data, Context context, onclick onclick, Boolean check) {
+    public void setdate(ArrayList<Product_class> product_data2, Context context, onclick onclick, Boolean check) {
         this.context = context;
         this.onclick = onclick;
         this.check = check;
-        for (Product_class p : product_data) {
+        for (Product_class p : product_data2) {
             this.product_data.add(p);
-            this.filterd_data.add(p);
         }
+        this.filterd_data=product_data;
         notifyDataSetChanged();
     }
 
